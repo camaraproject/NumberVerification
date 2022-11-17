@@ -1,0 +1,236 @@
+openapi: 3.0.0
+info:
+  title: CAMARA numberVerify
+  version: 1.0.0
+servers:
+  - url: https://mobileconnect.telekom.de
+tags:
+  - name: Verified MSISDN
+paths:
+  /authorize:
+    get:
+      tags:
+        - Verified MSISDN
+      summary: Authorize
+      parameters:
+        - name: response_type
+          in: query
+          schema:
+            type: string
+          example: code
+        - name: scope
+          in: query
+          schema:
+            type: string
+          example: openid mc_vm_match
+        - name: version
+          in: query
+          schema:
+            type: string
+          example: mc_v2.1
+        - name: redirect_uri
+          in: query
+          schema:
+            type: string
+          example: http://localhost
+        - name: nonce
+          in: query
+          schema:
+            type: integer
+          example: '123456'
+        - name: prompt
+          in: query
+          schema:
+            type: string
+          example: login
+        - name: state
+          in: query
+          schema:
+            type: string
+          example: teststate
+        - name: correlation_id
+          in: query
+          schema:
+            type: string
+          example: vm_match
+        - name: acr_values
+          in: query
+          schema:
+            type: integer
+          example: '2'
+        - name: client_id
+          in: query
+          schema:
+            type: string
+          description: client_id provided by MNO for mc vm match api consumption
+          example: '{client_id}'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json: {}
+  /token:
+    post:
+      tags:
+        - Verified MSISDN
+      summary: Token
+      requestBody:
+        content: {}
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/x-www-form-urlencoded
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          description: base64(client_id:client_secret)
+          example: 'Basic '
+        - name: grant_type
+          in: query
+          schema:
+            type: string
+          example: authorization_code
+        - name: code
+          in: query
+          schema:
+            type: string
+          example: jUQqqE-mawjwzscVbp00BRrdVWKU6qw78fklU1MSl9A
+        - name: correlation_id
+          in: query
+          schema:
+            type: string
+          example: vm_match
+        - name: redirect_uri
+          in: query
+          schema:
+            type: string
+          example: http://localhost
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Wed, 09 Nov 2022 11:45:58 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json;charset=UTF-8
+            Transfer-Encoding:
+              schema:
+                type: string
+                example: chunked
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+              example:
+                access_token: hIiC6ksKeD7olGcdW7-KcsKrX0kMEEm_NEtRdE2Le9k
+                id_token: '{id_token}'
+                correlation_id: vm_match
+                token_type: Bearer
+                expires_in: '500'
+  /openid/userinfo:
+    post:
+      tags:
+        - Verified MSISDN
+      summary: User Info
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              example:
+                correlation_id: vm_match
+                received_correlation_id: 'true'
+                mc_claims:
+                  device_msisdn: '+4915164816329'
+      parameters:
+        - name: Content-Type
+          in: header
+          schema:
+            type: string
+          example: application/json
+        - name: Authorization
+          in: header
+          schema:
+            type: string
+          description: access_token
+          example: Bearer hIiC6ksKeD7olGcdW7-KcsKrX0kMEEm_NEtRdE2Le9k
+      responses:
+        '200':
+          description: OK
+          headers:
+            Date:
+              schema:
+                type: string
+                example: Fri, 18 Feb 2022 13:27:15 GMT
+            Content-Type:
+              schema:
+                type: string
+                example: application/json;charset=UTF-8
+            Transfer-Encoding:
+              schema:
+                type: string
+                example: chunked
+            Connection:
+              schema:
+                type: string
+                example: keep-alive
+            X-Content-Type-Options:
+              schema:
+                type: string
+                example: nosniff
+            X-XSS-Protection:
+              schema:
+                type: string
+                example: 1; mode=block
+            Cache-Control:
+              schema:
+                type: string
+                example: no-cache, no-store, max-age=0, must-revalidate
+            Pragma:
+              schema:
+                type: string
+                example: no-cache
+            Expires:
+              schema:
+                type: integer
+                example: '0'
+            X-Frame-Options:
+              schema:
+                type: string
+                example: DENY
+            Strict-Transport-Security:
+              schema:
+                type: string
+                example: max-age=15724800; includeSubDomains
+          content:
+            application/json:
+              schema:
+                type: object
+              examples:
+                example-0:
+                  summary: User Info - TRUE
+                  value:
+                    sub: c1be197e-4314-4dd9-bd3e-26002004b468b5a9dc43
+                    correlation_id: vm_match
+                    device_msisdn_verified: true
+                example-1:
+                  summary: User Info - FALSE
+                  value:
+                    sub: c1be197e-4314-4dd9-bd3e-26002004b468b5a9dc43
+                    correlation_id: vm_match
+                    device_msisdn_verified: false
