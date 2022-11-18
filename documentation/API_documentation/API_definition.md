@@ -1,4 +1,4 @@
-#Reference
+# Reference
 CAMARA Number Verify is based on Mobile Connect Verified MSISDN standardized product:
 
 [IDY.54](assets/docs/(placeholder4MCspec).docx)
@@ -6,9 +6,10 @@ CAMARA Number Verify is based on Mobile Connect Verified MSISDN standardized pro
 **IDY.54 Mobile Connect Verified MSISDN Definition and Technical Requirements** 
 
 ## About Mobile Connect
+
 Mobile Connect is a worldwide initiative by Mobile Operators to bring a wide portfolio of Identity services to market that enable SPs and End-Users to transact with one-another more securely through strong authentication, authorisation and exchange of attributes, subject to User consent.
 
-The Mobile Connect architecture consists of a Core framework around which additional components can be added to support the different Mobile Connect services as well as other API based services that delivers value to the customer. The Core framework is based upon the OpenID Connect (OIDC) protocol suite and allows Users to be identified by their MSISDN (or a related Pseudonymous Customer Reference) to enable authentication on their mobile device.
+The Mobile Connect architecture consists of a Core framework around which additional components can be added to support the different Mobile Connect services as well as other API based services that delivers value to the customer. The Core framework is based upon the OpenID Connect (OIDC) protocol suite and allows Users to be identified by their MSISDN (or a related Pseudonymous Customer Reference) to enable authentication on their mobile device. Attributes sharing services are based upon the OAUTH2.0 framework - Client Credentials grant.
 
 ## Number Verify / Verified MSISDN definition
 
@@ -16,8 +17,8 @@ Mobile Connect Verified MSISDN allows Developer // Service Provider (SP) to veri
 
 Mobile Connect Verified MSISDN is defined as two service variants:
 
-    • Verified MSISDN Match: in which the Mobile Operator compares the MSISDN associated with the mobile device against that provided by the SP in the service request1. The MSISDN can be supplied in an E164 format [5] or in a hashed form. Verified MSISDN Match ensures no data is shared by the Mobile Operator.
-    • Verified MSISDN Share: in which the Mobile Operator provides the mobile device MSISDN to the SP who can then perform the check itself
+- **Verified MSISDN Match**: in which the Mobile Operator compares the MSISDN associated with the mobile device against that provided by the SP in the service request1. The MSISDN can be supplied in an E164 format [5] or in a hashed form. Verified MSISDN Match ensures no data is shared by the Mobile Operator.
+- **Verified MSISDN Share**: in which the Mobile Operator provides the mobile device MSISDN to the SP who can then perform the check itself
 
 Note that the Verified MSISDN service only works for devices which have an active mobile data bearer. It will not work via another data connection such as WiFi.
 
@@ -94,6 +95,8 @@ In order to be able to share (or match) User information with a SP, the User mus
   - The attribute identifier is “device_msisdn_hash”  with a value of the hash of the MSISDN if scope=”mc_vm_match_hash” was specified in the service request.
 - The Resource Server matches the attribute value with the previously extracted MSISDN or hash of the MSISDN extracted by the Authorization Server. If they match, the service returns a Boolean value “true” to the SP. 
 - If the verification fails, then it returns a Boolean value “false” to the SP. 
+
+
 ### User Consent Management
 
 The Mobile Connect Verified MSISDN service is designed to be used as a fraud check so typically, User consent will be captured by the SP (at registration and /or included within standard terms and conditions) and the service will be processed in the background without any explicit User consent.
@@ -164,8 +167,6 @@ Content-Length: 73.
 } 
 
 
-
-
 **Table 3** shows the attribute identifier and associated value that is returned in the Resource Response for Mobile Connect Verified MSISDN Match. The response is the same irrespective of whether plain text or hashed values were submitted in the Resource Request.
 
 **Table 3 - Mobile Connect Verified MSISDN Match – Returned Attributes in the Resource Response**
@@ -185,7 +186,7 @@ Content-Length: xx.
 Content-Type: application/json.
 .
 {
-  "sub": "cd45a691-d311-4134-9a0c-2747e5110d22 "
+  "sub": "cd45a691-d311-4134-9a0c-2747e5110d22"
   "device_msisdn_verified": true
 }
 
