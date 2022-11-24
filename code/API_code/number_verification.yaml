@@ -1,0 +1,372 @@
+openapi: 3.0.3
+info:
+  title: Number Verification - DRAFT VERSION
+  description: |-
+    Service Enabling Network Function API to verify that the provided **phone number** is the one used in the device. It verifies that the user is using a device with the same *phone number* as it is declared.
+
+    # Relevant  Definitions and concepts
+    - **NaaS**: *Network-as-a-Service* model where Telco Network resources are exposed to third parties through APIs. In this particular API, Number Verification is exposed following this model. 
+
+    # API Functionality 
+    It enables a Service Provider (SP) to verify the phone number (MSISDN) of the mobile device being used to access their service where the mobile device is accessing the *service provider* over a mobile network (WiFi connections are out of this API scope).
+
+    # Resources and Operations overview
+    This API currently provides two endpoints which check if the user phone number matches the MSISDN associated with the mobile device. It requires a **3-legged token** and authentication via **mobile network** (excluding for example by SMS/OTP or user/password as an authentication method). One of the endpoints receives a hashed phone number and the other receives a clear phone number as input.
+    
+    Both endpoints compare the received input with the authenticated user's MSISDN retrieved from the access token in order to respond **true/false**.
+  version: 0.1.0
+  termsOfService: http://example.com/terms/
+  contact:
+    name: API Support
+    url: http://www.example.com/support
+    email: support@example.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: https://{host}{basePath}
+    variables:
+      host:
+        default: api.example.com
+        description: Host that serves the API
+      basePath:
+        default: /number-verification/v1
+        description: Base path for the number verification API
+tags:
+  - name: Hashed phone number verify
+    description: API operation to verify a hashed phone number received as input
+  - name: Clear phone number verify
+    description: API operations to verify a phone number received as input
+paths:
+  /verify-hashed:
+    post:
+      tags:
+        - Hashed phone number verify
+      summary: Verifies if the received hashed phone number matches the MSISDN associated with the access token
+      description: |-
+        Verifies if the specified hashed phone number matches the one that the user is currently using.
+         - The number verification will be done for the user that has authenticated via mobile network and so their `sub` is in the access token
+         - It returns true/false depending on if the hashed phone number received as input matches the authenticated user's `MSISDN` retrieved from the access token
+      operationId: hashedPhoneNumberVerify
+      parameters:
+        - in: header
+          name: x-correlator
+          required: false
+          description: Correlation id for the different services
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NumberVerificationHashedRequestBody'
+        required: true
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-correlator:
+              description: Correlation id for the different services
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NumberVerificationMatchResponse'
+        '400':
+          $ref: '#/components/responses/InvalidArgument'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/NotAuthenticatedByIpPermissionDenied'
+        '500':
+          $ref: '#/components/responses/Internal'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+        '504':
+          $ref: '#/components/responses/Timeout'
+      security:
+        - three_legged:
+          - number-verification-verify-hashed-read
+  /verify:
+    post:
+      tags:
+        - Clear phone number verify
+      summary: Verifies if the received hashed phone number matches the MSISDN associated with the access token
+      description: |-
+        Verifies if the specified phone number matches the one that the user is currently using.
+         - The number verification will be done for the user that has authenticated via mobile network and so their `sub` is in the access token
+         - It returns true/false depending on if the phone number received as input matches the authenticated user's `MSISDN` retrieved from the access token
+      operationId: clearPhoneNumberVerify
+      parameters:
+        - in: header
+          name: x-correlator
+          required: false
+          description: Correlation id for the different services
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NumberVerificationClearRequestBody'
+        required: true
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-correlator:
+              description: Correlation id for the different services
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NumberVerificationMatchResponse'
+        '400':
+          $ref: '#/components/responses/InvalidArgument'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/NotAuthenticatedByIpPermissionDenied'
+        '500':
+          $ref: '#/components/responses/Internal'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+        '504':
+          $ref: '#/components/responses/Timeout'
+      security:
+        - three_legged:
+          - number-verification-verify-read
+components:
+  securitySchemes:
+    three_legged:
+      type: openIdConnect
+      openIdConnectUrl: https://example.com/.well-known/openid-configuration
+  schemas:
+    NumberVerificationClearRequestBody:
+      type: object
+      description: Payload to verify the number
+      properties:
+        phone_number:
+          $ref: '#/components/schemas/PhoneNumber'
+      required:
+        - phone_number
+    NumberVerificationHashedRequestBody:
+      type: object
+      description: Payload to verify the number
+      properties:
+        hashed_phone_number:
+          $ref: '#/components/schemas/HashedPhoneNumber'
+      required:
+        - hashed_phone_number
+    PhoneNumber:
+      description: A phone number belonging to the user. 'E164 with +' format
+      type: string
+      example: '+346661113334'
+    HashedPhoneNumber:
+      description: Hashed phone number. SHA-256 (in hexadecimal representation) of the MSISDN in 'E164 with +' format
+      type: string
+      example: 32f67ab4e4312618b09cd23ed8ce41b13e095fe52b73b2e8da8ef49830e50dba
+    NumberVerificationMatchResponse:
+      type: object
+      description: Number verification result
+      required:
+        - device_phone_number_verified
+      properties:
+        device_phone_number_verified:
+          $ref: '#/components/schemas/DevicePhoneNumberVerified'
+    DevicePhoneNumberVerified:
+      description: Number verification. True, if it matches
+      type: boolean
+    ModelError:
+      type: object
+      required:
+        - status
+        - message
+      properties:
+        status:
+          type: string
+          pattern: '^[1-5][0-9][0-9]$'
+          description: HTTP response status code
+        message:
+          type: string
+          description: A human readable description of what the event represent
+    schemas/NotAuthenticatedByIpPermissionDenied:
+            allOf:
+              - type: object
+                required:
+                  - code
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - PERMISSION_DENIED
+                      - NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_IP
+                    default: PERMISSION_DENIED
+                    description: Client does not have sufficient permissions to perform this action.
+              - $ref: '#/components/schemas/ModelError'
+  responses:
+    InvalidArgument:
+      description: Problem with the client request
+      headers:
+        x-correlator:
+          description: Correlation id for the different services
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            allOf:
+              - type: object
+                required:
+                  - code
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - INVALID_ARGUMENT
+                    default: INVALID_ARGUMENT
+                    description: Client specified an invalid argument, request body or query param.
+              - $ref: '#/components/schemas/ModelError'
+          examples:
+            response:
+              value:
+                status: "400"
+                code: INVALID_ARGUMENT
+                message: Client specified an invalid argument, request body or query param
+    Unauthenticated:
+      description: Authentication problem with the client request
+      headers:
+        x-correlator:
+          description: Correlation id for the different services
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            allOf:
+              - type: object
+                required:
+                  - code
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - UNAUTHENTICATED
+                    default: UNAUTHENTICATED
+                    description: Request not authenticated due to missing, invalid, or expired credentials.
+              - $ref: '#/components/schemas/ModelError'
+          examples:
+            response:
+              value:
+                status: "401"
+                code: UNAUTHENTICATED
+                message: Request not authenticated due to missing, invalid, or expired credentials
+    NotAuthenticatedByIpPermissionDenied:
+      description: |-
+        Client does not have sufficient permission.
+        In addition to regular scenario of `PERMISSION_DENIED`, another scenario may exist:
+          - Client authentication was not via mobile network. In order to check the authentication method, AMR parameter value in the 3-legged user's access token can be used and make sure that the authentication was not either by SMS+OTP nor username/password (`{"code": "NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_IP","message": "Client must authenticate via IP to use this service"}`)
+      headers:
+        x-correlator:
+          description: Correlation id for the different services
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotAuthenticatedByIpPermissionDenied'
+          examples:
+            response:
+              value:
+                status: "401"
+                code: NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_IP
+                message: Client must authenticate via IP to use this service
+    Internal:
+      description: Server error
+      headers:
+        x-correlator:
+          description: Correlation id for the different services
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            allOf:
+              - type: object
+                required:
+                  - code
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - INTERNAL
+                    default: INTERNAL
+                    description: Unknown server error.Typically a server bug.
+              - $ref: '#/components/schemas/ModelError'
+          examples:
+            response:
+              value:
+                status: "500"
+                code: INTERNAL
+                message: Server error
+    Unavailable:
+      description: Service unavailable. Typically the server is down.
+      headers:
+        x-correlator:
+          description: Correlation id for the different services
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            allOf:
+              - type: object
+                required:
+                  - code
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - UNAVAILABLE
+                    default: UNAVAILABLE
+                    description: Request timeout exceeded
+              - $ref: '#/components/schemas/ModelError'
+          examples:
+            response:
+              value:
+                status: "503"
+                code: UNAVAILABLE
+                message: Service unavailable
+    Timeout:
+      description: Request time exceeded. If it happens repeatedly, consider reducing the request complexity
+      headers:
+        x-correlator:
+          description: Correlation id for the different services
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            allOf:
+              - type: object
+                required:
+                  - code
+                properties:
+                  code:
+                    type: string
+                    enum:
+                      - TIMEOUT
+                    default: TIMEOUT
+                    description: Request timeout exceeded
+              - $ref: '#/components/schemas/ModelError'
+          examples:
+            response:
+              value:
+                status: "504"
+                code: TIMEOUT
+                message: Request timeout exceeded. Try later.
+externalDocs:
+  description: Project documentation at CAMARA
+  url: https://github.com/camaraproject/NumberVerification
