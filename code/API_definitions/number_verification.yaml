@@ -192,20 +192,20 @@ components:
         message:
           type: string
           description: A human readable description of what the event represent
-    schemas/NotAuthenticatedByIpPermissionDenied:
-            allOf:
-              - type: object
-                required:
-                  - code
-                properties:
-                  code:
-                    type: string
-                    enum:
-                      - PERMISSION_DENIED
-                      - NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_IP
-                    default: PERMISSION_DENIED
-                    description: Client does not have sufficient permissions to perform this action.
-              - $ref: '#/components/schemas/ModelError'
+    NotAuthenticatedByIpPermissionDenied:
+      allOf:
+        - type: object
+          required:
+            - code
+          properties:
+            code:
+              type: string
+              enum:
+                - PERMISSION_DENIED
+                - NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_IP
+              default: PERMISSION_DENIED
+              description: Client does not have sufficient permissions to perform this action.
+        - $ref: '#/components/schemas/ModelError'
   responses:
     InvalidArgument:
       description: Problem with the client request
