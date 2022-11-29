@@ -280,7 +280,7 @@ components:
           examples:
             response:
               value:
-                status: "401"
+                status: "403"
                 code: NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_IP
                 message: Client must authenticate via IP to use this service
     Internal:
