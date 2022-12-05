@@ -30,7 +30,7 @@ servers:
         default: api.example.com
         description: Host that serves the API
       basePath:
-        default: /number-verification/v1
+        default: /number-verification/v0
         description: Base path for the number verification API
 tags:
   - name: Hashed phone number verify
