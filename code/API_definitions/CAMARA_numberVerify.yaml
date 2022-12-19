@@ -3,9 +3,26 @@ info:
   title: CAMARA numberVerify
   description: Number Verify service based on Mobile Connect Verified MSISDN specification
   version: 0.1.0
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  contact:
+    name: Support
+    email: support@example.com
+    url: https://support.example.com
+externalDocs:
+  description: GSMA Mobile Connect Verified MSISDN specification
+  url: https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.54-Mobile-Connect-Verified-MSISDN-Definition-and-Technical-Requirements-1.0.pdf
 servers:
-  - url: https://api.server.test
-  - description: API server providing CAMARA APIs
+  - url: https://{countryServer}.{domain}
+    variables:
+      countryServer:
+        default: api.server
+        description: a server specific to country where API is delivered
+      domain:
+        default: com
+        description: a domain where server is delivered
+    description: API server providing CAMARA APIs
 tags:
   - name: Verified MSISDN
     description: Standard Number Verify service based on Mobile Connect Verified MSISDN
@@ -14,6 +31,9 @@ paths:
     get:
       tags:
         - Verified MSISDN
+      externalDocs:
+        description: Mobile Connect Device Initiated OIDC profile
+        url: https://www.gsma.com/identity/wp-content/uploads/2022/11/IDY.01-v3.0.pdf
       security:
         - openId: [mc_vm_match,mc_vm_match_hash]
       summary: Authorize request for MC Verified MSISDN service
