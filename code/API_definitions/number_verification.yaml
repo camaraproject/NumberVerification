@@ -2,11 +2,10 @@ openapi: 3.0.3
 info:
   title: Number Verification
   description: |-
-    Service Enabling Network Function API to verify that the provided **phone number** is the one used in the device. It verifies that the user is using a device with the same *phone number* as it is declared.
+    Service Enabling Network Function API to verify that the provided **mobile phone number** is the one used in the device. It verifies that the user is using a device with the same *mobile phone number* as it is declared.
     It also make it possible for a Service provider to verify the number itself by returning the phone number retrieved from the authenticated user's access token.
-
-    # Relevant  Definitions and concepts
-    - **NaaS**: *Network-as-a-Service* model where Telco Network resources are exposed to third parties through APIs. In this particular API, Number Verification is exposed following this model. 
+    
+    In this API **phone number** term refers to the mobile phone number (MSISDN)
 
     # API Functionality 
     It enables a Service Provider (SP) to verify the phone number (MSISDN) of the mobile device being used to access their service where the mobile device is accessing the *service provider* over a mobile network (WiFi connections are out of this API scope) either by getting the comparison result or receiving the phone number of the device that it is used, so they can verify it themselves.
