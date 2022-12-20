@@ -88,12 +88,21 @@ paths:
               - 3
           example: '2'
       responses:
-        '200':
-          description: Successful response with "code" describing successful device authentication
+        '302':
+          description: /authorize endpoint process the reqest and returns either success or error on redirect
           content:
-            application/json: 
+            application/json:
               schema:
-                  $ref: '#/components/schemas/oidc_auth_response'
+                oneOf:
+                 - $ref: '#/components/schemas/oidc_token_response'
+                 - $ref: '#/components/responses/302redirectError'
+                type: object
+        '400':
+          description: invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serverError'
   /token:
     post:
       tags:
@@ -124,13 +133,31 @@ paths:
             format: uri
           example: http://localhost
       responses:
-        '200':
-          description: OK
+        '400':
+          description: invalid request
           content:
             application/json:
               schema:
-                type: object
-                $ref: '#/components/schemas/oidc_token_response'
+                $ref: '#/components/schemas/serverError'
+        '401':
+          description: access denied or invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serverError'
+        '500':
+          description: internal error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serverError'
+        '503':
+          description: service unavailable
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serverError'
+
   /openid/userinfo:
     post:
       tags:
@@ -149,11 +176,17 @@ paths:
                 - $ref: '#/components/schemas/mc_vm_match_hash_resource_request'
       responses:
         '200':
-          description: OK
+          description: success - tokens returned
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/mc_vm_match_response'
+        '400':
+          description: bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/serverError'
 
 security:
   - openId:
@@ -171,6 +204,19 @@ components:
     basicAuth:
       type: http
       scheme: basic  
+  responses:
+    accessDenied:
+      description: request cannot be completed due to bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/serverError'
+    302redirectError:
+      description: error message returned on redirect
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/redirectError'
   schemas:
     mc_vm_match_resource_request:
       type: object
@@ -243,4 +289,25 @@ components:
         - token_type
         - id_token
         - expires_in
+    serverError:
+      type: object
+      properties:
+        error_description:
+          type: string
+          example: Mandatory parameter code is invalid
+        error:
+          type: string
+          example: invalid_request
+      required:
+        - error
+        - error_description
+    redirectError:
+      type: object
+      properties:
+        error_description:
+          type: string
+          example: Mandatory parameter code is invalid
+        error:
+          type: string
+          example: invalid_request
     
