@@ -61,7 +61,7 @@ Following table defines API endpoints of exposed REST based for Number Verificat
 | -------------------------- |
 | **HTTP Request**<br> POST /number-verification/v0/verify<br>**Query Parameters**<br> No query parameters are defined.<br>**Path Parameters**<br> No path parameters are defined.<br>**Request Body Parameters**<br> **One of:** <br> **phone_number**: A phone number belonging to the user. 'E164 with +' format.<br> **hashed_phone_number**: Hashed phone number. SHA-256 (in hexadecimal representation) of the mobile phone number in 'E164 with +' format.
 
- <br>**Response**<br> **200: OK**<br>  Response body: <br>**device_phone_number_verified** : Boolean <br> **400:** **INVALID_ARGUMENT**<br> **401:** **UNAUTHENTICATED** <br> **403:** **PERMISSION_DENIED** <br> **500:** **INTERNAL**<br> **503:** **UNAVAILABLE**<br> **504:** **TIMEOUT**<br>
+ <br>**Response**<br> **200: OK**<br>  Response body: <br>**device_phone_number_verified** : Boolean <br> **400:** **INVALID_ARGUMENT**<br> **401:** **UNAUTHENTICATED** <br> **403:** **PERMISSION_DENIED** <br> **403:** **NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_IP** <br> **500:** **INTERNAL**<br> **503:** **UNAVAILABLE**<br> **504:** **TIMEOUT**<br>
 <br>
 
 <br>
@@ -70,7 +70,7 @@ Following table defines API endpoints of exposed REST based for Number Verificat
 | -------------------------- |
 | **HTTP Request**<br> GET /number-verification/v0/device-phone-number<br>**Query Parameters**<br> No query parameters are defined.<br>**Path Parameters**<br> No path parameters are defined.<br>**Request Body Parameters**<br> No body
 
- <br>**Response**<br> **200: OK**<br>  Response body: <br>**device_phone_number** : The device phone number associated to the access token. 'E164 with +' format. <br> **400:** **INVALID_ARGUMENT**<br> **401:** **UNAUTHENTICATED** <br> **403:** **PERMISSION_DENIED** <br> **500:** **INTERNAL**<br> **503:** **UNAVAILABLE**<br> **504:** **TIMEOUT**<br>
+ <br>**Response**<br> **200: OK**<br>  Response body: <br>**device_phone_number** : The device phone number associated to the access token. 'E164 with +' format. <br> **400:** **INVALID_ARGUMENT**<br> **401:** **UNAUTHENTICATED** <br> **403:** **PERMISSION_DENIED** <br> **403:** **NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_IP** <br> **500:** **INTERNAL**<br> **503:** **UNAVAILABLE**<br> **504:** **TIMEOUT**<br>
 <br>
 
 <br>
@@ -87,9 +87,10 @@ Following table provides an overview of common error names, codes, and messages 
 |1	|400 |	INVALID_ARGUMENT |	"Client specified an invalid argument, request body or query param" |
 |2	|401 |	UNAUTHENTICATED |	"Request not authenticated due to missing, invalid, or expired credentials" |
 |3	|403 |	PERMISSION_DENIED |	"Client does not have sufficient permissions to perform this action" |
-|4	|500 |	INTERNAL | "Server error" |
-|5	|503 |	UNAVAILABLE | "Service unavailable" |
-|6	|504 |	TIMEOUT | "Request timeout exceeded. Try later." |
+|4	|403 |	NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_IP |	"Client must authenticate via IP to use this service" |
+|5	|500 |	INTERNAL | "Server error" |
+|6	|503 |	UNAVAILABLE | "Service unavailable" |
+|7	|504 |	TIMEOUT | "Request timeout exceeded. Try later." |
 
 <br>
 
