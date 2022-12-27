@@ -13,11 +13,11 @@ The Mobile Connect architecture consists of a Core framework around which additi
 
 ## Number Verify / Verified MSISDN definition
 
-Mobile Connect Verified MSISDN allows Developer // Service Provider (SP) to verify the MSISDN (phone number) of the device connected to the mobile data network through which a User is accessing an SP service. In doing so, it enables the SP to check that the device being used to access a particular SP User account belongs to the account holder. Such a service can also be used by theSP for verifying the User’s device as a complementary service when a User is being authenticated.
+Mobile Connect Verified MSISDN allows Developer // Service Provider (SP) to verify the MSISDN (phone number) of the device connected to the mobile data network through which a User is accessing an SP service. In doing so, it enables the SP to check that the device being used to access a particular SP User account belongs to the account holder. Such a service can also be used by the SP for verifying the User’s device as a complementary service when a User is being authenticated.
 
 Mobile Connect Verified MSISDN is defined as two service variants:
 
-- **Verified MSISDN Match**: in which the Mobile Operator compares the MSISDN associated with the mobile device against that provided by the SP in the service request1. The MSISDN can be supplied in an E164 format [5] or in a hashed form. Verified MSISDN Match ensures no data is shared by the Mobile Operator.
+- **Verified MSISDN Match**: in which the Mobile Operator compares the MSISDN associated with the mobile device against that provided by the SP in the service request. The MSISDN can be supplied in an E164 format [5] or in a hashed form. Verified MSISDN Match ensures no data is shared by the Mobile Operator.
 - **Verified MSISDN Share**: in which the Mobile Operator provides the mobile device MSISDN to the SP who can then perform the check itself
 
 Note that the Verified MSISDN service only works for devices which have an active mobile data bearer. It will not work via another data connection such as WiFi.
