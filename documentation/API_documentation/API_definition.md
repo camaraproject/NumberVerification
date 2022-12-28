@@ -1,5 +1,5 @@
 # Reference
-CAMARA Number Verify is based on Mobile Connect Verified MSISDN standardized product:
+Number Verify API is based on Mobile Connect Verified MSISDN standardized product:
 
 [IDY.54](assets/docs/(placeholder4MCspec).docx)
 
