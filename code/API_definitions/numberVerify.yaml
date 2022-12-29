@@ -45,6 +45,15 @@ paths:
             type: string
             enum:
               - code
+        - name: scope
+          in: query
+          required: true
+          description: Scope value impacts resource call consumption.
+          schema:
+            type: string
+            enum:
+              - mc_vm_match
+              - mc_vm_match_hash
         - name: client_id
           in: query
           schema:
