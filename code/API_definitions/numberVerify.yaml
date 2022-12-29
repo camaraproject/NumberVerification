@@ -201,7 +201,7 @@ security:
 
 components:
   securitySchemes:
-    openid:
+    openId:
       type: openIdConnect
       openIdConnectUrl: https://example.com/.well-known/openid-configuration
     bearerAuth:
