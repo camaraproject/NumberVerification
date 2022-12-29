@@ -1,5 +1,5 @@
 # Reference
-CAMARA Number Verify is based on Mobile Connect Verified MSISDN standardized product:
+Number Verify API is based on Mobile Connect Verified MSISDN standardized product:
 
 [IDY.54](assets/docs/(placeholder4MCspec).docx)
 
@@ -13,7 +13,7 @@ The Mobile Connect architecture consists of a Core framework around which additi
 
 ## Number Verify / Verified MSISDN definition
 
-Mobile Connect Verified MSISDN allows Developer // Service Provider (SP) to verify the MSISDN (phone number) of the device connected to the mobile data network through which a User is accessing an SP service. In doing so, it enables the SP to check that the device being used to access a particular SP User account belongs to the account holder. Such a service can also be used by theSP for verifying the User’s device as a complementary service when a User is being authenticated.
+Mobile Connect Verified MSISDN allows Developer // Service Provider (SP) to verify the MSISDN (phone number) of the device connected to the mobile data network through which a User is accessing an SP service. In doing so, it enables the SP to check that the device being used to access a particular SP User account belongs to the account holder. Such a service can also be used by the SP for verifying the User’s device as a complementary service when a User is being authenticated.
 
 Mobile Connect Verified MSISDN is defined as two service variants:
 

@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: CAMARA numberVerify
+  title: numberVerify
   description: Number Verify service based on Mobile Connect Verified MSISDN specification
   version: 0.1.0
   license:
