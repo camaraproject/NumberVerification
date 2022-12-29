@@ -57,7 +57,7 @@ MNOs continue work and aiming to deliver APIs by the end of this week.
 
    -------
 
-   >following items were not presented during meeting, although sharing status and recommendations
+   >discussion continued on Thursday 15th Dec'22
 
 ### NumberVerify SMS 2FA
 

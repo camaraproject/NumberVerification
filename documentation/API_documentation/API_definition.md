@@ -18,7 +18,6 @@ Mobile Connect Verified MSISDN allows Developer // Service Provider (SP) to veri
 Mobile Connect Verified MSISDN is defined as two service variants:
 
 - **Verified MSISDN Match**: in which the Mobile Operator compares the MSISDN associated with the mobile device against that provided by the SP in the service request1. The MSISDN can be supplied in an E164 format [5] or in a hashed form. Verified MSISDN Match ensures no data is shared by the Mobile Operator.
-- **Verified MSISDN Share**: in which the Mobile Operator provides the mobile device MSISDN to the SP who can then perform the check itself
 
 Note that the Verified MSISDN service only works for devices which have an active mobile data bearer. It will not work via another data connection such as WiFi.
 
@@ -110,7 +109,6 @@ The SP requests Mobile Connect Verified MSISDN services via the scope parameter 
 **Table 1 - Mobile Connect Verified MSISDN scope Values**
 |Mobile Connect Verified MSISDN|OIDC Authorization Request scope Parameter|
 |:---|:---|
-|Mobile Connect Verified MSISDN Share [plain]|“mc_vm_share”|
 |Mobile Connect Verified MSISDN Match [plain]|“mc_vm_match”|
 |Mobile Connect Verified MSISDN Match [hashed]|“mc_vm_match_hash”|
 

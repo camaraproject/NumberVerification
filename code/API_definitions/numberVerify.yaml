@@ -94,7 +94,7 @@ paths:
             application/json:
               schema:
                 oneOf:
-                 - $ref: '#/components/schemas/oidc_token_response'
+                 - $ref: '#/components/schemas/oidc_auth_response'
                  - $ref: '#/components/responses/302redirectError'
                 type: object
         '400':
@@ -133,6 +133,12 @@ paths:
             format: uri
           example: http://localhost
       responses:
+        '200':
+          description: success - mc vm match response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/oidc_token_response'
         '400':
           description: invalid request
           content:
@@ -176,7 +182,7 @@ paths:
                 - $ref: '#/components/schemas/mc_vm_match_hash_resource_request'
       responses:
         '200':
-          description: success - tokens returned
+          description: success - mc vm match response
           content:
             application/json:
               schema:
