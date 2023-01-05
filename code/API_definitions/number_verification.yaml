@@ -55,6 +55,39 @@ paths:
           description: Correlation id for the different services
           schema:
             type: string
+        ### optional parameters proposed by TIM ###
+        - name: X-Request-consentGranted
+          in: header
+          required: false
+          schema:
+            type: boolean
+          example: true
+        - name: X-Request-deviceIp
+          in: header
+          required: false
+          schema:
+            type: string
+            format: ip
+          example: 100.71.23.123
+        - name: X-Request-devicePort
+          in: header
+          required: false
+          schema:
+            type: integer
+            format: int32
+          example: 1234
+        - name: X-Request-callbackUrl
+          in: header
+          required: false
+          schema:
+            type: string
+        - name: X-Request-returnUrl
+          in: header
+          required: false
+          schema:
+            type: string
+        ###  END OPTIONAL parameters proposed by TIM  ###
+            
       requestBody:
         content:
           application/json:
