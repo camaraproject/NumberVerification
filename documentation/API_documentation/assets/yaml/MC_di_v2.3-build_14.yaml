@@ -1,0 +1,4148 @@
+swagger: '2.0'
+info:
+  title: Mobile Connect API
+  description: >-
+    The Mobile Connect API specifies a set of operations that allow developers
+    to interact with operator ID Gateways.
+  version: R2.3
+tags:
+  - name: OVERVIEW
+    description: >-
+      <h2>The Mobile Connect products</h2>
+
+      <p>The Mobile Connect APIs support 9 products across four services:
+
+      <h3>Authentication</h3>
+
+      <p>Simple and globally ubiquitous user
+      <strong>Authentication</strong>.</p> <ul>
+          <li><strong>Authenticate</strong> allows user authentication based on principle of ‘<a href="/glossary#something-i-have">Something I have</a>’</li>
+          <li><strong>Authenticate plus</strong> improves the security by adding ‘<a href="/glossary#something-i-know">Something I know</a>’</li>
+      </ul>
+
+      <h3>Authorisation</h3>  <p>User <strong>Authorisation</strong> of Service Provider requests</p> <ul>
+          <li><strong style="color:silver">Authorise</strong> allows user authorisation based on principle of ‘<a href="/glossary#something-i-have">Something I have</a>’</li>
+          <li><strong>Authorise plus</strong> improves the security by adding ‘<a href="/glossary#something-i-know">Something I know</a>’</li>
+      </ul>
+
+      <h3>Identity</h3> 
+
+      <p>The provision of user <strong>Identity</strong></p> <ul>
+          <li><strong>Phone Number</strong> allows an end-user to consent to sharing their phone number with an SP.</li>
+          <li><strong>Sign-up</strong> allows an end-user to consent to sharing their sign up details (address etc) with an SP.</li>
+          <li><strong>National ID</strong> allows an end-user to consent to sharing their National ID with an SP.</li>
+          <li><strong>KYC match</strong> allows checking the information about the end-user with that held by the Mobile Network Operator</li>
+      </ul>
+
+      <h3>Attributes</h3> 
+
+      <p>Insights about the <strong>user</strong>, their <strong>device</strong>
+      or a <strong>transaction</strong></p> <ul>
+          <li><strong>Account Takeover Protection</strong> provides a mechanism to protect the end-user’s account from being used for fraudulent purposes.</li>
+      </ul>
+
+      <h2>Operator implementations</h2>
+
+      <p>Operator ID Gateway implementations will be based on specific Mobile
+      Connect profiles. There may be some differences across
+      operators although the implementations will normally be consistent within
+      a country. Please see the <a href="/understand-country-specific-variations">country
+      specific variations</a> pages for more information.</p>
+
+      <p>Details of the technical differences will be discussed in the product
+      specific implementation guides. You can find more information on different the 
+      <a href="mobile-connect-profiles">Mobile Connect Profiles</a> page.</p>
+  - name: AUTHENTICATION
+    description: >-
+      <p>Mobile Connect Authentication offers a simple and globally ubiquitous
+      log-in  mechanism with no personal information being shared without the
+      end-user's permission.</p>
+
+      <h2>Pre-requisites</h2>
+
+      <p>Before you can make an live authentication request you need to ensure that the 
+      following pre-requisites have been completed</p>
+
+      <p><strong>You have obtained Operator endpoints and credentials.</strong></p>
+
+      <p>The Operator Mobile Connect endpoints and credentials can be retrieved
+      using the <a href="/discovery">Discovery</a> service or will be provided to you if
+      you are working directly with an operator.</p>
+
+      <p><strong>Access to the operator ID Gateway is confirmed</strong></p>
+
+      <p>You should have received confirmation (either via Mobile Connect
+      Support  or directly from the operator) that your credentials have been
+      enabled  on the operator ID Gateway - note that this will include the
+      <code>redirect_uri</code> that you will be using and have registered with
+      the Developer Portal or provided to the operator.</p>
+      
+      <p>You can, of course, use the Sandbox at any time.</p>
+      
+      <h2>Operator Implementations</h2> 
+        
+      <p>There are a number of different Mobile Connect Profiles, a full description 
+      of the profiles can be found <a href="/mobile-connect-profiles">here</a>.
+      You will need to understand which version an operator uses before you implement 
+      authentication. The parameter descriptions below indicate the differences between the profiles 
+      and how they impact authentication.</p>
+        
+      <h2>Implementation</h2>
+      
+      <p>As Mobile Connect is based on <a href="https://openid.net/connect/">OpenID Connect</a>, at a high level Authentication is a two stage process:</p>
+      
+      <ol>
+      <li>Make an oidc authorize call to the Mobile Connect ID Gateway asking for the 
+      end-user to authenticate themselves. If this is succesful then the response can 
+      be used to build the Get Tokens call.</li>
+      <li>The Get Tokens call uses the <code>code</code> received from the authorize 
+      request to get an ID Token. The customer identifer (<a href="/the-pcr">PCR</a>) can then be extracted 
+      from the token to identify the end-user.</li>
+      </ol>
+
+      <h3>Sequence diagram</h3>
+      
+      <p>The diagram below breaks down these steps in more detail</p>
+      
+      <img src="/sites/default/files/authentication-sequence.png">
+      
+      
+      <ol>
+      <li>SP applications opens a pop-up window or web-view on the consumption device and loads the <a href="/mobile-connect-api#tag/AUTHENTICATION%2Fpaths%2F~1authorize%3F%5BAuthentication-params%5D%2Fget">Authorize</a> request to the window or web-view.</p> 
+      <li>The consumption device makes the authorize request to the ID Gateway.</p> 
+      <li>The ID Gateway responds with a <strong>302 Found</strong> that loads the <em>wait</em> screen in the pop-up window. This screen let's the end-user know that they have been sent a message by their operator.</p>
+      <li>An authenticator message is sent to the authentication device. The authenticator used will be operator specific, but preferences can be added in the authorize request.</>
+      <li>The end-user authenticates themselves. The process will vary per operator and may include additional steps.</>
+      <li>Once the end-user has authenticated themselves then a <strong>302 Found</strong> is returned by the ID Gateway with a Location header of the SP application's redirect URI. The SP application receives the request and extracts the query parameters.</p>
+      <li>The SP application then makes a <a href="/mobile-connect-api#tag/AUTHENTICATION%2Fpaths%2F~1authentication-token_endpoint%2Fpost">Get Token</a> request using the <code>code</code> extracted from the authorize response.</p>
+      <li>The ID Gateway includes the ID Token & Access Token. The PCR user identifier is then extracted from the ID Token. The pop-up window can now be closed.</p> 
+      </ol>
+
+      <p>The PCR can now be used to to identify a returning end-user or to set up an account for a new user.</p>
+  - name: AUTHORISATION
+    description: >-
+      <p>Mobile Connect Authorise captures authorisation from a user for a service provider 
+      to perform an action on their behalf. The service provider provides details specific
+       to their request in the Mobile Connect API, which is displayed on the user’s mobile phone.
+        The user approves or rejects the request, which is relayed to the service provider 
+        in the API response. The user is authenticated as part of the flow to ensure that 
+        they have the right to provide the authorisation.</p>
+
+      <p>Mobile Connect Authorise Plus works in the same way, but in addition, requires 
+      the end user to authenticate first by entering the Mobile Connect PIN prior to 
+      authorising the request.</p>
+      
+      <h2>Implementation</h2>
+      
+      <ol>
+      <li>Make an <a href="https://openid.net/connect">OIDC</a> authorize call to the Mobile Connect ID Gateway asking for the 
+      end-user to authorise an action. If this is succesful then the response can 
+      be used to build the Get Tokens call.</li>
+      <li>The Get Tokens call uses the parameters received from the Authorize 
+      request to get the ID Tokens which can be used to extract the PCR and so identify the end-user.</li>
+      </ol>
+
+      <h3>Sequence diagram</h3>
+      
+      <p>The diagram below breaks down these steps in more detail</p>
+      
+      <img src="/sites/default/files/authorisation-sequence.png">
+      
+      
+      <ol>
+      <li>SP applications opens a pop-up window or web-view on the consumption device and loads the <a href="/mobile-connect-api#tag/AUTHORISATION%2Fpaths%2F~1authorize%3F%5BAuthorisation-params%5D%2Fget">Authorize</a> request to the window or web-view.</p> 
+      <li>The consumption device makes the Authorize request to the ID Gateway.</p> 
+      <li>The ID Gateway responds with a <strong>302 Found</strong> that loads the <em>wait</em> screen in the pop-up window. This screen let's the end-user know that they have been sent a message by their operator.</p>
+      <li>An authenticator message is sent to the authentication device. The authenticator will vary per operator and the Authorize request.</>
+      <li>The end-user authenticates themselves. The process will vary per operator and may include additional steps.</>
+      <li>Once the end-user has authenticated themselves then a <strong>302 Found</strong> is returned by the ID Gateway with a Location of the SP application's redirect URI. The SP application receives the request and extracts the query parameters.</p>
+      <li>The SP application then makes a <a href="/mobile-connect-api#tag/AUTHORISATION%2Fpaths%2F~1authorisation-token_endpoint%2Fpost">Get Token</a> using values extracted from the Authorize response.</p>
+      <li>The ID Gateway includes the ID & Access Tokens. The PCR can be extracted from the ID Token.</p> 
+      </ol>
+      
+      <h3>Operator Implementations</h3>
+     
+      <p>Identity is supported by Mobile Connect Profile v2.0 and Mobile Connect Profile DI v2.3</p>
+
+
+
+  - name: SIGN-UP
+    description: >-
+      <p>Mobile Connect Sign-up allows end-users to consent to share details necessary to sign-up for a service.</p>
+      
+      <h3>Operator Implementations</h3>
+     
+      <p>Sign-up is supported by Mobile Connect Profile v2.0 and Mobile Connect Profile DI v2.3</p>
+
+  - name: PHONE NUMBER
+    description: >-
+      <p>Mobile Connect Phone Number allows end-users to consent to share their Phone Number.</p>
+      
+      <h3>Operator Implementations</h3>
+     
+      <p>Phone Number is supported by Mobile Connect Profile v2.0 and Mobile Connect Profile DI v2.3</p>
+
+  - name: NATIONAL ID
+    description: >-
+      <p>Mobile Connect National ID allows end-users to consent to share their National ID</p>
+      
+      <h3>Operator Implementations</h3>
+     
+      <p>National ID is supported by Mobile Connect Profile v2.0 and Mobile Connect Profile DI v2.3</p>
+
+  - name: KYC MATCH
+    description: >-
+      <p>&nbsp;</p>
+
+      <h2>KYC Match</h2>
+      
+      <p>KYC Match provides a mechanism for Service Providers to receive feedback 
+      from an operator on key parameters associated with a user’s mobile device account 
+      to prevent it being used as part of an Service Provider account takeover attack. 
+      This mechanism is based on comparing the data held by the Service Provider with 
+      that held by the operator. The actual data compared will be implementation specific 
+      but the underlying mechanism does not change.</p>
+      
+      <h3>Flavours</h3>
+      
+      <p>KYC is provided in a two flavours:</p>
+      
+      <ul>
+      <li><strong>KYC Match Plain Text</strong>: the user attributes to be compared are sent in normalised plain text.</li>
+      <li><strong>KYC Match Hashed Text</strong>: the user attributes to be compared are sent in a normalised hashed form.</li>
+      </ul>
+      
+      <p>The latter approach ensures that the Operator and the TSP do not learn anything new about the user.</p>
+
+      <p>&nbsp;</p>
+            
+      <h2>Pre-requisites</h2>
+
+      <p>Before you can make a live authentication request you need to ensure that the 
+      following pre-requisites have been completed</p>
+
+      <p><strong>You have obtained Operator endpoints and credentials.</strong></p>
+
+      <p>The Operator Mobile Connect endpoints and credentials can be retrieved
+      using the <a href="/discovery">Discovery</a> service or will be provided to you if
+      you are working directly with an operator.</p>
+
+      <p><strong>Access to the operator ID Gateway is confirmed</strong></p>
+
+      <p>You should have received confirmation (either via Mobile Connect
+      Support  or directly from the operator) that your credentials have been
+      enabled  on the operator ID Gateway - note that this will include the
+      <code>redirect_uri</code> and <code>sector_identifier_uri</code> that you will be 
+      using and have registered with the Developer Portal or provided to the operator.</p>
+      
+      <p>You can, of course, use the Sandbox at any time.</p>
+
+      <p>&nbsp;</p>
+            
+      <h2>Using attributes</h2>
+      
+      <p>There are two possible approaches to using attributes in KYC Match</p>
+      
+      <ul>
+      <li><strong>Split attributes</strong>: each attribute to be matched is sent through individually.</li>
+      <li><strong>Concatenated attributes</strong>: the attributes to be matched are concatenated together into a single field</li>
+      </ul>
+
+      <p>&nbsp;</p>
+            
+      <h2>Attribute set</h2>
+      
+      <p>The following attributes are available in KYC Match.</p>
+      
+      <h3>Name attributes</h3>
+      
+      <p>These attributes provide the users name.</p>
+      
+      <ul>
+      <li><code>given_name</code> Given name(s) or first name(s) of the end-user.</li>
+      <li><code>family_name</code> Family name(s), surname(s) or last name(s) of the end-user./li>
+      <li><code>name</code> Concatenated attribute of <code>given_name</code> and <code>first_name</code>.</li>
+      </ul>
+        
+      <h3>Address attributes</h3>
+      
+      <p>These attributes provide the users address.</p>
+      
+      <ul>
+      <li><code>houseno_or_housename</code> End-user's registered house number or house name.</li>
+      <li><code>postal_code</code> End-user's registered zip code or post code.</li>    
+      <li><code>town</code> End-user's registered city or town name.</li>
+      <li><code>country</code> End-user's registered country.</li>
+      <li><code>address</code> Concatenated attribute of  <code>houseno_or_housename</code>, <code>postal_code</code>, <code>town</code> and <code>country</code>.</li>
+      </ul>
+      
+      <h3>Other attributes</h3>
+      
+      <p>Attributes other name name or address.</p>
+      
+      <ul>
+      <li><code>birthdate</code> End-User's birthday, represented as an ISO 8601:2004  [ISO8601 2004] YYYY-MM-DD format. The year may be 0000, indicating that it is omitted.</li>
+      </ul>
+      
+      <p>&nbsp;</p>
+
+      <h2>Response match values</h2>
+      
+      <p>The response match values indicate if there has been a match. If the match fails then the response will indicate the reason.</p>
+      
+      <table>
+        <tr>
+          <th>Response</th>
+          <th>Description</th>
+        </tr>
+        </tr>
+        <tr>
+          <td>Y</td>
+          <td>Match is successful</td>
+        </tr>
+        <tr>
+          <td>N-NA</td>
+          <td>Match failed. Data is not available.</td>
+        </tr>
+        <tr>
+          <td>N-AV</td>
+          <td>Match failed. Data is available.</td>
+        </tr>
+        <tr>
+          <td>N-AD</td>
+          <td>Match failed. Data is available, but access is denied.</td>
+        </tr>
+      </table>
+      
+      <p>&nbsp;</p>
+      
+      <h2>Operator Implementations</h2> 
+        
+      <p>KYC Match is only supported as part of Mobile Connect v2.3 and operators are free to decide which variant of the KYC Match service they wish to support. </p>
+      
+      <p>The KYC Match service MAY issue a notification to the end user if it receives a request from a TSP with Level2 trusted status (i.e., where the TSP has already captured consent); doing so ensures that the user is aware that the KYC Match service has been invoked against their MSISDN</p>
+      
+      <h3>Normalisation rules</h3>
+      
+      <p>Mobile Connect KYC Match normalization rules for attributes should be negotiated offline between Operators and SPs for a given geographic region / market..</p>   
+  - name: ERROR HANDLING
+    description: >-
+      
+      <p>Mobile Connect defines various error messages based on different scenarios that 
+      will be returned to the Service Provider. These error messages are related to:</p>
+      
+      <ul>
+      <li>Missing MANDATORY parameter(s) in authorization request</li>
+      <li>Incorrect parameter values in authorization request</li>
+      <li>Incorrect token request</li>
+      <li>Incorrect Notification</li>
+      <li>Errors to IDGW through acknowledgement to notification</li>
+      <li>Errors mapped to abstract errors</li>
+      <li>Mobile Connect User interaction failure</li>
+      <li>Mobile Connect Service/Product specific errors</li>
+      </ul>
+      
+      <h3>Notes</h3>
+      
+      <p>If authorization request contains a state parameter, then the error response MUST 
+      contain "state “parameter value. The value is set to the value received from the 
+      Service Provider. If correlation_id is provided in the authorization request, 
+      then it must be included in the response, and the value must be set to the value 
+      received from the Service Provider.>/p>
+      
+      <p>The following is the example error response.</p> 
+
+      <pre>
+      HTTP/1.1 302 Found
+      Location: https://sp.example.org/redirct_here
+        ?error=invalid_request
+        &error_description=Invalid%20response_type%20value
+        &state=af0ifjsldkj
+        &correlation_id=<example correlationid>
+      </pre>
+      
+      <p>&nbsp;</p>
+      
+      <h3>Generic Errors</h3>
+      
+      <p>If redirect_uri is missing or redirect_uri value is invalid, then Operator ID 
+      Gateway will always treat this as a high priority error and MUST return the 
+      appropriate error response as described in the following table. </p> 
+
+      <table>
+        <tr>
+          <th>HTTP Response</th>
+          <th>Error Code</th>
+          <th>Error Description</th>
+          <th>Scenario</th>
+        </tr>
+        <tr>
+          <td>400 Bad request</td>
+          <td>invalid_request</td>
+          <td>redirect_uri is invalid</td>
+          <td>The redirect_uri value is invalid or not a registered URI.</td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>access_denied</td>
+          <td>Unknown user</td>
+          <td>MSISDN/ENCR MSISDN/ PCR provided does not belong to the Operator. </td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>access_denied</td>
+          <td>User is not recognized</td>
+          <td>MSISDN/ENCR MSISDN/ PCR provided does not belong to the Operator. </td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>access_denied</td>
+          <td>Mobile Connect User is not registered</td>
+          <td>MSISDN/MSISDN belongs to the Operator, but MC services are not enabled.</br>
+              Note: IDGW policy does not allow creation of partially active accounts.</td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>access_denied</td>
+          <td>Unknown Mobile Connect User</td>
+          <td>MSISDN/ENCR_MSISDN belongs to the Operator, but MC services are not enabled.</br>
+              Note: IDGW policy does not allow creation of partially active accounts.</td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>temporarily_unavailable</td>
+          <td>Internal Server Error</td>
+          <td>System connection problems [internal to IDGW] (or) </br>
+              Authenticator unreachable (or) </br>
+              Expiration in server (or) </br>
+              Any Unexpected error [internal to IDGW] 
+          </td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>server_error</td>
+          <td>Internal Server Error</td>
+          <td>System connection problems [internal to IDGW] (or) </br>
+              Authenticator unreachable (or) </br>
+              Expiration in server (or) </br>
+              Any Unexpected error [internal to IDGW] 
+          </td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>access_denied</td>
+          <td>The user is busy with another transaction</td>
+          <td>Multiple requests for the same MSISDN sent at the same time.</td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>invalid_request</td>
+          <td>MANDATORY parameter response_type is missing or value is invalid</td>
+          <td>The response_type parameter is missing or invalid.</td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>invalid_request</td>
+          <td>MANDATORY parameter client_id is missing</td>
+          <td>The client_id parameter value is invalid.</td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>invalid_request</td>
+          <td>The client is not authorized to request an authorization code</td>
+          <td>The client_id is valid, but not allowed to make MC service requests </td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>access_denied </td>
+          <td>The client is not allowed to make MC service requests</td>
+          <td>The client_id is valid, but not allowed to make MC service requests.</td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>unauthorized_client</td>
+          <td>The client is not allowed to make MC service requests</td>
+          <td>The client_id is valid, but not allowed to make MC service requests.</td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>invalid_request</td>
+          <td>MANDATORY parameter scope is missing</td>
+          <td>The scope parameter is missing.</td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>invalid_request</td>
+          <td>The scope value is invalid</td>
+          <td>The scope value "openid" is missing (or)<br>
+              invalid scope values.
+          </td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>invalid_scope</td>
+          <td>MANDATORY parameter scope is missing</td>
+          <td>The scope parameter is missing.</td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>invalid_scope</td>
+          <td>The scope value is invalid</td>
+          <td>The scope value "openid" is missing (or)<br>
+              invalid scope values.
+          </td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>invalid_request</td>
+          <td>MANDATORY parameter version is missing / invalid.</td>
+          <td>The version parameter is missing (or)<br>
+          version parameter value is invalid.</td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>invalid_request</td>
+          <td>RECOMMENDED parameter state is invalid </td>
+          <td>The state parameter exists, but the value is invalid.</td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>invalid_request</td>
+          <td>MANDATORY parameter nonce is missing (or) invalid. </td>
+          <td>nonce parameter is missing (or)<br> nonce parameter exists, but the value is empty </td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>invalid_request</td>
+          <td>MANDATORY parameters login_hint_token (or) login_hint does not exist. </td>
+          <td><p>login_hint and login_hint_token parameters are missing </p>
+            <p>Note: In the following conditions the IDGW SHOULD prompt the user to input MSISDN instead of throwing an error; <br>
+              -- MC service is for stand-alone authentication only in the device-initiated mode. <br>
+              -- If IDGW policy allows to capture MSISDN directly from the user [FC mode only]. </p>
+          </td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>invalid_request</td>
+          <td>Malformed request, duplicate parameter entries</td>
+          <td>login_hint and login_hint_token both exist.</td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>invalid_request</td>
+          <td>Invalid value for login_hint or login_hint_token </td>
+          <td>The login_hint (or) login_hint_token value is invalid </td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>invalid_request</td>
+          <td>MANDATORY parameter acr_values are missing or invalid values. </td>
+          <td>The acr_values parameter is missing (or)<br>
+              acr_values exist but contains an invalid value, other than supported values
+          </td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>invalid_request</td>
+          <td>Invalid display value. / not supported. </td>
+          <td>display parameter exists and it has an invalid value (or)<br>
+              display parameter exists and IDGW does not support the requested value
+          </td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>invalid_request</td>
+          <td>Multiple parameter names in the authorization request. Malformed request</td>
+          <td>The same parameter exists multiple times.</td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>invalid_request</td>
+          <td>Prompt value is invalid</td>
+          <td>prompt value exists, and it has an invalid value.</td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>invalid_request</td>
+          <td>claims value is invalid, </td>
+          <td>claims parameter exists, but it does not contain any value (or)<br>
+              claims parameter exists, but it has invalid values.</td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>invalid_request</td>
+          <td>GET request invalid serialization</td>
+          <td>GET request is used, and the request parameter is NOT serialized using URI string serialization, IDGW able to validate the redirect_uri. </td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>invalid_request</td>
+          <td>POST request Invalid serialization</td>
+          <td>POST request is used, the request parameters are NOT serialized using form serialization, IDGW can validate the redirect_uri.</td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>invalid_request</td>
+          <td>response_mode contains same as response_type (or) invalid</td>
+          <td>response_mode parameter exists, and it has a value not supported by the Operator IDGW.</td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>invalid_request</td>
+          <td>Invalid max_age value</td>
+          <td>max_age parameter exists, and it has an invalid value.</td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>invalid_request</td>
+          <td>Malformed request multiple problems exist</td>
+          <td>Multiple problems in authorization request [redirect URI is valid].</td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>invalid_request</td>
+          <td>Invalid correlation_id value. </td>
+          <td>correlation_id exists, but it has an empty value </td>
+        </tr>
+        <tr>
+          <td>302 Found</td>
+          <td>invalid_request</td>
+          <td>Invalid client_name value </td>
+          <td>client_name exists but it has empty value (or)<br>
+              client_name parameter exists, but the provided value is not a registered client_name with Operator IDGW and invalid.
+          </td>
+        </tr>
+      </table>    
+      
+      <p><strong>NOTE:</strong> the error messages defined above only apply to Mobile Connevt DI v2.3.</p>       
+#########################################################################################
+# CALL DEFINITIONS
+#########################################################################################
+host: operator.com
+paths:
+#########################################################################################
+# AUTHENTICATION
+#########################################################################################
+  /authorize?[Authentication-params]:
+    get:
+      tags:
+        - AUTHENTICATION
+      summary: Authorize
+      description: >-
+        <p>Requests that the operator ID Gateway authenticate an end-user and return a 
+        value which can be used to make the <a href="/mobile-connect-api#tag/AUTHENTICATION%2Fpaths%2F~1authentication-token_endpoint%2Fpost">Get Tokens</a> call.</p>
+        
+        <h3>Overview</h3>
+        
+        <p>Once the user has selected the Mobile Connect button the application should open 
+        up a pop-up window or web view. The application will load this window with the
+        authorise request. A successful authorise request will result in a <strong>302 Found</strong> response from 
+        the operator ID Gateway where the Location header will point to the operator wait screen. This 
+        screen displays a message to the end-user that a message has been sent to their device
+        using the operator's selected <a href="/authenticators">authenticator</a>. 
+        (You can see this in the Sandbox where an SMS wait screen is displayed).</p>
+        
+        <p>Once the end-user has authenticated themselves another <strong>302 Found</strong> 
+        is returned  to the <code>redirect_uri</code>
+        passed in the initial request (and previously registered with the operator ID gateway).
+        The response will have a number of URI parameters which are used to build the
+        follow-up <a href="/mobile-connect-api#tag/AUTHENTICATION%2Fpaths%2F~1authentication-token_endpoint%2Fpost">Get Tokens</a> call</p>
+        
+        <h3>Response parameters</h3>
+        
+        <p>The URI response parameters are:</p>
+        
+        <ul>
+        <li><code>code</code>: Authorization code as per OAuth 2.0 section 4.1.2. This code will be used in the Get Token call.</li>
+        <li><code>state</code>: This must equal the <code>state</code> parameter in the initial Authenticate User request.</li>
+        <li><code>correlation_id</code>: If the initial request included a <code>correlation_id</code> then this will be included. Not 
+        supported for Mobile Connect Profile v1.1.</li>
+        </ul>
+        
+        <h3>Error responses</h3>
+        
+        <p>If there are issues with the request the response will be 
+        <strong>400 Bad Request</strong>. All other errors will be provided as part of the
+        <strong>302 Found</strong> response, with URI parameters in the format:</p>
+        
+        <ul>
+          <li><code>error</code>: Error type.</li>
+          <li><code>error_description</code>: Description of the error.</li>
+        </ul>
+        
+        <p>Error responses will vary according to the Mobile Connect Profile. More 
+        details on error responses can be found <a href="/mobile-connect-api#tag/ERROR-HANDLING">here</a>.<p>
+        
+        <p><em>
+        
+        <p>&nbsp;</p>
+      parameters:
+        - in: query
+          name: client_id
+          description: >-
+            <p>The <code>client_id</code> field obtained from the Discovery response
+            which is used as the unique client identifier of the SP</p>
+            
+            <p><em>This parameter is required for all Mobile Connect Profiles</em></p>
+          required: true
+          type: string
+          x-example: x-a94d903f-ad45-4135-80b8-ac459f41b38f
+        - in: query
+          name: redirect_uri
+          description: >-
+             <p>The URI to which ID Gateway responses are sent. 
+             The <code>redirect_uri</code> is defined during application 
+             registration.</p> 
+            
+             <p><em>This parameter is required for all Mobile Connect Profiles</em></p>
+          required: true
+          type: string
+          x-example: 'http://localhost/'
+        - in: query
+          name: response_type
+          description: >-
+            <p>Indicates the <a href='/glossary#grant-type'>grant
+            type</a> (i.e. method). The value must always be <code>code</code> to 
+            indicate the Authorisation Code Flow.</p>
+            <p><em>This parameter is required for all Mobile Connect Profiles</em></p>
+          required: true
+          enum:
+            - code
+          type: string
+          x-example: code
+        - in: query
+          name: scope
+          description: >-
+            <p>Space delimited, case-sensitive ASCII, strings of the scope values used to indicate 
+            the services being requested.  For more information see the 
+            <a href="https://developer.mobileconnect.io/scope-values">Scope values</a> 
+            page.</p>
+            
+            <p>For Mobile Connect Profile v1.1 Authentication requests the scope values should be 
+            <code>openid</code>
+            
+            <p>For all other Mobile Connect Authentication requests the scope values should be 
+            <code>openid mc_authn</code>
+                        
+            <p><em>This parameter is required for all Mobile Connect Profiles</em></p>
+          required: true
+          enum:
+            - openid
+            - openid mc_authn
+          type: string
+          x-example: openid mc_authn
+        - in: query
+          name: version
+          type: string
+          required: true
+          description: >-
+            <p>This parameter identifies the Mobile Connect profile version.</p>
+            
+            <p><em>This parameter is required for Mobile Connect DI Profile v2.3 
+            (<code>mc_di_r2_v2.3</code>) and Mobile Connect Profile v2.0 
+            (<code>mc_v2.0</code>). It is not supported by Mobile Connect Profile v1.1, but
+            <code>mc_v1.1</code> can be used with ID Gateways that support Mobile 
+            Connect Profiles v2.0 & SI v2.3</em> to ensure a v1.1 flow.</p>
+          enum:
+            - mc_v1.1
+            - mc_v2.0
+            - mc_di_r2_v2.3
+          x-example: mc_v1.1
+        - in: query
+          name: state
+          description: >-
+            <p>Value used by the client to maintain state between request and callback. 
+            Also used as a security mechanism , if a cryptographic binding is done with 
+            the browser cookie, to prevent Cross-Site Request Forgery. The recommended 
+            format is <a href="/glossary#uuid4">UUID4</a>.</p>
+            
+            <p><em>This parameter is required for all Mobile Connect Profiles</em>.</p>
+          required: true
+          type: string
+          x-example: eee40fe4-8a8d-4b26-8dfd-2fb4d52aa368
+        - in: query
+          name: nonce
+          description: >-
+            <p>String value used to associate a client session with the ID Token. 
+            It is passed unmodified from Authorisation Request to ID Token. The value 
+            SHOULD be unique per session to mitigate replay attacks. The recommended 
+            format is <a href="/glossary#uuid4">UUID4</a>.</p>
+            
+            <p><em>This parameter is required for all Mobile Connect Profiles</em>.</p>
+          required: true
+          type: string
+          x-example: 878aacd7-83f1-4b4f-9582-7347b0a6fa62
+        - in: query
+          name: display
+          description: >-
+            <p>Specifies the user interface display for the Authentication and Consent flow.</p>
+            <p>Values are:</p>
+            
+            <p><code>page</code>: The UI SHOULD be consistent with a full page view of the User-Agent.</p>
+            <p><code>pop-up</code>: Use a pop-up window. (The popup window SHOULD be 450px X 500px) </p>
+            <p><code>touch</code>: Display a UI consistent with a “touch” based interface.</p>
+            <p><code>wap</code>: The UI SHOULD be consistent with a “feature-phone” device display</p>
+            
+            <p>These values will only be respected if supported by the ID Gateway.</p>
+            
+            <p><em>This is an optional parameter supported by all Mobile Connect Profiles.</em></p>
+          required: false
+          enum:
+            - page
+            - pop-up
+            - touch
+            - wap
+          default: page
+          type: string
+          x-example: touch
+        - in: query
+          name: prompt
+          description: >-
+            <p>Specifies to the IDGW Server whether to prompt the end-user for re-authentication and consent.</p>
+            <p>Values are:</p>
+            
+            <p><code>none</code>: MUST NOT display any UI for reauthentication or consent to the user. If the user is not authenticated already, or authentication or consent is needed to process the Authorisation Request, a login_required error is returned. This can be used as a mechanism to check existing authentication or consent.</p>
+            <p><code>no_seam</code>: prompt the end-user if the authentication session is not valid. Caters for the 3G/4Ghot-spots, tethered phone etc. scenarios</p> 
+            
+            <p><em>This is an optional parameter supported by all Mobile Connect Profiles.</em></p>
+          required: false
+          enum:
+            - none
+            - no_seam
+          default: TBC
+          type: string
+          x-example: consent
+        - in: query
+          name: max_age
+          description: >-
+            <p>Indicator of the maximum elapsed time in seconds since the last
+            authentication of the end-user. If the elapsed time is greater than
+            this value, a re-authentication must be done. When this parameter is
+            in present the request, the ID Token will contain the
+            <code>auth_time</code> claim value</p>
+            
+            <p><em>This parameter is optional for Mobile Connect DI Profile v2.3 and Mobile
+            Connect Profile v.2.0. It is recommended for Mobile Connect Profile v1.1.</em></p>
+          required: false
+          type: string
+          x-example: 3600
+        - in: query
+          name: ui_locales
+          description: >-
+            <p>Space separated list of user preferred languages and scripts for
+            the UI as per RFC5646. The parameter is for guidance only and in
+            case a requested locale is not supported then the user interface
+            will be provided in the default language of the ID Gateway.</p>
+            
+            <p><em>This is an optional parameter supported by all Mobile Connect
+            Profiles</em></p>
+          required: false
+          type: string
+          x-example: fr-CA fr en
+        - in: query
+          name: claims_locales
+          description: >-
+            <p>Space separated list of user preferred languages and scripts for
+            the claims, defines as per RFC5646. The parameter is for guidance
+            only and in case a requested locale is not supported then the claims 
+            will be provided in the default language of the ID Gateway.</p> 
+            
+            <p><em>This is an optional parameter supported by all
+            Mobile Connect Profiles</em></p>
+          required: false
+          type: string
+          x-example: fr-CA fr en
+        - in: query
+          name: id_token_hint
+          description: >-
+            <p>Previously issued ID token passed as a hint for the current or past
+            authentication session, generally used in conjunction with
+            <code>prompt=none</code>. If the ID Token is still valid and the
+            end-user is logged in then the server returns a positive response,
+            otherwise will return a <code>login_error</code> response. For
+            the  ID Token, the server does not need to be listed as audience,
+            when included in the <code>id_token_hint</code></p>
+            
+            <p><em>This is an optional parameter supported by all Mobile Connect Profiles.</em></p>
+          required: false
+          type: string
+          x-example: eyJhbGciOiJSUzI1NiIsImtpZCI6IjdlOGFkZmM
+        - in: query
+          name: login_hint
+          description: >-
+            <p>An indication to the ID Gateway about what ID to use for login. Using this 
+            parameter allows the end-user to skip the login identifier. The values passed
+            will be a type and associated value (see example).</p>
+                        
+            <p><em>This is an optional parameter supported by all Mobile Connect Profiles.</em></p>
+          required: false
+          enum:
+            - MSISDN:<end-user-msisdn>
+            - ENCR_MSISDN:<end-user-encrypted-msisdn>
+            - PCR:<end-user-pcr>
+          type: string
+          x-example: 'MSISDN:447700900907'
+        - in: query
+          name: login_hint_token
+          description: >-
+            <p>Encrypted <a href="/glossary#json-web-token">JSON Web Token</a> (JWT) that contains a user hint
+            about the SP for an individual <a  href="/glossary#mobile-network-operator">Mobile
+            Network Operator</a> (MNO). The <code>login_hint_token</code> should
+            be used by the SP as a login hint with the particular MNO, so the
+            MNO recognises the SP that is trying to get a response.</p>
+            
+            <p><em>This parameter is optional for Mobile Connect DI Profile
+            v2.3 and Mobile Connect Profile v2.0. and is not
+            supported by Mobile Connect Profile v1.1</em></p>
+          required: false
+          type: string
+          x-example: n5JhbwerOiJSUzI1NiVm23reNp2DSE6sdfDEgcFnB
+        - in: query
+          name: acr_values
+          description: >-
+            <p>Level of Assurance to be used to authenticate an end-user. The values appear 
+            as order of preference. The <code>acr</code> used during authentication
+            is returned as acr claim value. When it is present the Authentication endpoint should satisfy one for the 
+            end-user's authentication. The recommended values are the LOAs as 
+            specified in <a href="https://www.iso.org/standard/45138.html">ISO/IEC 29115</a>
+             Clause 6 – 1, 2, 3, 4 –  representing the LOAs of LOW, MEDIUM, HIGH and VERY HIGH.</p>
+            
+            <p><em>This parameter is required for all Mobile Connect Profiles.</em></p>
+          required: false
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+          type: string
+          x-example: 3 2
+        - in: query
+          name: response_mode
+          description: >-
+            <p>Informs the ID Gateway of the mechanism to be used for returning 
+            parameters from the Authorize Endpoint. Can be used when there is 
+            no user agent </p>
+
+            <p><em>This parameter is optional for Mobile Connect DI Profile v2.3. It is 
+            not supported by Mobile Connect Profile v2.0 and Mobile Connect Profile 1.1</em></p>
+          type: string
+          default: query
+          required: false
+          x-example: form_post
+        - in: query
+          name: correlation_id
+          description: >-
+            <p>Correlates a transaction across Mobile Connect components. The value is generated by the Service Provider
+            and must be locally unique.</p>
+            
+            <p>This parameter should be used in conjunction 
+            with your operator partner and only for tracing and resolving issues. If you are using the Discovery service then you should use the same correlation ID 
+            that you use in the Discovery call. The recommended  format is <a href="/glossary#uuid4">UUID4</a>.</p>
+            
+            <p><em>This parameter is optional for Mobile Connect DI Profile
+            v2.3 and Mobile Connect Profile v2.0. and is not
+            supported by Mobile Connect Profile v1.1</em></p>
+          type: string
+          required: false
+          x-example: 42da5b19-457a-4d30-a5c4-038c62dccbb0
+        - in: query
+          name: dtbs
+          description: >-
+            <p>This is a text string to be signed with the private key owned by the
+            SIM card of the end-user. The signed data is returned in the ID
+            Claim, as private JWT claims for this profile.</p>
+            
+            <p><em>This parameter is only supported by Mobile Connect Profile 1.1</em></p>
+          type: string
+          required: false
+      responses:
+        '302':
+          description: Found
+          headers:
+            Location:
+              type: string
+              description: >-
+                <p>The resource requested has been temporarily moved to the URL given 
+                by the Location header.</p>
+                
+                <p>This will be the location of the MNO wait screen 
+                that tells the end-user that they have been sent a message and should 
+                respond to it.</p>
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Response_400_Authorize'
+      x-code-samples:
+        - lang: HTTPS
+          source: >-
+            https://operator-a.sandbox.mobileconnect.io/oidc/authorize?client_id=YzZjNmZjNmItNGZjYS00ZjIyLTkyMWYtNTdjYzM0M2U0YjQ1Om9wZXJhdG9yLWE=&scope=openid&response_type=code&redirect_uri=https://localhost/&acr_values=2&nonce=878aacd7-83f1-4b4f-9582-7347b0a6fa62&state=eee40fe4-8a8d-4b26-8dfd-2fb4d52aa368&login_hint=ENCR_MSISDN:eyJhbGciOiJSU0EtT0FFUC0yNTYiLCJlbmMiOiJBMjU2Q0JDLUhTNTEyIiwia2lkIjoib3BlcmF0b3ItYV9lbmMiLCJ0eXAiOiJKV0UifQ.ZSQma37JFP_Mx2OMp9VzOZ-Puh4jq0q4x-AiT25-5NvBS00lPTbG4_lUR0-Ie3WO55R088y0ecu_wmFOKtWaUPMsvXiW3L1RdqrjY9eXz8vKTofsqTvIUwoD1yIFn6qj0l8yGQdMshIgFyW84qecyY4GRrUdfGRRanO1fhWTir7zDnUj1ZrtQPwnFK4yfIjl0v9L3HqYNZxTv8mEVIYCFx00jvuOd4T1LrGLai0bcFZFSZqcyQQIBCPCvWdTbYP2i2Le6SnlIf6JugfiW5LSRiWAx6e9eTwfN5g0yEJRCqe7kuNwTl164wsUQz9oGmEC9--wVeA2ScMcP456nBEU_w.LcYmWHsB-0cgBSib1eanrg.knvvx6QBv8cKGNY6oCiIxA.5xnd4-UcUZMgpxCGGALByIiAZnKITeFifazkqkLCHJE
+#########################################################################################
+# AUTHENTICATION: GET TOKEN
+#########################################################################################
+  /authentication-token_endpoint:
+    post:
+      tags:
+        - AUTHENTICATION
+      summary: Get Tokens
+      consumes:
+        - application/x-www-form-urlencoded
+      description: >-
+        <p>Returns a signed <a href="/glossary#id-token">ID Token</a> and an 
+        <a href="/glossary#access-token">Access Token</a> when passed the code value 
+        returned from a previous authorize request.</p>
+
+        <h3>Handling the response</h3>
+
+        <p>The Access Token is used to access further protected resources, but for 
+        Authentication we only need the ID Token as this contains the 
+        end-user <a href="/the-pcr">PCR</a>. To access this the ID Token will need to be 
+        decoded, validated and verified. Full details on this process can be found on 
+        the <a href="/tokens">tokens</a> page.</p>
+
+        <p>The PCR is your user identifier and will be consistent for each request. 
+        It should be stored against the end-user’s account.</p>
+        
+        <h3>Mobile Connect Implementations</h3>
+        
+        <p>Unless specified in the parameter descriptions all parameters apply to 
+        Mobile Connect Profile v1.1, Mobile Connect v2.0 & Mobile Connect Profile DI v2.3</p>
+      parameters:
+        - in: formData
+          name: grant_type
+          type: string
+          required: true
+          enum:
+            - authorization_code
+          description: >-
+            <p>Describes the method to be used for the
+            processing flow. The value of this parameter must always be
+            <code>authorization_code</code>.
+          x-example: authorization_code
+        - in: formData
+          name: code
+          type: string
+          required: true
+          description: >-
+            <p>Authorisation code received from the ID Gateway as a result of the
+            successful Authorize request. Allows the SP to obtain the Access Token 
+            and the ID Token from the ID Gateway.</p>
+          x-example: efb1467d-b6b0-4145-834f-72285442f1a9
+        - in: formData
+          name: redirect_uri
+          type: string
+          required: true
+          description: >-
+            <p>URI to which the responses from the ID Gateway are sent. The value of this
+            parameter must match that sent in the authorise request.</p>
+          x-example: 'https://example.com/callback'
+        - in: formData
+          name: correlation_id
+          type: string
+          required: false
+          description: >-
+            <p>The same <code>correlation_id</code> submitted in the initial
+            authorize request.</p>  
+
+            <p><em>This parameter is optional for Mobile Connect DI Profile
+            v2.3 and Mobile Connect Profile v2.0. and is not
+            supported by Mobile Connect Profile v1.1</em></p>
+          x-example: 42da5b19-457a-4d30-a5c4-038c62dccbb0
+        - in: header
+          name: Authorization
+          description: >-
+            <p>Uses <a href='/glossary#basic-authentication'>HTTP basic
+            authentication</a> to access the API. This is a Base64 encoded
+            string of your <code>client_id:client_secret</code></p> 
+          required: true
+          type: string
+          x-example: Basic czZCaGRSa3F0MzpnWDFmQmF0M2==
+        - in: header
+          name: Content-Type
+          description: >-
+            Resource content type.
+          required: true
+          enum:
+            - application/x-www-form-urlencoded
+          type: string
+          x-example: application/x-www-form-urlencoded
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Response_200_for_Get_Tokens'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Response_400_Get_Tokens'
+          headers:
+            Content-Type:
+              description: Resource content type
+              type: string
+              x-example: application/json
+#########################################################################################
+# AUTHORISATION: 
+#########################################################################################
+  /authorize?[Authorisation-params]:
+    get:
+      tags:
+        - AUTHORISATION
+      summary: Authorize
+      description: >-
+        <p>Requests that the operator ID Gateway capture an end-user authorisation to 
+        allow the SP to perform an action on their behalf and returns values which can be used to make the 
+        <a href="/mobile-connect-api#tag/AUTHENTICATION%2Fpaths%2F~1authentication-token_endpoint%2Fpost">Get Tokens</a call. 
+        The user is authenticated as part of the flow to 
+        ensure that they have the right to provide the authorisation</p>
+        
+        <h3>Overview</h3>
+        
+        <p>Once the user has selected the Mobile Connect button and the application has 
+        opened a pop-up or web-view then the browser will make the Authorize request 
+        using a <strong>302 Found</strong> sent from the SP application. A successful 
+        request will result in a <strong>302 Found</strong> response from 
+        the operator ID Gateway where the location will point the operator wait screen. This 
+        screen displays a message to the end-user that a message has been sent to their device
+        using the operator's selected <a href="/authenticators">authenticator</a>. 
+        (You can see this in the Sandbox where an SMS wait screen is displayed).</p>
+        
+        <p>Once the end-user has authorised the transaction a <strong>302 Found</strong> 
+        is returned  to the <code>redirect_uri</code>
+        passed in the initial request (and previously registered with the operator ID gateway).
+        The response will have a number of URI parameters which are used to build the
+        follow-up <a href="/mobile-connect-api#tag/AUTHENTICATION%2Fpaths%2F~1authentication-token_endpoint%2Fpost">Get Tokens</a> call</p>
+        
+        <h3>Response parameters</h3>
+        
+        <p>The URI response parameters are:</p>
+        
+        <ul>
+        <li><code>code</code>: Authorization code as per OAuth 2.0 section 4.1.2. This code will be used in the Get Token call.</li>
+        <li><code>state</code>: This must equal the <code>state</code> parameter in the initial Authenticate User request.</li>
+        <li><code>correlation_id</code>: If the initial request included a <code>correlation_id</code> then this will be included. Not 
+        supported for Mobile  Connect Profile v1.1.</li>
+        </ul>
+        
+        <h3>Error responses</h3>
+        
+        <p>If there are issues with the request the response will be 
+        <strong>400 Bad Request</strong>. All other errors will be provided as part of the
+        <strong>302 Found</strong> response, with URI parameters in the format:</p>
+        
+        <ul>
+          <li><code>error</code>: Error type.</li>
+          <li><code>error_description</code>: Description of the error.</li>
+        </ul>
+        
+        <p>Error responses will vary according to the Mobile Connect Profile. More 
+        details on error responses can be found <a href="/mobile-connect-api#tag/ERROR-HANDLING">here</a>.<p>
+        
+        <p><em>
+        
+        <p>&nbsp;</p>
+      parameters:
+        - in: query
+          name: client_id
+          description: >-
+            <p>The <code>client_id</code> field obtained from the Discovery response
+            which is used as the unique client identifier of the SP</p>
+          required: true
+          type: string
+          x-example: x-a94d903f-ad45-4135-80b8-ac459f41b38f
+        - in: query
+          name: redirect_uri
+          description: >-
+             <p>The <a href='/glossary#uri'>URI</a> to which ID Gateway responses are sent. 
+             The <code>redirect_uri</code> is defined during application 
+             registration.</p> 
+          required: true
+          type: string
+          x-example: 'http://localhost/'
+        - in: query
+          name: response_type
+          description: >-
+            <p>Indicates the <a href='/glossary#grant-type'>grant
+            type</a> (i.e. method). The value must always be <code>code</code> to 
+            indicate the Authorisation Code Flow.</p>
+          required: true
+          enum:
+            - code
+          type: string
+          x-example: code
+        - in: query
+          name: scope
+          description: >-
+            <p>Space delimited, case-sensitive ASCII, strings of the scope values used to indicate 
+            the services being requested.  For more information see the 
+            <a href="https://developer.mobileconnect.io/scope-values">Scope values</a> 
+            page.</p>
+          required: true
+          enum: 
+            - openid mc_authz
+          default: 
+            - openid mc_authz
+          type: string
+          x-example: openid mc_authz
+        - in: query
+          name: version
+          description: >-
+            <p>This parameter identifies the Mobile Connect profile version.</p>  
+          type: string
+          required: true
+          enum:
+            - mc_v2.0
+            - mc_di_r2_v2.3
+          x-example: mc_di_r2_v2.3
+        - in: query
+          name: state
+          description: >-
+            <p>Value used by the client to maintain state between request and callback. 
+            Also used as a security mechanism, if a cryptographic binding is done with 
+            the browser cookie, to prevent Cross-Site Request Forgery. The recommended 
+            format is <a href="/glossary#uuid4">UUID4</a>.</p>
+          required: true
+          type: string
+          x-example: eee40fe4-8a8d-4b26-8dfd-2fb4d52aa368
+        - in: query
+          name: nonce
+          description: >-
+            <p>String value used to associate a client session with the ID Token. 
+            It is passed unmodified from Authorisation Request to ID Token. The value 
+            SHOULD be unique per session to mitigate replay attacks. The recommended 
+            format is <a href="/glossary#uuid4">UUID4</a>.</p>
+          required: true
+          type: string
+          x-example: 878aacd7-83f1-4b4f-9582-7347b0a6fa62
+        - in: query
+          name: display
+          description: >-
+            <p>Specifies the user interface display for the Authentication and Consent flow.</p>
+            <p>Values are:</p>
+            
+            <p><code>page</code>: The UI SHOULD be consistent with a full page view of the User-Agent.</p>
+            <p><code>pop-up</code>: Use a pop-up window. (The popup window SHOULD be 450px X 500px) </p>
+            <p><code>touch</code>: Display a UI consistent with a “touch” based interface.</p>
+            <p><code>wap</code>: The UI SHOULD be consistent with a “feature-phone” device display</p>
+            
+            <p>These values will only be respected if supported by the ID Gateway.</p>
+          required: false
+          enum:
+            - page
+            - pop-up
+            - touch
+            - wap
+          type: string
+          x-example: touch
+        - in: query
+          name: prompt
+          description: >-
+            <p>Specifies to the IDGW Server whether to prompt the end-user for re-authentication and consent.</p>
+            <p>Values are:</p>
+            
+            <p><code>none</code>: MUST NOT display any UI for reauthentication or consent to the user. If the user is not authenticated already, or authentication or consent is needed to process the Authorisation Request, a login_required error is returned. This can be used as a mechanism to check existing authentication or consent.</p>
+            <p><code>no_seam</code>: prompt the end-user if the authentication session is not valid. Caters for the 3G/4Ghot-spots, tethered phone etc. scenarios</p> 
+            
+            <p><em>This is an optional parameter supported by all Mobile Connect Profiles.</em></p>
+          required: false
+          enum:
+            - none
+            - no_seam
+          default: TBC
+          type: string
+          x-example: consent
+        - in: query
+          name: max_age
+          description: >-
+            <p>Indicator of the maximum elapsed time in seconds since the last
+            authentication of the end-user. If the elapsed time is greater than
+            this value, a re-authentication must be done. When this parameter is
+            in present the request, the ID Token must contain the
+            <code>auth_time</code> claim value</p>
+          required: false
+          type: string
+          x-example: 3600
+        - in: query
+          name: ui_locales
+          description: >-
+            <p>Space separated list of user preferred languages and scripts for
+            the UI as per RFC5646. The parameter is for guidance only and in
+            case a requested locale is not supported then the user interface
+            will be provided in the default language of the ID Gateway.</p>
+            <p><em>This is an optional parameter supported by all Mobile Connect
+            Profiles</em></p>
+          required: false
+          type: string
+          x-example: fr-CA fr en
+        - in: query
+          name: claims_locales
+          description: >-
+            <p>Space separated list of user preferred languages and scripts for
+            the claims, defines as per RFC5646. The parameter is for guidance
+            only and in case a requested locale is not supported then the claims 
+            will be provided in the default language of the ID Gateway.</p> 
+          required: false
+          type: string
+          x-example: fr-CA fr en
+        - in: query
+          name: id_token_hint
+          description: >-
+            <p>Previously issued ID token passed as a hint for the current or past
+            authentication session, generally used in conjunction with
+            <code>prompt=none</code>. If the ID Token is still valid and the
+            end-user is logged in then the server returns a positive response,
+            otherwise SHOULD return a <code>login_error</code> response. For
+            the  ID Token, the server does not need to be listed as audience,
+            when included in the <code>id_token_hint</code>
+          required: false
+          type: string
+          x-example: eyJhbGciOiJSUzI1NiIsImtpZCI6IjdlOGFkZmM
+        - in: query
+          name: login_hint
+          description: >-
+            <p>An indication to the ID Gateway about what ID to use for login. Using this 
+            parameter allows the end-user to skip the login identifier. The values passed
+            will parameter type and the parameter value (see example).</p>
+          required: false
+          enum:
+            - MSISDN:<end-user-msisdn>
+            - ENCR_MSISDN:<end-user-encrypted-msisdn>
+            - PCR:<end-user-pcr>
+          type: string
+          x-example: 'MSISDN:447700900907'
+        - in: query
+          name: login_hint_token
+          description: >-
+            <p>Encrypted <a href="/glossary#json-web-token">JSON Web Token</a> (JWT) that contains a user hint
+            about the SP for an individual <a  href="/glossary#mobile-network-operator">Mobile
+            Network Operator</a> (MNO). The <code>login_hint_token</code> should
+            be used by the SP as a login hint with the particular MNO, so the
+            MNO recognises the SP that is trying to get a response.</p>
+          required: false
+          type: string
+          x-example: n5JhbwerOiJSUzI1NiVm23reNp2DSE6sdfDEgcFnB
+        - in: query
+          name: acr_values
+          description: >-
+            <p>Level of Assurance to be used to authenticate an end-user. The values appear 
+            as order of preference. The <code>acr</code> using during authentication
+            is returned as acr claim value. This parameter is optional, however,
+            when it is present the Authentication endpoint should satisfy one of
+            them for end-user's authentication. The recommended values are the LOAs as 
+            specified in <a href="https://www.iso.org/standard/45138.html">ISO/IEC 29115</a>
+             Clause 6 – 1, 2, 3, 4 –  representing the LOAs of LOW, MEDIUM, HIGH and VERY HIGH.</p>
+          required: true
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+          type: string
+          x-example: 3 2
+#####   response_mode
+        - in: query
+          name: response_mode
+          description: >-
+            <p>Informs the ID Gateway of the mechanism to be used for returning 
+            parameters from the Authorize Endpoint. Can be used when there is 
+            no user agent </p>
+
+            <p><em>This parameter is optional for Mobile Connect DI Profile v2.3. 
+            It is not supported by Mobile Connect Profile v2.0><em></p>
+          type: string
+          default: query
+          required: false
+          x-example: form_post
+#####   client_name
+        - in: query
+          name: client_name
+          description: >-
+            <p>A short name to identify the SP client application which will 
+            be displayed on end-user de vice during the authorisation flow. This 
+            short name is created when the application is registered 
+            on the Developer Portal.</p>
+          required: true
+          type: string
+          x-example: AppName
+#####   binding_message
+        - in: query
+          name: binding_message
+          description: >-
+            <p>Client provided plain text, to interlock the <a href="/glossary#consumption-device">consumption device</a> 
+            and <a href="/glossary#authorisation-device">authorisation device</a> for a better 
+            user experience. The message will be displayed on both devices. Empty values 
+            are allowed (zero length).</p>
+          required: true
+          type: string
+          x-example: Sample message
+#####   context
+        - in: query
+          name: context
+          description: >-
+            <p>A transaction or action based message provided by the client Application
+            which will be displayed on the authentication device of the end-user.</p>
+          required: true
+          type: string
+          x-example: Transfer $100
+#####   correlation_id
+        - in: query
+          name: correlation_id
+          description: >-
+            <p>Correlates a transaction across Mobile Connect components. The value is generated by the Service Provider
+            and must be locally unique.</p>
+            
+            <p>This parameter should be used in conjunction 
+            with your operator partner and only for tracing and resolving issues. If you are using the Discovery service then you should use the same correlation ID 
+            that you use in the Discovery call. The recommended  format is <a href="/glossary#uuid4">UUID4</a>.</p>
+          type: string
+          required: false
+          x-example: 42da5b19-457a-4d30-a5c4-038c62dccbb0
+      responses:
+        '302':
+          description: Found
+          headers:
+            Location:
+              type: string
+              description: >-
+                <p>The resource requested has been temporarily moved to the URL given 
+                by the Location header.</p>
+                
+                <p>This will be the location of the MNO wait screen 
+                that tells the end-user that they have been sent a message and should 
+                respond to it.</p>
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Response_400_Authorize'
+      x-code-samples:
+        - lang: HTTPS
+          source: >-
+            https://operator-g.sandbox.mobileconnect.io/oidc/authorize?redirect_uri=http%3A%2F%2Flocalhost&client_id=YmY4OGQzYzEtZWU5Yy00ZTRiLTkzNGMtMGVmMmI1YjBiOGEyOm9wZXJhdG9yLWc%3D&response_type=code&scope=openid+mc_authz&acr_values=2&state=eee40fe4-8a8d-4b26-8dfd-2fb4d52aa368&nonce=878aacd7-83f1-4b4f-9582-7347b0a6fa62&display=page&max-age=3600&version=mc_di_r2_v2.3&binding_message=transaction%100&client_name=Test%Application%Name&context=transfer%100%to%Bob&login_hint=ENCR_MSISDN%3Aef091a26a09a5b3cd249cbb651a89ad7ee37a41f33336130d5931976af73f3794dc5d4c74ede726605a94b1d76e306e7a8a43c4d7db177f40fdbe27b392b27b41744c6173f99aa3fec955f75623954aa3bee5877c4c058b9e1ce7658bc91039c6cf31e4d16d7fc5147f572eba111e43399353cd727aac4a286b7618d6704b9f57f5b82b47ea26ed871b873da4315f212acce7ee1ec122770b799cd8341737be501b1c1985ba43f074a713bd487eac7d7736bc67597e821c0e69ba1134f8c2536aac7ae9e465ae106e6e2a33dffeca256148a89ccd5b8e7b4621e57c091d609dc91a6dc19da02ad40bc0592ee7ae2e0baa110d744d873458d06f18ad998a0cf94
+#########################################################################################
+# AUTHORIZATION: GET TOKENS
+#########################################################################################
+  /authorisation-token_endpoint:
+    post:
+      tags:
+        - AUTHORISATION
+      summary: Get Tokens
+      consumes:
+        - application/x-www-form-urlencoded
+      description: >-
+        <p>Returns an <a href="/glossary#access-token">Access Token</a> and a
+        signed <a href="/glossary#id-token">ID Token</a> when passed the code value 
+        returned from a previous Authorize request.</p>
+
+        <h3>Handling the response</h3>
+
+        <p>The Access Token is used to access further protected resources, but for 
+        Authorisation we only need the ID Token as this contains the 
+        end-user <a href="/the-pcr">PCR</a>. To access this the ID Token will need to be 
+        decoded, validated and verified. Full details on this process can be found on 
+        the <a href="/tokens">tokens</a> page.</p>
+
+        <p>The PCR is your user identifier and will be consistent for each request. 
+        It should be stored against the end-user’s account.</p>
+        
+        <h3>Mobile Connect Implementations</h3>
+        
+        <p>Unless specified in the parameter descriptions all parameters apply to 
+        Mobile Connect v2.0 & Mobile Connect Profile DI v2.3</p>
+      parameters:
+        - in: formData
+          name: grant_type
+          type: string
+          required: true
+          enum:
+            - authorization_code
+          description: >-
+            <p>Describes the method to be used for the
+            processing flow. The value of this parameter must always be
+            <code>authorization_code</code>.
+          x-example: authorization_code
+        - in: formData
+          name: code
+          type: string
+          required: true
+          description: >-
+            <p>Authorisation code received from the ID Gateway as a result of the
+            successful Authorize request. Allows the SP to obtain the Access Token 
+            and the ID Token from the ID Gateway.</p>
+          x-example: efb1467d-b6b0-4145-834f-72285442f1a9
+        - in: formData
+          name: redirect_uri
+          type: string
+          required: true
+          description: >-
+            <p>URI to which the responses from the ID Gateway are sent. The value of this
+            parameter must match that sent in the request.</p>
+          x-example: 'https://example.com/callback'
+        - in: formData
+          name: correlation_id
+          type: string
+          required: false
+          description: >-
+            <p>The same <code>correlation_id</code> submitted in the initial
+            authorize request. The <code>correlation_id</code> tracks the transaction
+            correlation across the Mobile Connect components (Discovery, Mobile
+            Connect). The value for this parameter is generated only by the SP and it 
+            must be locally unique.</p>  
+          x-example: 42da5b19-457a-4d30-a5c4-038c62dccbb0
+        - in: header
+          name: Authorization
+          description: >-
+            <p> Uses <a href='/glossary#basic-authentication'>HTTP basic
+            authentication</a> to access the API. This is a Base64 encoded
+            string of your <code>client_id:client_secret</code></p> <p><em>This
+            parameter is required for all Mobile Connect Profiles</em></p>
+          required: true
+          type: string
+          x-example: Basic czZCaGRSa3F0MzpnWDFmQmF0M2==
+        - in: header
+          name: Content-Type
+          description: >-
+            Resource content type <p><em>This parameter is required for all
+            Mobile Connect Profiles</em></p>
+          required: true
+          type: string
+          x-example: application/x-ww-form-urlencoded
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Response_200_for_Get_Tokens'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Response_400_Get_Tokens'
+          headers:
+            Content-Type:
+              description: Resource content type
+              type: string
+              x-example: application/json
+#########################################################################################
+# SIGN_UP: AUTHORIZE REQUEST
+#########################################################################################
+  /authorize?[signup-params]:
+    get:
+      tags:
+        - SIGN-UP
+      summary: Authorize
+      parameters:
+#####   client_id
+        - in: query
+          name: client_id
+          description: >-
+            <p>The <code>client_id</code> field obtained from the Discovery response
+            which is used as the unique client identifier of the SP</p>
+          required: true
+          type: string
+          x-example: x-a94d903f-ad45-4135-80b8-ac459f41b38f
+#####   redirect_url
+        - in: query
+          name: redirect_uri
+          description: >-
+             <p>The <a href='/glossary#uri'>URI</a> to which ID Gateway responses are sent. 
+             The <code>redirect_uri</code> is defined during application 
+             registration.</p> 
+          required: true
+          type: string
+          x-example: 'http://localhost/'
+#####   Response Type
+        - in: query
+          name: response_type
+          description: >-
+            <p>Indicates the <a href='/glossary#grant-type'>grant
+            type</a> (i.e. method). The value must always be <code>code</code> to 
+            indicate the Authorisation Code Flow.</p>
+          required: true
+          enum:
+            - code
+          type: string
+          x-example: code
+#####   scope
+        - in: query
+          name: scope
+          description: >-
+            <p>Space delimited, case-sensitive ASCII, strings of the scope value used to indicate 
+            the service being requested.  For more information see the 
+            <a href="https://developer.mobileconnect.io/scope-values">Scope values</a> 
+            page.</p>
+          required: true
+          enum:
+            - openid mc_identity_signup
+          type: string
+          x-example: openid mc_identity_signup
+#####   version
+        - in: query
+          name: version
+          description: >-
+            <p>This parameter identifies the Mobile Connect profile version. This 
+            parameter is required for Mobile Connect DI Profile v2.3 
+            (<code>mc_di_r2_v2.3</code>) and Mobile Connect Profile v2.0 (<code>mc_v2.0</code>).</p>  
+          required: true
+          enum:
+            - mc_v2
+            - mc_di_r2_v2.3
+          type: string
+          x-example: mc_di_r2_v2.3
+#####   state
+        - in: query
+          name: state
+          description: >-
+            <p>Value used by the client to maintain state between request and callback. 
+            Also used as a security mechanism, if a cryptographic binding is done with 
+            the browser cookie, to prevent Cross-Site Request Forgery. The recommended 
+            format is <a href="/glossary#uuid4">UUID4</a>.</p>
+          required: true
+          type: string
+          x-example: eee40fe4-8a8d-4b26-8dfd-2fb4d52aa368
+#####   nonce
+        - in: query
+          name: nonce
+          description: >-
+            <p>String value used to associate a client session with the ID Token. 
+            It is passed unmodified from Authorisation Request to ID Token. The value 
+            SHOULD be unique per session to mitigate replay attacks. The recommended 
+            format is <a href="/glossary#uuid4">UUID4</a>.</p>
+          required: true
+          type: string
+          x-example: 878aacd7-83f1-4b4f-9582-7347b0a6fa62
+#####   display
+        - in: query
+          name: display
+          description: >-
+            <p>Specifies the user interface display for the Authentication and Consent flow.</p>
+            <p>Values are:</p>
+            
+            <p><code>page</code>: The UI SHOULD be consistent with a full page view of the User-Agent.</p>
+            <p><code>pop-up</code>: Use a pop-up window. (The popup window SHOULD be 450px X 500px) </p>
+            <p><code>touch</code>: Display a UI consistent with a “touch” based interface.</p>
+            <p><code>wap</code>: The UI SHOULD be consistent with a “feature-phone” device display</p>
+            
+            <p>These values will only be respected if supported by the ID Gateway.</p>
+          required: false
+          enum:
+            - page
+            - pop-up
+            - touch
+            - wap
+          type: string
+          x-example: touch
+#####   prompt
+        - in: query
+          name: prompt
+          description: >-
+            <p>Specifies to the IDGW Server whether to prompt the end-user for re-authentication and consent.</p>
+            <p>Values are:</p>
+            
+            <p><code>none</code>: MUST NOT display any UI for reauthentication or consent to the user. If the user is not authenticated already, or authentication or consent is needed to process the Authorisation Request, a login_required error is returned. This can be used as a mechanism to check existing authentication or consent.</p>
+            <p><code>no_seam</code>: prompt the end-user if the authentication session is not valid. Caters for the 3G/4Ghot-spots, tethered phone etc. scenarios</p>             
+          required: false
+          enum:
+            - none
+            - no_seam
+          type: string
+          x-example: consent
+        - in: query
+#####   max-age
+          name: max_age
+          description: >-
+            <p>Indicator of the maximum elapsed time in seconds since the last
+            authentication of the end-user. If the elapsed time is greater than
+            this value, a re-authentication must be done. When this parameter is
+            in present the request, the ID Token must contain the
+            <code>auth_time</code> claim value</p>
+          required: false
+          type: string
+          x-example: 3600
+#####   ui_locales
+        - in: query
+          name: ui_locales
+          description: >-
+            <p>Space separated list of user preferred languages and scripts for
+            the UI as per RFC5646. The parameter is for guidance only and in
+            case a requested locale is not supported then the user interface
+            will be provided in the default language of the ID Gateway.</p>
+          required: false
+          type: string
+          x-example: fr-CA fr en
+#####   claims_locales
+        - in: query
+          name: claims_locales
+          description: >-
+            <p>Space separated list of user preferred languages and scripts for
+            the claims, defines as per RFC5646. The parameter is for guidance
+            only and in case a requested locale is not supported then the claims 
+            will be provided in the default language of the ID Gateway.</p> 
+          required: false
+          type: string
+          x-example: fr-CA fr en
+#####   id_token_hint
+        - in: query
+          name: id_token_hint
+          description: >-
+            <p>Previously issued ID token passed as a hint for the current or past
+            authentication session, generally used in conjunction with
+            <code>prompt=none</code>. If the ID Token is still valid and the
+            end-user is logged in then the server returns a positive response,
+            otherwise server SHOULD return a <code>login_error</code> response. For
+            the  ID Token, the server does not need to be listed as audience,
+            when included in the <code>id_token_hint</code>
+          required: false
+          type: string
+          x-example: eyJhbGciOiJSUzI1NiIsImtpZCI6IjdlOGFkZmM
+#####   login_hint
+        - in: query
+          name: login_hint
+          description: >-
+            <p>An indication to the ID Gateway about what ID to use for login. Using this 
+            parameter allows the end-user to skip the login identifier. The values passed
+            will parameter type and the parameter value (see example).</p>
+          required: false
+          enum:
+            - MSISDN:<end-user-msisdn>
+            - ENCR_MSISDN:<end-user-encrypted-msisdn>
+            - PCR:<end-user-pcr>
+          type: string
+          x-example: 'MSISDN:447700900907'
+#####   login_hint_token
+        - in: query
+          name: login_hint_token
+          description: >-
+            <p>Encrypted <a href="/glossary#json-web-token">JSON Web Token</a> (JWT) that contains a user hint
+            about the SP for an individual <a  href="/glossary#mobile-network-operator">Mobile
+            Network Operator</a> (MNO). The <code>login_hint_token</code> should
+            be used by the SP as a login hint with the particular MNO, so the
+            MNO recognises the SP that is trying to get a response.</p>
+          required: false
+          type: string
+          x-example: n5JhbwerOiJSUzI1NiVm23reNp2DSE6sdfDEgcFnB
+#####   acr_values
+        - in: query
+          name: acr_values
+          description: >-
+            <p>Level of Assurance to be used to authenticate an end-user. The values appear 
+            as order of preference. The <code>acr</code> used during authentication
+            is returned as acr claim value. This parameter is optional, however,
+            when it is present the Authentication endpoint should satisfy one for the end-user's authentication. The recommended values are the LOAs as 
+            specified in <a href="https://www.iso.org/standard/45138.html">ISO/IEC 29115</a>
+             Clause 6 – 1, 2, 3, 4 –  representing the LOAs of LOW, MEDIUM, HIGH and VERY HIGH.</p>
+          required: true
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+          type: string
+          x-example: 3 2
+#####   response_mode
+        - in: query
+          name: response_mode
+          description: >-
+            <p>Informs the ID Gateway of the mechanism to be used for returning 
+            parameters from the Authorize Endpoint. Can be used when there is 
+            no user agent </p>
+            
+            <p><em>This parameter is not supported by Mobile Connect Profile v2.0><em></p>
+          type: string
+          default: query
+          required: false
+          x-example: form_post
+#####   client_name
+        - in: query
+          name: client_name
+          description: >-
+            <p>A short name to identify the SP client application which will 
+            be displayed on end-user de vice during the authorisation flow. This 
+            short name is created when the application is registered 
+            on the Developer Portal.</p>
+          required: true
+          type: string
+          x-example: AppName
+#####   binding_message
+        - in: query
+          name: binding_message
+          description: >-
+            <p>Client provided plain text, to interlock the <a href="/glossary#consumption-device">consumption device</a> 
+            and <a href="/glossary#authorisation-device">authorisation device</a> for a better 
+            user experience. The message will be displayed on both devices. Empty values 
+            are allowed (zero length).</p>
+          required: true
+          type: string
+          x-example: Sample message
+#####   context
+        - in: query
+          name: context
+          description: >-
+            <p>A transaction or action based message provided by the client Application
+            which will be displayed on the authentication device of the end-user.</p>
+          required: true
+          type: string
+          x-example: Transfer $100
+#####   correlation_id
+        - in: query
+          name: correlation_id
+          description: >-
+            <p>Correlates a transaction across Mobile Connect components. The value is generated by the Service Provider
+            and must be locally unique.</p>
+            
+            <p>This parameter should be used in conjunction 
+            with your operator partner and only for tracing and resolving issues. If you are using the Discovery service then you should use the same correlation ID 
+            that you use in the Discovery call. The recommended  format is <a href="/glossary#uuid4">UUID4</a>.</p>
+          type: string
+          required: false
+          x-example: 42da5b19-457a-4d30-a5c4-038c62dccbb0
+      responses:
+        '302':
+          description: Found
+          headers:
+            Location:
+              type: string
+              description: >-
+                <p>The resource requested has been temporarily moved to the URL given 
+                by the Location header.</p>
+                
+                <p>This will be the location of the MNO wait screen 
+                that tells the end-user that they have been sent a message and should 
+                respond to it.</p>
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Response_400_Authorize'
+#########################################################################################
+# IDENTITY: GET TOKENS REQUEST
+#########################################################################################
+  /get-token_sign-up-endpoint:
+    post:
+      tags:
+        - SIGN-UP
+      summary: Get Tokens
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+#####   grant_type
+        - in: formData
+          name: grant_type
+          type: string
+          required: true
+          enum:
+            - authorization_code
+          description: >-
+            <p>Describes the method to be used for the
+            processing flow. The value of this parameter must always be
+            <code>authorization_code</code>.
+          x-example: authorization_code
+#####   code
+        - in: formData
+          name: code
+          type: string
+          required: true
+          description: >-
+            <p>Authorization code received from the ID Gateway as a result of the
+            successful Authorize request. Allows the SP to obtain the Access Token 
+            and the ID Token from the ID Gateway.</p>
+          x-example: efb1467d-b6b0-4145-834f-72285442f1a9
+#####   redirect_uri
+        - in: formData
+          name: redirect_uri
+          type: string
+          required: true
+          description: >-
+            <p>URI to which the responses from the ID Gateway are sent. The value of this
+            parameter must match that sent in the request.</p>
+          x-example: 'https://example.com/callback'
+#####   correlation_id
+        - in: formData
+          name: correlation_id
+          type: string
+          required: false
+          description: >-
+            <p>The same <code>correlation_id</code> submitted in the initial
+            authorize request. The <code>correlation_id</code> tracks the transaction
+            correlation across the Mobile Connect components (Discovery, Mobile
+            Connect). The value for this parameter is generated only by the SP and it 
+            must be locally unique.</p>  
+          x-example: 42da5b19-457a-4d30-a5c4-038c62dccbb0
+#####   Authorization
+        - in: header
+          name: Authorization
+          description: >-
+            <p> Uses <a href='/glossary#basic-authentication'>HTTP basic
+            authentication</a> to access the API. This is a Base64 encoded
+            string of your <code>client_id:client_secret</code></p> 
+          required: true
+          type: string
+          x-example: Basic czZCaGRSa3F0MzpnWDFmQmF0M2==
+#####   Content-Type
+        - in: header
+          name: Content-Type
+          description: >-
+            Resource content type.
+          required: true
+          enum:
+            - application/x-www-form-urlencoded
+          type: string
+          x-example: application/x-www-form-urlencoded
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Response_200_for_Get_Token_Premiuminfo'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Response_400_Get_Tokens'
+#########################################################################################
+# IDENTITY: GET DETAILS
+#########################################################################################
+  /sign-up_premiuminfo_endpoint:
+    post:
+      tags:
+        - SIGN-UP
+      summary: Get Sign-up Details
+      description: ''
+      parameters:
+        - in: header
+          name: Authorization
+          description: >-
+            <p>Uses an Access Token to access the Premiuminfo resources. The token is of type <code>Bearer</code></p>
+          type: string
+          required: true
+          x-example: Bearer f6e0e342-aefd-4e82-8a9a-a3424be24a90
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Response_200_Sign-Up'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Response_400_Get_Identity'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Response_401'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Response_403'
+#########################################################################################
+# PHONE NUMBER: AUTHORIZE REQUEST
+#########################################################################################
+  /authorize?[phone-number-params]:
+    get:
+      tags:
+        - PHONE NUMBER
+      summary: Authorize
+      parameters:
+#####   client_id
+        - in: query
+          name: client_id
+          description: >-
+            <p>The <code>client_id</code> field obtained from the Discovery response
+            which is used as the unique client identifier of the SP</p>
+          required: true
+          type: string
+          x-example: x-a94d903f-ad45-4135-80b8-ac459f41b38f
+#####   redirect_url
+        - in: query
+          name: redirect_uri
+          description: >-
+             <p>The <a href='/glossary#uri'>URI</a> to which ID Gateway responses are sent. 
+             The <code>redirect_uri</code> is defined during application 
+             registration.</p> 
+          required: true
+          type: string
+          x-example: 'http://localhost/'
+#####   Response Type
+        - in: query
+          name: response_type
+          description: >-
+            <p>Indicates the <a href='/glossary#grant-type'>grant
+            type</a> (i.e. method). The value must always be <code>code</code> to 
+            indicate the Authorisation Code Flow.</p>
+          required: true
+          enum:
+            - code
+          type: string
+          x-example: code
+#####   scope
+        - in: query
+          name: scope
+          description: >-
+            <p>Space delimited, case-sensitive ASCII, strings of the scope values used to indicate 
+            the services being requested.  For more information see the 
+            <a href="https://developer.mobileconnect.io/scope-values">Scope values</a> 
+            page.</p>
+          required: true
+          enum:
+            - openid mc_identity_phonenumber
+          type: string
+          x-example: openid mc_identity_phonenumber
+#####   version
+        - in: query
+          name: version
+          description: >-
+            <p>This parameter identifies the Mobile Connect profile version. This 
+            parameter is required for Mobile Connect DI Profile v2.3 
+            (<code>mc_di_r2_v2.3</code>) and Mobile Connect Profile v2.0 (<code>mc_v2.0</code>).</p>  
+          required: true
+          enum:
+            - mc_v2
+            - mc_di_r2_v2.3
+          type: string
+          x-example: mc_di_r2_v2.3
+#####   state
+        - in: query
+          name: state
+          description: >-
+            <p>Value used by the client to maintain state between request and callback. 
+            Also used as a security mechanism, if a cryptographic binding is done with 
+            the browser cookie, to prevent Cross-Site Request Forgery. The recommended 
+            format is <a href="/glossary#uuid4">UUID4</a>.</p>
+          required: true
+          type: string
+          x-example: eee40fe4-8a8d-4b26-8dfd-2fb4d52aa368
+#####   nonce
+        - in: query
+          name: nonce
+          description: >-
+            <p>String value used to associate a client session with the ID Token. 
+            It is passed unmodified from Authorisation Request to ID Token. The value 
+            SHOULD be unique per session to mitigate replay attacks. The recommended 
+            format is <a href="/glossary#uuid4">UUID4</a>.</p>
+          required: true
+          type: string
+          x-example: 878aacd7-83f1-4b4f-9582-7347b0a6fa62
+#####   display
+        - in: query
+          name: display
+          description: >-
+            <p>Specifies the user interface display for the Authentication and Consent flow.</p>
+            <p>Values are:</p>
+            
+            <p><code>page</code>: The UI SHOULD be consistent with a full page view of the User-Agent.</p>
+            <p><code>pop-up</code>: Use a pop-up window. (The popup window SHOULD be 450px X 500px) </p>
+            <p><code>touch</code>: Display a UI consistent with a “touch” based interface.</p>
+            <p><code>wap</code>: The UI SHOULD be consistent with a “feature-phone” device display</p>
+            
+            <p>These values will only be respected if supported by the ID Gateway.</p>
+          required: false
+          enum:
+            - page
+            - pop-up
+            - touch
+            - wap
+          type: string
+          x-example: touch
+#####   prompt
+        - in: query
+          name: prompt
+          description: >-
+            <p>Specifies to the IDGW Server whether to prompt the end-user for re-authentication and consent.</p>
+            <p>Values are:</p>
+            
+            <p><code>none</code>: MUST NOT display any UI for reauthentication or consent to the user. If the user is not authenticated already, or authentication or consent is needed to process the Authorisation Request, a login_required error is returned. This can be used as a mechanism to check existing authentication or consent.</p>
+            <p><code>no_seam</code>: prompt the end-user if the authentication session is not valid. Caters for the 3G/4Ghot-spots, tethered phone etc. scenarios</p>             
+          required: false
+          enum:
+            - none
+            - no_seam
+          type: string
+          x-example: consent
+        - in: query
+#####   max-age
+          name: max_age
+          description: >-
+            <p>Indicator of the maximum elapsed time in seconds since the last
+            authentication of the end-user. If the elapsed time is greater than
+            this value, a re-authentication must be done. When this parameter is
+            in present the request, the ID Token must contain the
+            <code>auth_time</code> claim value</p>
+          required: false
+          type: string
+          x-example: 3600
+#####   ui_locales
+        - in: query
+          name: ui_locales
+          description: >-
+            <p>Space separated list of user preferred languages and scripts for
+            the UI as per RFC5646. The parameter is for guidance only and in
+            case a requested locale is not supported then the user interface
+            will be provided in the default language of the ID Gateway.</p>
+          required: false
+          type: string
+          x-example: fr-CA fr en
+#####   claims_locales
+        - in: query
+          name: claims_locales
+          description: >-
+            <p>Space separated list of user preferred languages and scripts for
+            the claims, defines as per RFC5646. The parameter is for guidance
+            only and in case a requested locale is not supported then the claims 
+            will be provided in the default language of the ID Gateway.</p> 
+          required: false
+          type: string
+          x-example: fr-CA fr en
+#####   id_token_hint
+        - in: query
+          name: id_token_hint
+          description: >-
+            <p>Previously issued ID token passed as a hint for the current or past
+            authentication session, generally used in conjunction with
+            <code>prompt=none</code>. If the ID Token is still valid and the
+            end-user is logged in then the server returns a positive response,
+            otherwise server SHOULD return a <code>login_error</code> response. For
+            the  ID Token, the server does not need to be listed as audience,
+            when included in the <code>id_token_hint</code>
+          required: false
+          type: string
+          x-example: eyJhbGciOiJSUzI1NiIsImtpZCI6IjdlOGFkZmM
+#####   login_hint
+        - in: query
+          name: login_hint
+          description: >-
+            <p>An indication to the ID Gateway about what ID to use for login. Using this 
+            parameter allows the end-user to skip the login identifier. The values passed
+            will parameter type and the parameter value (see example).</p>
+          required: false
+          enum:
+            - MSISDN:<end-user-msisdn>
+            - ENCR_MSISDN:<end-user-encrypted-msisdn>
+            - PCR:<end-user-pcr>
+          type: string
+          x-example: 'MSISDN:447700900907'
+#####   login_hint_token
+        - in: query
+          name: login_hint_token
+          description: >-
+            <p>Encrypted <a href="/glossary#json-web-token">JSON Web Token</a> (JWT) that contains a user hint
+            about the SP for an individual <a  href="/glossary#mobile-network-operator">Mobile
+            Network Operator</a> (MNO). The <code>login_hint_token</code> should
+            be used by the SP as a login hint with the particular MNO, so the
+            MNO recognises the SP that is trying to get a response.</p>
+          required: false
+          type: string
+          x-example: n5JhbwerOiJSUzI1NiVm23reNp2DSE6sdfDEgcFnB
+#####   acr_values
+        - in: query
+          name: acr_values
+          description: >-
+            <p>Level of Assurance to be used to authenticate an end-user. The values appear 
+            as order of preference. The <code>acr</code> used during authentication
+            is returned as acr claim value. This parameter is optional, however,
+            when it is present the Authentication endpoint should satisfy one for the end-user's authentication. The recommended values are the LOAs as 
+            specified in <a href="https://www.iso.org/standard/45138.html">ISO/IEC 29115</a>
+             Clause 6 – 1, 2, 3, 4 –  representing the LOAs of LOW, MEDIUM, HIGH and VERY HIGH.</p>
+          required: true
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+          type: string
+          x-example: 3 2
+#####   response_mode
+        - in: query
+          name: response_mode
+          description: >-
+            <p>Informs the ID Gateway of the mechanism to be used for returning 
+            parameters from the Authorize Endpoint. Can be used when there is 
+            no user agent </p>
+            
+            <p><em>This parameter is not supported by Mobile Connect Profile v2.0><em></p>
+          type: string
+          default: query
+          required: false
+          x-example: form_post
+#####   client_name
+        - in: query
+          name: client_name
+          description: >-
+            <p>A short name to identify the SP client application which will 
+            be displayed on end-user de vice during the authorisation flow. This 
+            short name is created when the application is registered 
+            on the Developer Portal.</p>
+          required: true
+          type: string
+          x-example: AppName
+#####   binding_message
+        - in: query
+          name: binding_message
+          description: >-
+            <p>Client provided plain text, to interlock the <a href="/glossary#consumption-device">consumption device</a> 
+            and <a href="/glossary#authorisation-device">authorisation device</a> for a better 
+            user experience. The message will be displayed on both devices. Empty values 
+            are allowed (zero length).</p>
+          required: true
+          type: string
+          x-example: Sample message
+#####   context
+        - in: query
+          name: context
+          description: >-
+            <p>A transaction or action based message provided by the client Application
+            which will be displayed on the authentication device of the end-user.</p>
+          required: true
+          type: string
+          x-example: Transfer $100
+#####   correlation_id
+        - in: query
+          name: correlation_id
+          description: >-
+            <p>Correlates a transaction across Mobile Connect components. The value is generated by the Service Provider
+            and must be locally unique.</p>
+            
+            <p>This parameter should be used in conjunction 
+            with your operator partner and only for tracing and resolving issues. If you are using the Discovery service then you should use the same correlation ID 
+            that you use in the Discovery call. The recommended  format is <a href="/glossary#uuid4">UUID4</a>.</p>
+          type: string
+          required: false
+          x-example: 42da5b19-457a-4d30-a5c4-038c62dccbb0
+      responses:
+        '302':
+          description: Found
+          headers:
+            Location:
+              type: string
+              description: >-
+                <p>The resource requested has been temporarily moved to the URL given 
+                by the Location header.</p>
+                
+                <p>This will be the location of the MNO wait screen 
+                that tells the end-user that they have been sent a message and should 
+                respond to it.</p>
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Response_400_Authorize'
+#########################################################################################
+# PHONE NUMBER: GET TOKENS REQUEST
+#########################################################################################
+  /get-token_phone-number-endpoint:
+    post:
+      tags:
+        - PHONE NUMBER
+      summary: Get Tokens
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+#####   grant_type
+        - in: formData
+          name: grant_type
+          type: string
+          required: true
+          enum:
+            - authorization_code
+          description: >-
+            <p>Describes the method to be used for the
+            processing flow. The value of this parameter must always be
+            <code>authorization_code</code>.
+          x-example: authorization_code
+#####   code
+        - in: formData
+          name: code
+          type: string
+          required: true
+          description: >-
+            <p>Authorization code received from the ID Gateway as a result of the
+            successful Authorize request. Allows the SP to obtain the Access Token 
+            and the ID Token from the ID Gateway.</p>
+          x-example: efb1467d-b6b0-4145-834f-72285442f1a9
+#####   redirect_uri
+        - in: formData
+          name: redirect_uri
+          type: string
+          required: true
+          description: >-
+            <p>URI to which the responses from the ID Gateway are sent. The value of this
+            parameter must match that sent in the request.</p>
+          x-example: 'https://example.com/callback'
+#####   correlation_id
+        - in: formData
+          name: correlation_id
+          type: string
+          required: false
+          description: >-
+            <p>The same <code>correlation_id</code> submitted in the initial
+            authorize request. The <code>correlation_id</code> tracks the transaction
+            correlation across the Mobile Connect components (Discovery, Mobile
+            Connect). The value for this parameter is generated only by the SP and it 
+            must be locally unique.</p>  
+          x-example: 42da5b19-457a-4d30-a5c4-038c62dccbb0
+#####   Authorization
+        - in: header
+          name: Authorization
+          description: >-
+            <p> Uses <a href='/glossary#basic-authentication'>HTTP basic
+            authentication</a> to access the API. This is a Base64 encoded
+            string of your <code>client_id:client_secret</code></p> 
+          required: true
+          type: string
+          x-example: Basic czZCaGRSa3F0MzpnWDFmQmF0M2==
+#####   Content-Type
+        - in: header
+          name: Content-Type
+          description: >-
+            Resource content type.
+          required: true
+          enum:
+            - application/x-www-form-urlencoded
+          type: string
+          x-example: application/x-www-form-urlencoded
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Response_200_for_Get_Token_Premiuminfo'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Response_400_Get_Tokens'
+#########################################################################################
+# PHONE NUMBER: GET PHONE NUMBER
+#########################################################################################
+  /phone-number_premiuminfo_endpoint:
+    post:
+      tags:
+        - PHONE NUMBER
+      summary: Get Phone Number
+      description: ''
+      parameters:
+        - in: header
+          name: Authorization
+          description: >-
+            <p>Uses an Access Token to access the Premiuminfo resources. The token is of type <code>Bearer</code></p>
+          type: string
+          required: true
+          x-example: Bearer f6e0e342-aefd-4e82-8a9a-a3424be24a90
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Response_200_Phone-Number'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Response_400_Get_Identity'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Response_401'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Response_403'
+      x-code-samples:
+        - lang: cURL
+          source: >-
+#########################################################################################
+# NATIONAL ID: AUTHORIZE REQUEST
+#########################################################################################
+  /authorize?[national-params]:
+    get:
+      tags:
+        - NATIONAL ID
+      summary: Authorize
+      parameters:
+#####   client_id
+        - in: query
+          name: client_id
+          description: >-
+            <p>The <code>client_id</code> field obtained from the Discovery response
+            which is used as the unique client identifier of the SP</p>
+          required: true
+          type: string
+          x-example: x-a94d903f-ad45-4135-80b8-ac459f41b38f
+#####   redirect_url
+        - in: query
+          name: redirect_uri
+          description: >-
+             <p>The <a href='/glossary#uri'>URI</a> to which ID Gateway responses are sent. 
+             The <code>redirect_uri</code> is defined during application 
+             registration.</p> 
+          required: true
+          type: string
+          x-example: 'http://localhost/'
+#####   Response Type
+        - in: query
+          name: response_type
+          description: >-
+            <p>Indicates the <a href='/glossary#grant-type'>grant
+            type</a> (i.e. method). The value must always be <code>code</code> to 
+            indicate the Authorisation Code Flow.</p>
+          required: true
+          enum:
+            - code
+          type: string
+          x-example: code
+#####   scope
+        - in: query
+          name: scope
+          description: >-
+            <p>Space delimited, case-sensitive ASCII, strings of the scope values used to indicate 
+            the services being requested.  For more information see the 
+            <a href="https://developer.mobileconnect.io/scope-values">Scope values</a> 
+            page.</p>
+          required: true
+          enum:
+            - openid mc_identity_nationalid
+          type: string
+          x-example: openid mc_identity_nationalid
+#####   version
+        - in: query
+          name: version
+          description: >-
+            <p>This parameter identifies the Mobile Connect profile version. This 
+            parameter is required for Mobile Connect DI Profile v2.3 
+            (<code>mc_di_r2_v2.3</code>) and Mobile Connect Profile v2.0 (<code>mc_v2.0</code>).</p>  
+          required: true
+          enum:
+            - mc_v2
+            - mc_di_r2_v2.3
+          type: string
+          x-example: mc_di_r2_v2.3
+#####   state
+        - in: query
+          name: state
+          description: >-
+            <p>Value used by the client to maintain state between request and callback. 
+            Also used as a security mechanism, if a cryptographic binding is done with 
+            the browser cookie, to prevent Cross-Site Request Forgery. The recommended 
+            format is <a href="/glossary#uuid4">UUID4</a>.</p>
+          required: true
+          type: string
+          x-example: eee40fe4-8a8d-4b26-8dfd-2fb4d52aa368
+#####   nonce
+        - in: query
+          name: nonce
+          description: >-
+            <p>String value used to associate a client session with the ID Token. 
+            It is passed unmodified from Authorisation Request to ID Token. The value 
+            SHOULD be unique per session to mitigate replay attacks. The recommended 
+            format is <a href="/glossary#uuid4">UUID4</a>.</p>
+          required: true
+          type: string
+          x-example: 878aacd7-83f1-4b4f-9582-7347b0a6fa62
+#####   display
+        - in: query
+          name: display
+          description: >-
+            <p>Specifies the user interface display for the Authentication and Consent flow.</p>
+            <p>Values are:</p>
+            
+            <p><code>page</code>: The UI SHOULD be consistent with a full page view of the User-Agent.</p>
+            <p><code>pop-up</code>: Use a pop-up window. (The popup window SHOULD be 450px X 500px) </p>
+            <p><code>touch</code>: Display a UI consistent with a “touch” based interface.</p>
+            <p><code>wap</code>: The UI SHOULD be consistent with a “feature-phone” device display</p>
+            
+            <p>These values will only be respected if supported by the ID Gateway.</p>
+          required: false
+          enum:
+            - page
+            - pop-up
+            - touch
+            - wap
+          type: string
+          x-example: touch
+#####   prompt
+        - in: query
+          name: prompt
+          description: >-
+            <p>Specifies to the IDGW Server whether to prompt the end-user for re-authentication and consent.</p>
+            <p>Values are:</p>
+            
+            <p><code>none</code>: MUST NOT display any UI for reauthentication or consent to the user. If the user is not authenticated already, or authentication or consent is needed to process the Authorisation Request, a login_required error is returned. This can be used as a mechanism to check existing authentication or consent.</p>
+            <p><code>no_seam</code>: prompt the end-user if the authentication session is not valid. Caters for the 3G/4Ghot-spots, tethered phone etc. scenarios</p>             
+          required: false
+          enum:
+            - none
+            - no_seam
+          type: string
+          x-example: consent
+        - in: query
+#####   max-age
+          name: max_age
+          description: >-
+            <p>Indicator of the maximum elapsed time in seconds since the last
+            authentication of the end-user. If the elapsed time is greater than
+            this value, a re-authentication must be done. When this parameter is
+            in present the request, the ID Token must contain the
+            <code>auth_time</code> claim value</p>
+          required: false
+          type: string
+          x-example: 3600
+#####   ui_locales
+        - in: query
+          name: ui_locales
+          description: >-
+            <p>Space separated list of user preferred languages and scripts for
+            the UI as per RFC5646. The parameter is for guidance only and in
+            case a requested locale is not supported then the user interface
+            will be provided in the default language of the ID Gateway.</p>
+          required: false
+          type: string
+          x-example: fr-CA fr en
+#####   claims_locales
+        - in: query
+          name: claims_locales
+          description: >-
+            <p>Space separated list of user preferred languages and scripts for
+            the claims, defines as per RFC5646. The parameter is for guidance
+            only and in case a requested locale is not supported then the claims 
+            will be provided in the default language of the ID Gateway.</p> 
+          required: false
+          type: string
+          x-example: fr-CA fr en
+#####   id_token_hint
+        - in: query
+          name: id_token_hint
+          description: >-
+            <p>Previously issued ID token passed as a hint for the current or past
+            authentication session, generally used in conjunction with
+            <code>prompt=none</code>. If the ID Token is still valid and the
+            end-user is logged in then the server returns a positive response,
+            otherwise server SHOULD return a <code>login_error</code> response. For
+            the  ID Token, the server does not need to be listed as audience,
+            when included in the <code>id_token_hint</code>
+          required: false
+          type: string
+          x-example: eyJhbGciOiJSUzI1NiIsImtpZCI6IjdlOGFkZmM
+#####   login_hint
+        - in: query
+          name: login_hint
+          description: >-
+            <p>An indication to the ID Gateway about what ID to use for login. Using this 
+            parameter allows the end-user to skip the login identifier. The values passed
+            will parameter type and the parameter value (see example).</p>
+          required: false
+          enum:
+            - MSISDN:<end-user-msisdn>
+            - ENCR_MSISDN:<end-user-encrypted-msisdn>
+            - PCR:<end-user-pcr>
+          type: string
+          x-example: 'MSISDN:447700900907'
+#####   login_hint_token
+        - in: query
+          name: login_hint_token
+          description: >-
+            <p>Encrypted <a href="/glossary#json-web-token">JSON Web Token</a> (JWT) that contains a user hint
+            about the SP for an individual <a  href="/glossary#mobile-network-operator">Mobile
+            Network Operator</a> (MNO). The <code>login_hint_token</code> should
+            be used by the SP as a login hint with the particular MNO, so the
+            MNO recognises the SP that is trying to get a response.</p>
+          required: false
+          type: string
+          x-example: n5JhbwerOiJSUzI1NiVm23reNp2DSE6sdfDEgcFnB
+#####   acr_values
+        - in: query
+          name: acr_values
+          description: >-
+            <p>Level of Assurance to be used to authenticate an end-user. The values appear 
+            as order of preference. The <code>acr</code> used during authentication
+            is returned as acr claim value. This parameter is optional, however,
+            when it is present the Authentication endpoint should satisfy one for the end-user's authentication. The recommended values are the LOAs as 
+            specified in <a href="https://www.iso.org/standard/45138.html">ISO/IEC 29115</a>
+             Clause 6 – 1, 2, 3, 4 –  representing the LOAs of LOW, MEDIUM, HIGH and VERY HIGH.</p>
+          required: true
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+          type: string
+          x-example: 3 2
+#####   response_mode
+        - in: query
+          name: response_mode
+          description: >-
+            <p>Informs the ID Gateway of the mechanism to be used for returning 
+            parameters from the Authorize Endpoint. Can be used when there is 
+            no user agent </p>
+            
+            <p><em>This parameter is not supported by Mobile Connect Profile v2.0><em></p>
+          type: string
+          default: query
+          required: false
+          x-example: form_post
+#####   client_name
+        - in: query
+          name: client_name
+          description: >-
+            <p>A short name to identify the SP client application which will 
+            be displayed on end-user de vice during the authorisation flow. This 
+            short name is created when the application is registered 
+            on the Developer Portal.</p>
+          required: true
+          type: string
+          x-example: AppName
+#####   binding_message
+        - in: query
+          name: binding_message
+          description: >-
+            <p>Client provided plain text, to interlock the <a href="/glossary#consumption-device">consumption device</a> 
+            and <a href="/glossary#authorisation-device">authorisation device</a> for a better 
+            user experience. The message will be displayed on both devices. Empty values 
+            are allowed (zero length).</p>
+          required: true
+          type: string
+          x-example: Sample message
+#####   context
+        - in: query
+          name: context
+          description: >-
+            <p>A transaction or action based message provided by the client Application
+            which will be displayed on the authentication device of the end-user.</p>
+          required: true
+          type: string
+          x-example: Transfer $100
+#####   correlation_id
+        - in: query
+          name: correlation_id
+          description: >-
+            <p>Correlates a transaction across Mobile Connect components. The value is generated by the Service Provider
+            and must be locally unique.</p>
+            
+            <p>This parameter should be used in conjunction 
+            with your operator partner and only for tracing and resolving issues. If you are using the Discovery service then you should use the same correlation ID 
+            that you use in the Discovery call. The recommended  format is <a href="/glossary#uuid4">UUID4</a>.</p>
+          type: string
+          required: false
+          x-example: 42da5b19-457a-4d30-a5c4-038c62dccbb0
+      responses:
+        '302':
+          description: Found
+          headers:
+            Location:
+              type: string
+              description: >-
+                <p>The resource requested has been temporarily moved to the URL given 
+                by the Location header.</p>
+                
+                <p>This will be the location of the MNO wait screen 
+                that tells the end-user that they have been sent a message and should 
+                respond to it.</p>
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Response_400_Authorize'
+#########################################################################################
+# NATIONAL ID: GET TOKENS REQUEST
+#########################################################################################
+  /get-token_national-id-endpoint:
+    post:
+      tags:
+        - NATIONAL ID
+      summary: Get Tokens
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+#####   grant_type
+        - in: formData
+          name: grant_type
+          type: string
+          required: true
+          enum:
+            - authorization_code
+          description: >-
+            <p>Describes the method to be used for the
+            processing flow. The value of this parameter must always be
+            <code>authorization_code</code>.
+          x-example: authorization_code
+#####   code
+        - in: formData
+          name: code
+          type: string
+          required: true
+          description: >-
+            <p>Authorization code received from the ID Gateway as a result of the
+            successful Authorize request. Allows the SP to obtain the Access Token 
+            and the ID Token from the ID Gateway.</p>
+          x-example: efb1467d-b6b0-4145-834f-72285442f1a9
+#####   redirect_uri
+        - in: formData
+          name: redirect_uri
+          type: string
+          required: true
+          description: >-
+            <p>URI to which the responses from the ID Gateway are sent. The value of this
+            parameter must match that sent in the request.</p>
+          x-example: 'https://example.com/callback'
+#####   correlation_id
+        - in: formData
+          name: correlation_id
+          type: string
+          required: false
+          description: >-
+            <p>The same <code>correlation_id</code> submitted in the initial
+            authorize request. The <code>correlation_id</code> tracks the transaction
+            correlation across the Mobile Connect components (Discovery, Mobile
+            Connect). The value for this parameter is generated only by the SP and it 
+            must be locally unique.</p>  
+          x-example: 42da5b19-457a-4d30-a5c4-038c62dccbb0
+#####   Authorization
+        - in: header
+          name: Authorization
+          description: >-
+            <p> Uses <a href='/glossary#basic-authentication'>HTTP basic
+            authentication</a> to access the API. This is a Base64 encoded
+            string of your <code>client_id:client_secret</code></p> 
+          required: true
+          type: string
+          x-example: Basic czZCaGRSa3F0MzpnWDFmQmF0M2==
+#####   Content-Type
+        - in: header
+          name: Content-Type
+          description: >-
+            Resource content type.
+          required: true
+          enum:
+            - application/x-www-form-urlencoded
+          type: string
+          x-example: application/x-www-form-urlencoded
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Response_200_for_Get_Token_Premiuminfo'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Response_400_Get_Tokens'
+#########################################################################################
+# NATIONAL ID: GET DETAILS REQUEST
+#########################################################################################
+  /national-id_premiuminfo_endpoint:
+    post:
+      tags:
+        - NATIONAL ID
+      summary: Get National ID
+      description: ''
+      parameters:
+        - in: header
+          name: Authorization
+          description: >-
+            <p>Uses an Access Token to access the Premiuminfo resources. The token is of type <code>Bearer</code>.</p>
+          type: string
+          required: true
+          x-example: Bearer f6e0e342-aefd-4e82-8a9a-a3424be24a90
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Response_200_NationalID'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Response_400_Get_Identity'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Response_401'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Response_403'
+#########################################################################################
+# ATTRIBUTES: AUTHORIZE REQUEST
+#########################################################################################
+  /authorize?[kyc-params]:
+    get:
+      tags:
+        - KYC MATCH
+      summary: Authorize
+      parameters:
+#####   client_id
+        - in: query
+          name: client_id
+          type: string
+          required: true
+          description: >-
+            <p>The <code>client_id</code> field obtained from the Discovery response
+            which is used as the unique client identifier of the SP</p>
+          x-example: a94d903f-ad45-4135-80b8-ac459f41b38f
+#####   redirect_uri
+        - in: query
+          name: redirect_uri
+          type: string
+          required: true
+          description: >-
+             <p>The <a href='/glossary#uri'>URI</a> to which ID Gateway responses are sent. 
+             The <code>redirect_uri</code> is defined during application 
+             registration.</p> 
+          x-example: 'http://localhost/'
+#####   response_type
+        - in: query
+          name: response_type
+          type: string
+          enum:
+            - code
+          required: true
+          description: >-
+             <p>The <a href='/glossary#uri'>URI</a> to which ID Gateway responses are sent. 
+             The <code>redirect_uri</code> is defined during application 
+             registration.</p> 
+          x-example: code
+#####   scope
+        - in: query
+          name: scope
+          type: string
+          enum:
+            - 'openid mc_kyc_plain'
+            - 'openid mc_kyc_hashed'
+          required: true
+          description: >-
+            <p>Space delimited, case-sensitive ASCII, strings of the scope values used to indicate 
+            the services being requested.  For more information see the 
+            <a href="https://developer.mobileconnect.io/scope-values">Scope values</a> 
+            page.</p>
+          x-example: openid mc_kyc_plain
+#####   claims
+        - in: query
+          name: claims
+          type: string
+          required: false
+          description: >-
+            <p>JSON object listing specific claims to be returned in the response.</p>
+            
+            <p>Example JSON Object</p>
+            
+            <pre>
+            {  
+                "premiuminfo":{  
+                    "address_hash":{  
+                        "value":"5a182f28e16bb73cee76e04015736f5c2f681a2ce1f08bafc6a40167b3a344aa"
+                    },
+                    "name_hash":{  
+                        "value":"bb7ff9e6715bf5f87a4adc3620ad2bb194a59ca838c418c033b9c3d55fbcfbce"
+                    }
+                }
+            }
+            </pre>
+            
+            <p>See the <a href="http://openid.net/specs/openid-connect-core-1_0.html#Claims">Claims specifications</a> for more details.</p>
+#####   version
+        - in: query
+          name: version
+          type: string
+          enum:
+            - mc_di_r2_v2.3
+          required: true
+          description: >-
+            <p>Identifies the Mobile Connect profile version. The
+            current version used for the deployment of KYC Match product is
+            <code>mc_di_r2_v2.3</code>.
+          x-example: mc_di_r2_v2.3
+#####   state
+        - in: query
+          name: state
+          description: >-
+            <p>Value used by the client to maintain state between request and callback. 
+            Also used as a security mechanism , if a cryptographic binding is done with 
+            the browser cookie, to prevent Cross-Site Request Forgery. The recommended 
+            format is <a href="/glossary#uuid4">UUID4</a>.</p>
+          required: true
+          type: string
+          x-example: eee40fe4-8a8d-4b26-8dfd-2fb4d52aa368
+#####   nonce
+        - in: query
+          name: nonce
+          required: true
+          type: string
+          description: >-
+            <p>String value used to associate a client session with the ID Token. 
+            It is passed unmodified from Authorisation Request to ID Token. The value 
+            SHOULD be unique per session to mitigate replay attacks. The recommended 
+            format is <a href="/glossary#uuid4">UUID4</a>.</p>
+          x-example: 878aacd7-83f1-4b4f-9582-7347b0a6fa62
+#####   display
+        - in: query
+          name: display
+          description: >-
+            <p>Specifies the user interface display for the Authentication and Consent flow.</p>
+            <p>Values are:</p>
+            
+            <p><code>page</code>: The UI SHOULD be consistent with a full page view of the User-Agent.</p>
+            <p><code>pop-up</code>: Use a pop-up window. (The popup window SHOULD be 450px X 500px) </p>
+            <p><code>touch</code>: Display a UI consistent with a “touch” based interface.</p>
+            <p><code>wap</code>: The UI SHOULD be consistent with a “feature-phone” device display</p>
+            
+            <p>These values will only be respected if supported by the ID Gateway.</p>
+          required: false
+          enum:
+            - page
+            - pop-up
+            - touch
+            - wap
+          default: page
+          type: string
+          x-example: touch
+#####   prompt
+        - in: query
+          name: prompt
+          type: string
+          required: false
+          enum:
+            - none
+            - no_seam
+          description: >-
+            <p>Specifies to the IDGW Server whether to prompt the end-user for re-authentication and consent.</p>
+            <p>Values are:</p>
+            
+            <p><code>none</code>: MUST NOT display any UI for reauthentication or consent to the user. If the user is not authenticated already, or authentication or consent is needed to process the Authorisation Request, a login_required error is returned. This can be used as a mechanism to check existing authentication or consent.</p>
+            <p><code>no_seam</code>: prompt the end-user if the authentication session is not valid. Caters for the 3G/4Ghot-spots, tethered phone etc. scenarios</p> 
+            
+            <p><em>This is an optional parameter supported by all Mobile Connect Profiles.</em></p>
+          x-example: consent
+#####   max-age
+        - in: query
+          name: max_age
+          type: string
+          required: false
+          description: >-
+            <p>Indicator of the maximum elapsed time in seconds since the last
+            authentication of the end-user. If the elapsed time is greater than
+            this value, a re-authentication must be done. When this parameter is
+            in present the request, the ID Token must contain the
+            <code>auth_time</code> claim value</p>
+          x-example: 3600
+#####   ui_locales
+        - in: query
+          name: ui_locales
+          type: string
+          required: false
+          description: >-
+            <p>Space separated list of user preferred languages and scripts for
+            the UI as per RFC5646. The parameter is for guidance only and in
+            case a requested locale is not supported then the user interface
+            will be provided in the default language of the ID Gateway.</p>
+          x-example: fr-CA fr en
+#####   claims_locales
+        - in: query
+          name: claims_locales
+          type: string
+          required: false
+          description: >-
+            <p>Space separated list of user preferred languages and scripts for
+            the claims returned as per RFC5646. The parameter is for guidance
+            only and in case a requested locale is not supported then the user
+            interface will be provided in the default language of the ID
+            Gateway.</p>
+          x-example: fr-CA fr en
+#####   id_token_hint
+        - in: query
+          name: id_token_hint
+          type: string
+          required: false
+          description: >-
+            <p>Previously issued ID token passed as a hint for the current or past
+            authentication session, generally used in conjunction with
+            <code>prompt=none</code>. If the ID Token is still valid and the
+            end-user is logged in then the server returns a positive response,
+            otherwise SHOULD return a <code>login_error</code> response. For
+            the  ID Token, the server does not need to be listed as audience,
+            when included in the <code>id_token_hint</code></p>
+          x-example: eyJhbGciOiJSUzI1NiIsImtpZCI6IjdlOGFkZmM
+#####   login_hint
+        - in: query
+          name: login_hint
+          type: string
+          enum:
+            - MSISDN:<end-user-msisdn>
+            - ENCR_MSISDN:<end-user-encrypted-msisdn>
+            - PCR:<end-user-pcr>
+          required: false
+          description: >-
+            <p>An indication to the ID Gateway about what ID to use for login. Using this 
+            parameter allows the end-user to skip the login identifier. The values passed
+            will parameter type and the parameter value (see example).</p>
+                        
+            <p><em>This is an optional parameter supported by all Mobile Connect Profiles.</em></p>
+          x-example: 'MSISDN:447700900907'
+#####   login_hint_token
+        - in: query
+          name: login_hint_token
+          type: string
+          required: false
+          description: >-
+            <p>Encrypted JSON Web Token (JWT) that contains a user hint
+            about the SP for an individual <a  href="/glossary#mobile-network-operator">Mobile
+            Network Operator</a> (MNO). The <code>login_hint_token</code> should
+            be used by the SP as a login hint with the particular MNO, so the
+            MNO recognises the SP that is trying to get a response.</p>
+#####   acr_values
+        - in: query
+          name: acr_values
+          type: string
+          enum:
+            - 1
+            - 2
+            - 3
+            - 4
+          required: false
+          description: >-
+            <p>Level of Assurance to be used to authenticate an end-user. The values appear 
+            as order of preference. The <code>acr</code> used during authentication
+            is returned as acr claim value. This parameter is optional, however,
+            when it is present the Authentication endpoint should satisfy one for the 
+            end-user's authentication. The recommended values are the LOAs as 
+            specified in <a href="https://www.iso.org/standard/45138.html">ISO/IEC 29115</a>
+            Clause 6 – 1, 2, 3, 4 –  representing the LOAs of LOW, MEDIUM, HIGH and VERY HIGH.</p>
+            
+            <p><em>This parameter is required for all Mobile Connect Profiles.</em></p>
+          x-example: 3 2
+#####   response_mode
+        - in: query
+          name: response_mode
+          description: >-
+            <p>Informs the ID Gateway of the mechanism to be used for returning 
+            parameters from the Authorize Endpoint. Can be used when there is 
+            no user agent </p>
+            
+            <!--<p><strong><em>NOTE: DETAILS & EXAMPLE NEEDED HERE</em></strong></p>-->
+          type: string
+          default: query
+          required: false
+          x-example: form_post
+#####   client_name
+        - in: query
+          name: client_name
+          description: >-
+            <p>Short name of the SP's application / web service which can be
+            used for the end-user's authentication requests. This short name is
+            created when the SP registers their application / web service on the
+            Developers Portal.</p>
+          required: false
+          type: string
+          x-example: Test Application Name
+#####   binding_message
+        - in: query
+          name: binding_message
+          description: >-
+            This parameter contains a text provided by the SP that is intended
+            to be shown to the end-user on the consumption device as well as on
+            the authorisation device. This text serves as an interlock between
+            the SP and the MNO. Empty values are allowed for this parameter
+          required: false
+          type: string
+          x-example: kyc
+#####   context
+        - in: query
+          name: context
+          description: >-
+            <p>This parameter contains a transaction or action based message
+            which will be displayed on the authentication device of the
+            end-user. This message must be provided by the SP and should prompt
+            the end-user to give a consent to share data with the SP's
+            application / web-service</p>
+          required: false
+          type: string
+          x-example: kyc context   
+      responses:
+        '302':
+          description: Found
+          headers:
+            Location:
+              type: string
+              description: >-
+                <p>The resource requested has been temporarily moved to the URL given 
+                by the Location header.</p>
+                
+                <p>This will be the location of the MNO wait screen 
+                that tells the end-user that they have been sent a message and should 
+                respond to it.</p>
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Response_400_Authorize'
+#########################################################################################
+# ATTRIBUTES: GET TOKENS REQUEST
+#########################################################################################
+  /kyc-token_endpoint:
+    post:
+      tags:
+        - KYC MATCH
+      summary: Get Tokens
+      consumes:
+        - application/x-www-form-urlencoded
+      parameters:
+#####   grant_type
+        - in: formData
+          name: grant_type
+          type: string
+          required: true
+          enum:
+            - authorization_code
+          description: >-
+            <p>Describes the method to be used for the
+            processing flow. The value of this parameter must always be
+            <code>authorization_code</code>.
+          x-example: authorization_code
+#####   code
+        - in: formData
+          name: code
+          type: string
+          required: true
+          description: >-
+            <p>Authorisation code received from the ID Gateway as a result of the
+            successful Authorize request. Allows the SP to obtain the Access Token 
+            and the ID Token from the ID Gateway.</p>
+          x-example: efb1467d-b6b0-4145-834f-72285442f1a9
+#####   redirect_uri
+        - in: formData
+          name: redirect_uri
+          type: string
+          required: true
+          description: >-
+            <p>URI to which the responses from the ID Gateway are sent. The value of this
+            parameter must match that sent in the request.</p>
+          x-example: 'https://example.com/callback'
+#####   correlation_id
+        - in: formData
+          name: correlation_id
+          type: string
+          required: false
+          description: >-
+            <p>The same <code>correlation_id</code> submitted in the initial
+            authorize request. The <code>correlation_id</code> tracks the transaction
+            correlation across the Mobile Connect components (Discovery, Mobile
+            Connect). The value for this parameter is generated only by the SP and it 
+            must be locally unique.</p>  
+          x-example: 42da5b19-457a-4d30-a5c4-038c62dccbb0
+#####   Authorization
+        - in: header
+          name: Authorization
+          description: >-
+            <p> Uses <a href='/glossary#basic-authentication'>HTTP basic
+            authentication</a> to access the API. This is a Base64 encoded
+            string of your <code>client_id:client_secret</code></p> 
+          required: true
+          type: string
+          x-example: Basic czZCaGRSa3F0MzpnWDFmQmF0M2==
+#####   Content-Type
+        - in: header
+          name: Content-Type
+          description: >-
+            Resource content type.
+          required: true
+          enum:
+            - application/x-www-form-urlencoded
+          type: string
+          x-example: application/x-www-form-urlencoded
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Response_200_for_Get_Token_Premiuminfo'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Response_400_Get_Tokens'
+          headers:
+            Content-Type:
+              description: Resource content type
+              type: string
+              x-example: application/json
+#########################################################################################
+# ATTRIBUTES: GET KYC MATCH
+#########################################################################################
+  /kyc_match_split_premiuminfo_endpoint:
+    get:
+      tags:
+        - KYC MATCH
+      summary: Get KYC Match Split
+      parameters:
+        - in: header
+          name: Authorization
+          description: >-
+            <p>Uses an Access Token to access the Premiuminfo resources. The token is of type <code>Bearer</code></p>
+          type: string
+          required: true
+          x-example: Bearer f6e0e342-aefd-4e82-8a9a-a3424be24a90
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Response_200_KYC_Match_Split'
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Response_400_KYC'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Response_401_KYC'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Response_403'
+  /kyc_match_concat_premiuminfo_endpoint:
+    get:
+      tags:
+        - KYC MATCH
+      summary: Get KYC Match Concat
+      parameters:
+        - in: header
+          name: Authorization
+          description: >-
+            <p>Uses an Access Token to access the Premiuminfo resources. The token is of type <code>Bearer</code></p>
+          type: string
+          required: true
+          x-example: Bearer f6e0e342-aefd-4e82-8a9a-a3424be24a90
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Response_200_KYC_Match_Concat'
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Response_400_KYC'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Response_401_KYC'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Response_403'
+  /kyc_match_hashed_split_premiuminfo_endpoint:
+    get:
+      tags:
+        - KYC MATCH
+      summary: Get KYC Match Hashed Split
+      parameters:
+        - in: header
+          name: Authorization
+          description: >-
+            <p>Uses an Access Token to access the Premiuminfo resources. The token is of type <code>Bearer</code></p>
+          type: string
+          required: true
+          x-example: Bearer f6e0e342-aefd-4e82-8a9a-a3424be24a90
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Response_200_KYC_Hashed_Split'
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Response_400_KYC'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Response_401_KYC'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Response_403'
+  /kyc_match_hashed_concat_premiuminfo_endpoint:
+    get:
+      tags:
+        - KYC MATCH
+      summary: Get KYC Match Hashed Concat
+      parameters:
+        - in: header
+          name: Authorization
+          description: >-
+            <p>Uses an Access Token to access the Premiuminfo resources. The token is of type <code>Bearer</code></p>
+          type: string
+          required: true
+          x-example: Bearer f6e0e342-aefd-4e82-8a9a-a3424be24a90
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Response_200_KYC_Hashed_Concat'
+        '400':
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Response_400_KYC'
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Response_401_KYC'
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Response_403'
+#########################################################################################
+# DEFINITIONS
+#########################################################################################
+definitions:
+  Request_for_token:
+    type: object
+    properties:
+      grant_type:
+        type: string
+        description: >-
+          This parameter describes the method that is to be used for the
+          authentication processing flow. The value of this parameter must
+          always be <code>authorization_code</code> to indicate that the grant
+          type to use is the Authorisation Code Flow. </p> <p><em>This parameter
+          is required for all Mobile Connect Profiles</em></p>
+        example: authorization_code
+      code:
+        type: string
+        description: >-
+          Authorisation code received from the IDGW as a result of the
+          successful authentication request. The received authorisation code
+          allows the SP to obtain the Access Token and the ID Token from the
+          IDGW. <p><em>This parameter is required for all Mobile Connect
+          Profiles</em></p>
+        example: SplxlOBeZQQYbYS6WxSbIA
+      redirect_uri:
+        type: string
+        description: >-
+          URI to which the responses from the IDGW are sent. The value of this
+          parameter must match with that sent in the authentication request.
+          HTTPS scheme is recommended to be used here, however, HTTP can also be
+          applied <p><em>This parameter is required for all Mobile Connect
+          Profiles</em></p>
+        example: 'https://localhost/'
+      correlation_id:
+        type: string
+        description: >-
+          <code>correlation_id</code> submitted through the authentication
+          request. <code>correlation_id</code> ensures the transaction
+          correlation across Mobile Connect components (Discovery, Mobile
+          Connect Profile requests, IDGW internal components etc.). The value
+          for this parameter is generated only by the SP and it must be locally
+          unique.</p><p>Please note that the usage of this parameter is not
+          mandatory. However, if this parameter is present in the request, the
+          IDGW must add this parameter to the response. When the SP sends a
+          request without the <code>correlation_id</code> parameter, it's up to
+          the IDGW whether to include this parameter into the
+          response.</p><p>For more information on the correlation ID please see
+          the <a href='/correlation-id'>Correlation ID</a> section  <p><em>This
+          parameter is optional for Mobile Connect DI Profile 2.3, SI Profile
+          1.0, Mobile Connect Profile 2.0 and is not supported by the Mobile
+          Connect Profile 1.0</em></p>
+        example: 42da5b19-457a-4d30-a5c4-038c62dccbb0
+    required:
+      - grant_type
+      - code
+      - redirect_uri
+#########################################################################################
+# RESPONSE 200 OK
+#########################################################################################
+#########################################################################################
+# RESPONSE 200 OK - TOKENS
+#########################################################################################
+  Response_200_for_Get_Tokens:
+    type: object
+    properties:
+      token_type:
+        type: string
+        description: >-
+          <p>Type of the HTTP authentication scheme. The value for this parameter
+          must be <code>bearer</code> unless another <code>token_type</code>
+          value was agreed between the Service Provider and the ID Gateway.</p
+        example: bearer
+      id_token:
+        type: string
+        description: >-
+          <p>Token used to provide claims about the authentication of
+          the end-user and other specific claims, if requested. For the detailed
+          list of the possible claims to be returned please see <a
+          href='/tokens'>Tokens section</a>.</p>
+          
+          <p>The ID Token is a JSON Web Token (JWT). It is created and returned 
+          by the ID Gateway and is associated with only one authentication session. A
+          new authentication session for the same end-user will be provided with
+          a new ID Token</p>      
+        example: eyJ0 ... NiJ9.eyJ1c ... I6IjIifX0.DeWt4Qu ... ZXso
+      access_token:
+        type: string
+        description: >-
+          <p>OAuth 2.0 token used to get access to 
+          protected resources from the PremiumInfo endpoint.</p>
+        example: 7d6e93c2-54a8-4b98-b08f-f047e519d788
+      expires_in:
+        type: string
+        description: >-
+          <p>Expiration time of the Access Token in seconds since the response was generated.</p>
+        example: 3600
+      correlation_id:
+        type: string
+        description: >-
+          <p><code>correlation_id</code> submitted through the authentication
+          request. </p>
+                    
+          <p><em>This parameter is not supported by the Mobile Connect Profile 1.1</em></p>
+        example: 42da5b19-457a-4d30-a5c4-038c62dccbb0
+    required:
+      - access_token
+      - token_type
+      - expires_in
+      - id_token
+#########################################################################################
+# RESPONSE 200 OK - TOKENS WITH PREMIUMINFO REFERENCE
+#########################################################################################
+  Response_200_for_Get_Token_Premiuminfo:
+    type: object
+    properties:
+      access_token:
+        type: string
+        description: >-
+          <p>OAUth 2.0 <code>access_token</code> used to get the PremiumInfo object
+          from the PremiumInfo endpoint (or other specific resource endpoint)
+          and can be reused for accessing the protected resources, if required.</p>
+        example: f6e0e342-aefd-4e82-8a9a-a3424be24a90
+      token_type:
+        type: string
+        description: >-
+          <p>Value MUST be <code>bearer</code> unless another
+          <code>token_type</code> value was agreed between the Service Provider and the
+          ID Gateway.</p>
+        example: Bearer
+      expires_in:
+        type: string
+        description: >-
+          <p>Expiration time of the Access Token in seconds since the response was
+          generated</p>
+        example: 600
+      id_token:
+        type: string
+        description: >-
+          <p>This is an additional token used to provide the ID token claims. The
+          ID token is a JSON Web Token (JWT) sent by the IDGW to the SP's
+          Server.For more on how to handle the ID Token and the available claims
+          please refer to <a href='/tokens'>Tokens page</a>.</p>
+        example: eyJhbGciOiJSUzI1Ni1QifQ.eyJh5eUxXST01lIjoxNTIyMzI4NTc0LjAsImF6cCI6I
+      correlation_id:
+        type: string
+        description: >-
+          <p>The <code>correlation_id</code> submitted through the authentication
+          request. <code>correlation_id</code> ensures correlation of the
+          transaction across Mobile Connect components.</p>
+        example: 42da5b19-457a-4d30-a5c4-038c62dccbb0
+    required:
+      - access_token
+      - token_type
+      - expires_in
+      - id_token
+#########################################################################################
+# RESPONSE 200 OK - SIGN-UP DETAILS
+#########################################################################################
+  Response_200_Sign-Up:
+    type: object
+    properties:
+      sub:
+        type: string
+        description: >-
+          Subject identifier, a globally unique identifier (see <a href="/the-pcr">PCR</a>) of the
+          end-user generated by the operator. 
+        example: 22735ae2-9b1b-4edb-bed0-7b41de9e129e
+      phone_number_alternate:
+        type: string
+        description: The end-user's alternate or secondary telephone number (in E.164 format)
+        example: 447700900303
+      title:
+        type: string
+        description: End user's title.
+        example: Mr
+      given_name:
+        type: string
+        description: Given name(s) or first name(s) of the end-user
+        example: Henry
+      family_name:
+        type: string
+        description: Family name(s), surname(s) or last name(s) of the end-user
+        example: Case
+      middle_name:
+        type: string
+        description: Middle name(s) of the end-user
+        example: Dorsett
+      street_address:
+        type: string
+        description: Address of the end-user
+        example: 25 Walbrook
+      city:
+        type: string
+        description: End-user's city
+        example: London
+      state:
+        type: string
+        description: End-user's state or county
+        example: London
+      postal_code:
+        type: string
+        description: End-user's Zip or Postal code
+        example: EC4N 8AF
+      country:
+        type: string
+        description: End-user's country
+        example: UK
+      email:
+        type: string
+        description: End-user's email
+        example: henrydorsettcase@yopmail.com
+    required:
+      - sub
+      - given_name
+      - family_name
+      - street_address
+      - postal_code
+      - country
+      - phone_number_alternate
+#########################################################################################
+# RESPONSE 200 OK - NATIONALID DETAILS
+#########################################################################################
+  Response_200_NationalID:
+    type: object
+    properties:
+      sub:
+        type: string
+        description: >-
+          Subject identifier, a globally unique identifier (see <a href="/the-pcr">PCR</a>) of the
+          end-user generated by the operator. 
+        example: 22735ae2-9b1b-4edb-bed0-7b41de9e129e
+      phone_number:
+        type: string
+        description: End-user's mobile phone number
+        example: 447700900303
+      title:
+        type: string
+        description: End user's title.
+        example: Mr
+      given_name:
+        type: string
+        description: Given name(s) or first name(s) of the end-user
+        example: Henry
+      family_name:
+        type: string
+        description: Family name(s), surname(s) or last name(s) of the end-user
+        example: Case
+      middle_name:
+        type: string
+        description: Middle name(s) of the end-user
+        example: Dorsett
+      street_address:
+        type: string
+        description: Address of the end-user
+        example: 25 Walbrook
+      state:
+        type: string
+        description: End-user's state or county
+        example: London
+      postal_code:
+        type: string
+        description: End-user's Zip or Postal code
+        example: EC4N 8AF
+      country:
+        type: string
+        description: End-user's country
+        example: UK
+      email:
+        type: string
+        description: End-user's email
+        example: henrydorsettcase@yopmail.com
+      birthdate:
+        type: string
+        description: Date of birth of the end-user
+        example: 1948-03-17T00:00:00.000Z
+      national_identifier:
+        type: string
+        description: End-user's national identification number
+    required:
+      - sub
+      - given_name
+      - family_name
+      - street_address
+      - birthdate
+      - national_identifier
+#########################################################################################
+# RESPONSE 200 OK - PHONE NUMBER DETAILS
+#########################################################################################
+  Response_200_Phone-Number:
+    type: object
+    properties:
+      sub:
+        type: string
+        description: >-
+          Subject identifier, a globally unique identifier (see <a href="/the-pcr">PCR</a>) of the
+          end-user generated by the operator. 
+        example: e9c3c0dc-049a-4fd6-9263-1f7c1382d05e
+      phone_number:
+        type: string
+        description: End-user's Mobile Connect designated mobile number
+        example: 441234657890
+    required:
+      - sub
+      - phone_number
+#########################################################################################
+# RESPONSE 200 OK - KYC PLAIN TEXT SPLIT
+#########################################################################################
+  Response_200_KYC_Match_Split:
+    type: object
+    properties:
+      sub:
+        type: string
+        description: >-
+          Subject identifier, a globally unique identifier (see <a href="/the-pcr">PCR</a>) of the
+          end-user generated by the operator. 
+        example: 22735ae2-9b1b-4edb-bed0-7b41de9e129e
+      given_name:
+        type: string
+        description: End-user's given name(s) or first name(s)
+        example: John
+      given_name_match:
+        type: string
+        enum:
+         - Y
+         - N-NA
+         - N-AV
+         - Y-AD
+        description: Match result
+        example: Y
+      family_name:
+        type: string
+        description: End-user's family name(s), surname(s) or last name(s)
+        example: Case
+      family_name_match:
+        type: string
+        enum:
+         - Y
+         - N-NA
+         - N-AV
+         - Y-AD
+        description: Match result
+        example: Y
+      houseno_or_housename:
+        type: string
+        description: End-users house number or name of house
+        example: 25
+      houseno_or_housename_match:
+        type: string
+        enum:
+         - Y
+         - N-NA
+         - N-AV
+         - Y-AD
+        description: Match result
+        example: Y
+      postal_code:
+        type: string
+        description: End-user's postal or zip code
+        example: EC4N 8AF
+      postal_code_match:
+        type: string
+        enum:
+         - Y
+         - N-NA
+         - N-AV
+         - Y-AD
+        description: Match result
+        example: Y
+      town:
+        type: string
+        description: End-user's town or city
+        example: London
+      town_match:
+        type: string
+        enum:
+         - Y
+         - N-NA
+         - N-AV
+         - Y-AD
+        description: Match result
+        example: Y
+      country:
+        type: string
+        description: End-user's country
+        example: UK
+      country_match:
+        type: string
+        enum:
+         - Y
+         - N-NA
+         - N-AV
+         - Y-AD
+        description: Match result
+        example: Y
+      birthdate:
+        type: string
+        description: Date of birth of the end-user
+        example: 1948-03-17T00:00:00.000Z
+      birthdate_match:
+        type: string
+        enum:
+         - Y
+         - N-NA
+         - N-AV
+         - Y-AD
+        description: Match result. Required if <code>birthdate</code> is present.
+        example: Y
+      is_lost_stolen:
+        type: string
+        enum:
+         - false
+         - true
+        description: Has the end-user account been marked as lost or stolen
+        example: false
+      billing_segment:
+        type: string
+        enum:
+         - PAYM
+         - PAYG
+         - Business
+        description: End-users billing type
+        example: PAYM
+      account_state:
+        type: string
+        enum:
+         - active
+         - inactive
+        description: End-users account status
+        example: active
+    required:
+      - sub
+      - given_name
+      - given_name_match
+      - family_name
+      - family_name_match
+      - houseno_or_housename
+      - houseno_or_housename_match
+      - postal_code
+      - postal_code_match
+      - town
+      - town_match
+      - country
+      - country_match
+#########################################################################################
+# RESPONSE 200 OK - KYC PLAIN TEXT CONCAT
+#########################################################################################
+  Response_200_KYC_Match_Concat:
+    type: object
+    properties:
+      sub:
+        type: string
+        description: >-
+          Subject identifier, a globally unique identifier (see <a href="/the-pcr">PCR</a>) of the
+          end-user generated by the operator. 
+        example: 22735ae2-9b1b-4edb-bed0-7b41de9e129e
+      name:
+        type: string
+        description: Concatenated <code>given_name</code> and <code>family_name</code>.
+        example: Case
+      name_match:
+        type: string
+        enum:
+         - Y
+         - N-NA
+         - N-AV
+         - Y-AD
+        description: Match result
+        example: Y
+      address:
+        type: string
+        description: Concatenated <code>houseno_or_housename_match</code>, <code>postal_code</code>, <code>town</code> and <code>country</code>.
+        example: 25 Walbrook, London, EC4N 8AF, UK
+      address_match:
+        type: string
+        enum:
+         - Y
+         - N-NA
+         - N-AV
+         - Y-AD
+        description: Match result
+        example: Y
+      birthdate:
+        type: string
+        description: Date of birth of the end-user
+        example: 1948-03-17T00:00:00.000Z
+      birthdate_match:
+        type: string
+        enum:
+         - Y
+         - N-NA
+         - N-AV
+         - Y-AD
+        description: Match result. Required if <code>birthdate</code> is present.
+        example: Y
+      is_lost_stolen:
+        type: string
+        enum:
+         - false
+         - true
+        description: Has the end-user account been marked as lost or stolen
+        example: false
+      billing_segment:
+        type: string
+        enum:
+         - PAYM
+         - PAYG
+         - Business
+        description: End-users billing type
+        example: PAYM
+      account_state:
+        type: string
+        enum:
+         - active
+         - inactive
+        description: End-users account status
+        example: active
+    required:
+      - sub
+      - name
+      - name_match
+      - address
+      - address_match
+#########################################################################################
+# RESPONSE 200 OK - KYC HASHED SPLIT
+#########################################################################################
+  Response_200_KYC_Hashed_Split:
+    type: object
+    properties:
+      sub:
+        type: string
+        description: >-
+          Subject identifier, a globally unique identifier (see <a href="/the-pcr">PCR</a>) of the
+          end-user generated by the operator. 
+        example: 22735ae2-9b1b-4edb-bed0-7b41de9e129e
+      given_name_hash:
+        type: string
+        description: The hashed given name(s) or first name(s) of the end-user
+        example: 2fd4e1c67a2d28fced849ee1bb76e7391b93eb12
+      given_name_match:
+        type: string
+        enum:
+         - Y
+         - N-NA
+         - N-AV
+         - Y-AD
+        description: Match result
+        example: Y
+      family_name_hash:
+        type: string
+        description: Hashed family name(s), surname(s) or last name(s) of the end-user'
+        example: 3fd4e1c67a2d28fced849ee1bb76e7391b93eb13
+      family_name_match:
+        type: string
+        enum:
+         - Y
+         - N-NA
+         - N-AV
+         - Y-AD
+        description: Match result
+        example: Y
+      houseno_or_housename_hash:
+        type: string
+        description: End-users house number or name of house
+        example: g12f2c7fd25e1b3afad3e69a0bd17d9b100db4b2
+      houseno_or_housename_match:
+        type: string
+        enum:
+         - Y
+         - N-NA
+         - N-AV
+         - Y-AD
+        description: Match result
+        example: Y
+      postal_code_hash:
+        type: string
+        description: End-user's postal or zip code
+        example: b784e1c67a2d28fced849ee1bb76e739112bc43
+      postal_code_match:
+        type: string
+        enum:
+         - Y
+         - N-NA
+         - N-AV
+         - Y-AD
+        description: Match result
+        example: Y
+      town_hash:
+        type: string
+        description: End-user's town or city
+        example: 3e85a0bd17d9b100db4b1feff2c7fd25e1b3afad
+      town_match:
+        type: string
+        enum:
+         - Y
+         - N-NA
+         - N-AV
+         - Y-AD
+        description: Match result
+        example: Y
+      country_hash:
+        type: string
+        description: End-user's country
+        example: b4b27fd25e1b3afad3e69a0bd17d9bg12f2c100d
+      country_match:
+        type: string
+        enum:
+         - Y
+         - N-NA
+         - N-AV
+         - Y-AD
+        description: Match result
+        example: Y
+      birthdate_hash:
+        type: string
+        description: Date of birth of the end-user
+        example: 2c7fd25e1b3afad0db4b33e85a0bde9fd17d9b10
+      birthdate_match:
+        type: string
+        enum:
+         - Y
+         - N-NA
+         - N-AV
+         - Y-AD
+        description: Match result. Required if <code>birthdate_hash</code> is present.
+        example: Y
+      is_lost_stolen:
+        type: string
+        enum:
+         - false
+         - true
+        description: Has the end-user account been marked as lost or stolen
+        example: false
+      billing_segment:
+        type: string
+        enum:
+         - PAYM
+         - PAYG
+         - Business
+        description: End-users billing type
+        example: PAYM
+      account_state:
+        type: string
+        enum:
+         - active
+         - inactive
+        description: End-users account status
+        example: active
+    required:
+      - sub
+      - given_name_hash
+      - given_name_match
+      - family_name_hash
+      - family_name_match
+      - houseno_or_housename_hash
+      - houseno_or_housename_match
+      - postal_code_hash
+      - postal_code_match
+      - town_hash
+      - town_match
+      - country_hash
+      - country_match
+#########################################################################################
+# RESPONSE 200 OK - KYC HASHED CONCAT
+#########################################################################################
+  Response_200_KYC_Hashed_Concat:
+    type: object
+    properties:
+      sub:
+        type: string
+        description: >-
+          Subject identifier, a globally unique identifier (see <a href="/the-pcr">PCR</a>) of the
+          end-user generated by the operator. 
+        example: 22735ae2-9b1b-4edb-bed0-7b41de9e129e
+      name_hash:
+        type: string
+        description: Hashed concatenation of <code>given_name</code> and <code>family_nme</code>
+        example: de9f2c7fd25e1b3afad3e85a0bd17d9b100db4b3
+      name_match:
+        type: string
+        enum:
+         - Y
+         - N-NA
+         - N-AV
+         - Y-AD
+        description: Match result
+        example: Y
+      address_hash:
+        type: string
+        description: Concatenated <code>houseno_or_housename_match</code>, <code>postal_code</code>, <code>town</code> and <code>country</code>.
+        example: feff2c7fd25e1b3afad3e85a0bd17d9b100db4b1
+      address_match:
+        type: string
+        enum:
+         - Y
+         - N-NA
+         - N-AV
+         - Y-AD
+        description: Match result
+        example: Y
+      birthdate_hash:
+        type: string
+        description: Date of birth of the end-user
+        example: 2c7fd25e1b3afad0db4b33e85a0bde9fd17d9b10
+      birthdate_match:
+        type: string
+        enum:
+         - Y
+         - N-NA
+         - N-AV
+         - Y-AD
+        description: Match result. Required if <code>birthdate_hash</code> is present.
+        example: Y
+      is_lost_stolen:
+        type: string
+        enum:
+         - false
+         - true
+        description: Has the end-user account been marked as lost or stolen
+        example: false
+      billing_segment:
+        type: string
+        enum:
+         - PAYM
+         - PAYG
+         - Business
+        description: End-users billing type
+        example: PAYM
+      account_state:
+        type: string
+        enum:
+         - active
+         - inactive
+        description: End-users account status
+        example: active
+    required:
+      - sub
+      - name_hash
+      - name_match
+      - address_hash
+      - address_match
+#########################################################################################
+# RESPONSE 400 BAD REQUEST
+#########################################################################################
+  Response_400_Authorize:
+    type: object
+    properties:
+      error:
+        type: string
+        description: >-
+          <p>Error code. This will be <code>invalid_request</code>.</p>
+        example: invalid_request
+      error_description:
+        type: string
+        description: >-
+          <p>Error description. This will be <code>redirect_uri is invalid</code>.</p>
+        example: redirect_uri is invalid
+    required:
+      - error
+      - error_description
+  Response_400_Get_Tokens:
+    type: object
+    properties:
+      error:
+        type: string
+        description: >-
+          Error code.
+        enum:
+          - invalid_request
+          - unsupported_grant_type
+          - invalid_grant
+          - access_denied
+          - invalid_client
+        example: invalid_grant
+      error_description:
+        type: string
+        description: >-
+          Error description.
+        example: Mandatory parameter grant_type is missing (or) invalid
+    required:
+      - error
+      - error_description
+  Response_400_Get_Identity:
+    type: object
+    properties:
+      error:
+        type: string
+        description: >-
+          Error code.
+        example: invalid_request
+      error_description:
+        type: string
+        description: >-
+          Error description.
+        example: 'Malformed request, invalid url encoding'
+    required:
+      - error
+      - error_description
+  Response_400_KYC:
+    type: object
+    properties:
+      error:
+        type: string
+        description: >-
+          Error code.
+        example: invalid_request
+      error_description:
+        type: string
+        description: >-
+          Error description.
+        example: 'Malformed request, invalid url encoding'
+    required:
+      - error
+      - error_description
+#########################################################################################
+# RESPONSE 401
+#########################################################################################
+  Response_401:
+    type: object
+    properties:
+      error:
+        type: string
+        description: >-
+          Error code. This is a query parameter which is present in the response
+          only when an error has occurred during the flow
+        enum:
+          - invalid_request
+          - invalid_token
+        example: invalid_request
+      error_description:
+        type: string
+        description: >-
+          Error description. This is a query parameter which is present in the
+          response only when an error has occurred during the flow
+        example: access_token does not exist
+    required:
+      - error
+      - error_description
+  Response_401_KYC:
+    type: object
+    properties:
+      error:
+        type: string
+        description: >-
+          Error code. This is a query parameter which is present in the response
+          only when an error has occurred during the flow
+        enum:
+          - invalid_request
+          - invalid_token
+        example: invalid_request
+      error_description:
+        type: string
+        description: >-
+          Error description. This is a query parameter which is present in the
+          response only when an error has occurred during the flow
+        example: access_token does not exist
+    required:
+      - error
+      - error_description
+#########################################################################################
+# RESPONSE 403
+#########################################################################################
+  Response_403:
+    type: object
+    properties:
+      error:
+        type: string
+        description: >-
+          Error code.
+        enum:
+          - insufficient_scope
+          - access_denied
+        example: insufficient_scope
+      error_description:
+        type: string
+        description: >-
+          Error description.
+        example: Insufficient scope
+    required:
+      - error
+      - error_description
