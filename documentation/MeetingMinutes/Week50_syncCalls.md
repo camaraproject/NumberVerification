@@ -95,5 +95,5 @@ This particular service has to be considered by MNO community as a whole service
 
 1. GSMA to provide information about Openverse stakeholders (Done - Helen provided list to Vodafone and Hutchoison).
 2. simSwap - work with 2 yaml files with API description
-3. Number Verify - continue work based on MC Verified MSISDN specification, considering whole service flow.
+3. Number Verify - work with 2 yaml files with API description.
 4. Number Verify SMS 2FA - change the name of API and continue work to deliver OTP validation API.
