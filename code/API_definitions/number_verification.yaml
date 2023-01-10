@@ -87,7 +87,7 @@ paths:
           $ref: '#/components/responses/Timeout'
       security:
         - three_legged:
-          - number-verification-verify-read
+            - number-verification-verify-read
   /device-phone-number:
     get:
       tags:
@@ -131,7 +131,7 @@ paths:
           $ref: '#/components/responses/Timeout'
       security:
         - three_legged:
-          - number-verification-share-read
+            - number-verification-share-read
 components:
   securitySchemes:
     three_legged:
@@ -142,8 +142,8 @@ components:
       type: object
       description: Payload to verify the phone number
       oneOf:
-          - $ref: '#/components/schemas/PhoneNumber'
-          - $ref: '#/components/schemas/HashedPhoneNumber'
+        - $ref: '#/components/schemas/PhoneNumber'
+        - $ref: '#/components/schemas/HashedPhoneNumber'
     PhoneNumber:
       type: object
       properties:
@@ -184,9 +184,19 @@ components:
     ModelError:
       type: object
       required:
+        - code
         - status
         - message
       properties:
+        code:
+          type: string
+          enum:
+            - PERMISSION_DENIED
+            - NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_IP
+            - UNAUTHENTICATED
+            - INTERNAL
+            - UNAVAILABLE
+            - TIMEOUT
         status:
           type: string
           pattern: '^[1-5][0-9][0-9]$'
@@ -194,20 +204,6 @@ components:
         message:
           type: string
           description: A human readable description of what the event represent
-    NotAuthenticatedByIpPermissionDenied:
-      allOf:
-        - type: object
-          required:
-            - code
-          properties:
-            code:
-              type: string
-              enum:
-                - PERMISSION_DENIED
-                - NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_IP
-              default: PERMISSION_DENIED
-              description: Client does not have sufficient permissions to perform this action.
-        - $ref: '#/components/schemas/ModelError'
   responses:
     InvalidArgument:
       description: Problem with the client request
@@ -219,18 +215,7 @@ components:
       content:
         application/json:
           schema:
-            allOf:
-              - type: object
-                required:
-                  - code
-                properties:
-                  code:
-                    type: string
-                    enum:
-                      - INVALID_ARGUMENT
-                    default: INVALID_ARGUMENT
-                    description: Client specified an invalid argument, request body or query param.
-              - $ref: '#/components/schemas/ModelError'
+            $ref: '#/components/schemas/ModelError'
           examples:
             response:
               value:
@@ -247,18 +232,7 @@ components:
       content:
         application/json:
           schema:
-            allOf:
-              - type: object
-                required:
-                  - code
-                properties:
-                  code:
-                    type: string
-                    enum:
-                      - UNAUTHENTICATED
-                    default: UNAUTHENTICATED
-                    description: Request not authenticated due to missing, invalid, or expired credentials.
-              - $ref: '#/components/schemas/ModelError'
+            $ref: '#/components/schemas/ModelError'
           examples:
             response:
               value:
@@ -278,7 +252,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/NotAuthenticatedByIpPermissionDenied'
+            $ref: '#/components/schemas/ModelError'
           examples:
             response:
               value:
@@ -295,18 +269,7 @@ components:
       content:
         application/json:
           schema:
-            allOf:
-              - type: object
-                required:
-                  - code
-                properties:
-                  code:
-                    type: string
-                    enum:
-                      - INTERNAL
-                    default: INTERNAL
-                    description: Unknown server error.Typically a server bug.
-              - $ref: '#/components/schemas/ModelError'
+            $ref: '#/components/schemas/ModelError'
           examples:
             response:
               value:
@@ -323,18 +286,7 @@ components:
       content:
         application/json:
           schema:
-            allOf:
-              - type: object
-                required:
-                  - code
-                properties:
-                  code:
-                    type: string
-                    enum:
-                      - UNAVAILABLE
-                    default: UNAVAILABLE
-                    description: Request timeout exceeded
-              - $ref: '#/components/schemas/ModelError'
+            $ref: '#/components/schemas/ModelError'
           examples:
             response:
               value:
@@ -351,18 +303,7 @@ components:
       content:
         application/json:
           schema:
-            allOf:
-              - type: object
-                required:
-                  - code
-                properties:
-                  code:
-                    type: string
-                    enum:
-                      - TIMEOUT
-                    default: TIMEOUT
-                    description: Request timeout exceeded
-              - $ref: '#/components/schemas/ModelError'
+            $ref: '#/components/schemas/ModelError'
           examples:
             response:
               value:
