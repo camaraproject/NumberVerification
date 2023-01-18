@@ -6,9 +6,11 @@
 <a href="https://github.com/camaraproject/NumberVerification/blob/main/LICENSE" title="License"><img src="https://img.shields.io/badge/License-Apache%202.0-green.svg?style=plastic"></a>
 
 # NumberVerification
+
 Repository to describe, develop, document and test the NumberVerification API family
 
 ## Scope
+
 * Service APIs for “NumberVerification” (see APIBacklog.md)  
 * It provides the customer with the ability to:  
   * verify the phone number of the device connected to the mobile data network.
@@ -18,13 +20,14 @@ Repository to describe, develop, document and test the NumberVerification API fa
 * Location: virtually  
 
 ## Meetings
-* Meetings are held virtually
-* Schedule: tbd
-* Meeting link: tbd
+
+* Meetings are held virtually in MS Teams
+* Current schedule & meeting links: [Meetings information](documentation/MeetingMinutes/README.MD)
 
 ## Results
 * Sub Project is in progress
 
 ## Contributorship and mailing list
+
 * To subscribe / unsubscribe to the mailing list of this Sub Project and thus be / resign as Contributor please visit <https://lists.camaraproject.org/g/sp-nve>.
 * A message to all Contributors of this Sub Project can be sent using <sp-nve@lists.camaraproject.org>.
