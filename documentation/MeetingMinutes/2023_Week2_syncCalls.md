@@ -29,11 +29,11 @@
 
 ### Sim Swap API
 
-- CAMARA & MC APIs yaml files delvered
+- CAMARA & MC APIs yaml files delivered
 
 ### NumberVerify
 
-- CAMARA & MC APIs yaml files delvered
+- CAMARA & MC APIs yaml files delivered
 
 ### OTP Validation
 
