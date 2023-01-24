@@ -52,8 +52,8 @@ Upon successful onboarding following details are shared:
 
 |Flavour|Details Page|
 |---|---|
-|CAMARA|[DetailsPage](/NumberVerification/code/API_definitions/CAMARA/NUMBER_VERIFICATION_API.md)|
-|Mobile Connect|[DetailsPage](/NumberVerification/code/API_definitions/MobileConnect/MC_VERIFIED_MSISDN.md)|
+|CAMARA|[DetailsPage](../../code/API_definitions/CAMARA/NUMBER_VERIFICATION_API.md)|
+|Mobile Connect|[DetailsPage](../../code/API_definitions/MobileConnect/MC_VERIFIED_MSISDN.md)|
 
 ### Endpoint definitions
 
