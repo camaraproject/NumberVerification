@@ -1,7 +1,7 @@
 # Reference
 Number Verify API is based on Mobile Connect Verified MSISDN standardized product:
 
-[IDY.54](assets/docs/(placeholder4MCspec).docx)
+[IDY.54](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.54-Mobile-Connect-Verified-MSISDN-Definition-and-Technical-Requirements-1.0.pdf)
 
 **IDY.54 Mobile Connect Verified MSISDN Definition and Technical Requirements** 
 
@@ -65,7 +65,7 @@ Because Mobile Connect Verified MSISDN requires the use of the mobile data netwo
 - The SP educates the User about the need to perform number verification whenever the User attempts to login in the future. The SP provides further details such as revocation mechanism in a linked page (shown as “Learn more”).
 - The User is asked to provide long-lived consent to the SP. The use of data needs to be clearly stated in terms of the service and the privacy policy.
 
-![Figure 1 - Mobile Connect Verified MSISDN Service Flow](./assets/images/figure1.png)
+![Figure 1 - Mobile Connect Verified MSISDN Service Flow](/NumberVerification/documentation/API_documentation/assets/images/figure1.png)
 
 The service flow is as follows:
 
