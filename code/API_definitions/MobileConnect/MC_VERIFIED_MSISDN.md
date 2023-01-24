@@ -1,9 +1,8 @@
 # Reference
+
 Number Verify API is based on Mobile Connect Verified MSISDN standardized product:
 
-[IDY.54](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.54-Mobile-Connect-Verified-MSISDN-Definition-and-Technical-Requirements-1.0.pdf)
-
-**IDY.54 Mobile Connect Verified MSISDN Definition and Technical Requirements** 
+[IDY.54 Mobile Connect Verified MSISDN Definition and Technical Requirements](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.54-Mobile-Connect-Verified-MSISDN-Definition-and-Technical-Requirements-1.0.pdf)
 
 ## About Mobile Connect
 
@@ -65,7 +64,7 @@ Because Mobile Connect Verified MSISDN requires the use of the mobile data netwo
 - The SP educates the User about the need to perform number verification whenever the User attempts to login in the future. The SP provides further details such as revocation mechanism in a linked page (shown as “Learn more”).
 - The User is asked to provide long-lived consent to the SP. The use of data needs to be clearly stated in terms of the service and the privacy policy.
 
-![Figure 1 - Mobile Connect Verified MSISDN Service Flow](/NumberVerification/documentation/API_documentation/assets/images/figure1.png)
+![Figure 1 - Mobile Connect Verified MSISDN Service Flow](../../../documentation/API_documentation/assets/images/figure1.png)
 
 The service flow is as follows:
 
@@ -95,7 +94,6 @@ In order to be able to share (or match) User information with a SP, the User mus
 - The Resource Server matches the attribute value with the previously extracted MSISDN or hash of the MSISDN extracted by the Authorization Server. If they match, the service returns a Boolean value “true” to the SP. 
 - If the verification fails, then it returns a Boolean value “false” to the SP. 
 
-
 ### User Consent Management
 
 The Mobile Connect Verified MSISDN service is designed to be used as a fraud check so typically, User consent will be captured by the SP (at registration and /or included within standard terms and conditions) and the service will be processed in the background without any explicit User consent.
@@ -116,7 +114,7 @@ The SP requests Mobile Connect Verified MSISDN services via the scope parameter 
 
 Mobile Connect Verified MSISDN is only supported in Device-Initiated mode where the User is accessing an online SP service via their mobile device using a mobile data connection.
 
-[MC Device Initiated mode](assets/yaml/MC_di_v2.3-build_14.yaml)
+[MC Device Initiated mode](../../../documentation/API_documentation/assets/yaml/MC_di_v2.3-build_14.yaml)
 
 ### Verified MSISDN Match details
 
@@ -162,12 +160,12 @@ Content-Length: 73.
 "mc_claims" : {
                "device_msisdn" : "+44123456789"
                }
-} 
-
+}
 
 **Table 3** shows the attribute identifier and associated value that is returned in the Resource Response for Mobile Connect Verified MSISDN Match. The response is the same irrespective of whether plain text or hashed values were submitted in the Resource Request.
 
 **Table 3 - Mobile Connect Verified MSISDN Match – Returned Attributes in the Resource Response**
+
 |Attribute Identifier |Type|Usage Category|Description|
 |:---|:---:|:---:|:---|
 |device_msisdn_verified|Boolean|REQUIRED|Match result: “true” / “false”|
@@ -187,4 +185,3 @@ Content-Type: application/json.
   "sub": "cd45a691-d311-4134-9a0c-2747e5110d22"
   "device_msisdn_verified": true
 }
-
