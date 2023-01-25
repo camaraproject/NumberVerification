@@ -43,8 +43,8 @@ Upon successful onboarding following details are shared:
 
 ## Authentication and/or Authorization
 
-[Camara AuthN/AuthZ Concept]()
-[Mobile Connect AuthN/AuthZ Concept covered within MC Verified MSISDN specification](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.54-Mobile-Connect-Verified-MSISDN-Definition-and-Technical-Requirements-1.0.pdf)
+* [Camara AuthN/AuthZ Concept]()
+* [Mobile Connect AuthN/AuthZ Concept covered within MC Verified MSISDN specification](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.54-Mobile-Connect-Verified-MSISDN-Definition-and-Technical-Requirements-1.0.pdf)
 
 ## Documentation
 
