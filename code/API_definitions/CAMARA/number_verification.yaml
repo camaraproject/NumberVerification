@@ -1,19 +1,27 @@
 openapi: 3.0.3
 info:
   title: Number Verification
-  description: |-
-    Service Enabling Network Function API to verify that the provided **mobile phone number** is the one used in the device. It verifies that the user is using a device with the same *mobile phone number* as it is declared.
-    It also make it possible for a Service provider to verify the number itself by returning the phone number associated to the authenticated user's access token.
-    
-    In this API **phone number** term refers to the mobile phone number
-
-    # API Functionality 
-    It enables a Service Provider (SP) to verify the phone number of the mobile device being used to access their service where the mobile device is accessing the *service provider* over a mobile network (WiFi connections are out of this API scope) either by getting the comparison result or receiving the phone number of the device that it is used, so they can verify it themselves.
-
-    # Resources and Operations overview
-    This API currently provides two endpoints where both require a **3-legged token** and authentication via **mobile network** (excluding for example by SMS/OTP or user/password as an authentication method):
-    - The first one checks if the user mobile phone number matches the phone number associated with the mobile device. It can receive either a hashed phone number or a clear phone number as input and it compares the received input with the authenticated user's phone number associated to the access token in order to respond **true/false**.
-    - The next one retrieves the phone number associated to the user's token and returns it so the verification can be made by the service provider.
+  description: "Service Enabling Network Function API to verify that the provided
+    **mobile phone number** is the one used in the device. It verifies that the user
+    is using a device with the same *mobile phone number* as it is declared.\nIt also
+    make it possible for a Service provider to verify the number itself by returning
+    the phone number associated to the authenticated user's access token.\n\nIn this
+    API **phone number** term refers to the mobile phone number\n\n# API Functionality
+    \nIt enables a Service Provider (SP) to verify the phone number of the mobile
+    device being used to access their service where the mobile device is accessing
+    the *service provider* over a mobile network (WiFi connections are out of this
+    API scope) either by getting the comparison result or receiving the phone number
+    of the device that it is used, so they can verify it themselves.\n\n# Resources
+    and Operations overview\nThis API currently provides two endpoints where both
+    require either a **3-legged token** or **API Key** and authentication via **mobile
+    network** (excluding for example by SMS/OTP or user/password as an authentication
+    method):\n- The first one checks if the user mobile phone number matches the phone
+    number associated with the mobile device. It can receive either a hashed phone
+    number or a clear phone number as input and it compares the received input with
+    the authenticated user's phone number associated to the access token in order
+    to respond **true/false**.\n- The next one retrieves the phone number associated
+    to the user's token and returns it so the verification can be made by the service
+    provider."
   version: 0.1.0
   termsOfService: http://example.com/terms/
   contact:
@@ -24,42 +32,44 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-  - url: https://{host}{basePath}
-    variables:
-      host:
-        default: api.example.com
-        description: Host that serves the API
-      basePath:
-        default: /number-verification/v0
-        description: Base path for the number verification API
+- url: https://{host}{basePath}
+  variables:
+    host:
+      default: api.example.com
+      description: Host that serves the API
+    basePath:
+      default: "/number-verification/v0"
+      description: Base path for the number verification API
 tags:
-  - name: Phone number verify
-    description: API operation to verify a phone number received as input. It can be received either in clear or hashed format.
-  - name: Phone number share
-    description: API operation to return the phone number associated to the access token.
+- name: Phone number verify
+  description: API operation to verify a phone number received as input. It can be
+    received either in clear or hashed format.
+- name: Phone number share
+  description: API operation to return the phone number associated to the access token.
 paths:
-  /verify:
+  "/verify":
     post:
       tags:
-        - Phone number verify
-      summary: Verifies if the received hashed phone number matches the phone number associated with the access token
+      - Phone number verify
+      summary: Verifies if the received hashed phone number matches the phone number
+        associated with the access token
       description: |-
         Verifies if the specified phone number (clear or hashed format) matches the one that the user is currently using.
          - The number verification will be done for the user that has authenticated via mobile network and so their `sub` is in the access token
          - It returns true/false depending on if the hashed phone number received as input matches the authenticated user's `device phone number` associated to the access token
       operationId: hashedPhoneNumberVerify
       parameters:
-        - in: header
-          name: x-correlator
-          required: false
-          description: Correlation id for the different services
-          schema:
-            type: string
+      - in: header
+        name: x-correlator
+        required: false
+        description: Correlation id for the different services
+        schema:
+          type: string
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NumberVerificationRequestBody'
+              "$ref": "#/components/schemas/NumberVerificationRequestBody"
         required: true
       responses:
         '200':
@@ -72,26 +82,28 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NumberVerificationMatchResponse'
+                "$ref": "#/components/schemas/NumberVerificationMatchResponse"
         '400':
-          $ref: '#/components/responses/InvalidArgument'
+          "$ref": "#/components/responses/InvalidArgument"
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          "$ref": "#/components/responses/Unauthenticated"
         '403':
-          $ref: '#/components/responses/NotAuthenticatedByIpPermissionDenied'
+          "$ref": "#/components/responses/NotAuthenticatedByIpPermissionDenied"
         '500':
-          $ref: '#/components/responses/Internal'
+          "$ref": "#/components/responses/Internal"
         '503':
-          $ref: '#/components/responses/Unavailable'
+          "$ref": "#/components/responses/Unavailable"
         '504':
-          $ref: '#/components/responses/Timeout'
+          "$ref": "#/components/responses/Timeout"
       security:
-        - three_legged:
-          - number-verification-verify-read
-  /device-phone-number:
+      - three_legged:
+        - number-verification-verify-read
+      - ApiKeyAuth:
+        - number-verification-verify-read
+  "/device-phone-number":
     get:
       tags:
-        - Phone number share
+      - Phone number share
       summary: Returns the phone number associated with the access token
       description: |-
         Returns the phone number so the API clients can verify the number themselves:
@@ -99,12 +111,12 @@ paths:
          - It returns the authenticated user's `device phone number` associated to the access token
       operationId: phoneNumberShare
       parameters:
-        - in: header
-          name: x-correlator
-          required: false
-          description: Correlation id for the different services
-          schema:
-            type: string
+      - in: header
+        name: x-correlator
+        required: false
+        description: Correlation id for the different services
+        schema:
+          type: string
       responses:
         '200':
           description: OK
@@ -116,98 +128,107 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NumberVerificationShareResponse'
+                "$ref": "#/components/schemas/NumberVerificationShareResponse"
         '400':
-          $ref: '#/components/responses/InvalidArgument'
+          "$ref": "#/components/responses/InvalidArgument"
         '401':
-          $ref: '#/components/responses/Unauthenticated'
+          "$ref": "#/components/responses/Unauthenticated"
         '403':
-          $ref: '#/components/responses/NotAuthenticatedByIpPermissionDenied'
+          "$ref": "#/components/responses/NotAuthenticatedByIpPermissionDenied"
         '500':
-          $ref: '#/components/responses/Internal'
+          "$ref": "#/components/responses/Internal"
         '503':
-          $ref: '#/components/responses/Unavailable'
+          "$ref": "#/components/responses/Unavailable"
         '504':
-          $ref: '#/components/responses/Timeout'
+          "$ref": "#/components/responses/Timeout"
       security:
-        - three_legged:
-          - number-verification-share-read
+      - three_legged:
+        - number-verification-share-read
+      - ApiKeyAuth:
+        - number-verification-verify-read
 components:
   securitySchemes:
     three_legged:
       type: openIdConnect
       openIdConnectUrl: https://example.com/.well-known/openid-configuration
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: api-key
   schemas:
     NumberVerificationRequestBody:
       type: object
       description: Payload to verify the phone number
       oneOf:
-          - $ref: '#/components/schemas/PhoneNumber'
-          - $ref: '#/components/schemas/HashedPhoneNumber'
+      - "$ref": "#/components/schemas/PhoneNumber"
+      - "$ref": "#/components/schemas/HashedPhoneNumber"
     PhoneNumber:
       type: object
       properties:
         phone_number:
           description: A phone number belonging to the user. 'E164 with +' format
           type: string
-          example: '+346661113334'
+          example: "+346661113334"
     HashedPhoneNumber:
       type: object
       properties:
         hashed_phone_number:
-          description: Hashed phone number. SHA-256 (in hexadecimal representation) of the mobile phone number in 'E164 with +' format
+          description: Hashed phone number. SHA-256 (in hexadecimal representation)
+            of the mobile phone number in 'E164 with +' format
           type: string
           example: 32f67ab4e4312618b09cd23ed8ce41b13e095fe52b73b2e8da8ef49830e50dba
     NumberVerificationMatchResponse:
       type: object
       description: Number verification result
       required:
-        - device_phone_number_verified
+      - device_phone_number_verified
       properties:
         device_phone_number_verified:
-          $ref: '#/components/schemas/DevicePhoneNumberVerified'
+          "$ref": "#/components/schemas/DevicePhoneNumberVerified"
     NumberVerificationShareResponse:
       type: object
       description: Number verification share result
       required:
-        - device_phone_number
+      - device_phone_number
       properties:
         device_phone_number:
-          $ref: '#/components/schemas/DevicePhoneNumber'
+          "$ref": "#/components/schemas/DevicePhoneNumber"
     DevicePhoneNumber:
-      description: The device phone number associated to the access token. 'E164 with +' format
+      description: The device phone number associated to the access token. 'E164 with
+        +' format
       type: string
-      example: '+346661113334'
+      example: "+346661113334"
     DevicePhoneNumberVerified:
       description: Number verification. True, if it matches
       type: boolean
     ModelError:
       type: object
       required:
-        - status
-        - message
+      - status
+      - message
       properties:
         status:
           type: string
-          pattern: '^[1-5][0-9][0-9]$'
+          pattern: "^[1-5][0-9][0-9]$"
           description: HTTP response status code
         message:
           type: string
           description: A human readable description of what the event represent
     NotAuthenticatedByIpPermissionDenied:
       allOf:
-        - type: object
-          required:
-            - code
-          properties:
-            code:
-              type: string
-              enum:
-                - PERMISSION_DENIED
-                - NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_IP
-              default: PERMISSION_DENIED
-              description: Client does not have sufficient permissions to perform this action.
-        - $ref: '#/components/schemas/ModelError'
+      - type: object
+        required:
+        - code
+        properties:
+          code:
+            type: string
+            enum:
+            - PERMISSION_DENIED
+            - NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_IP
+            default: PERMISSION_DENIED
+            description: Client does not have sufficient permissions to perform this
+              action.
+      - "$ref": "#/components/schemas/ModelError"
   responses:
     InvalidArgument:
       description: Problem with the client request
@@ -220,23 +241,25 @@ components:
         application/json:
           schema:
             allOf:
-              - type: object
-                required:
-                  - code
-                properties:
-                  code:
-                    type: string
-                    enum:
-                      - INVALID_ARGUMENT
-                    default: INVALID_ARGUMENT
-                    description: Client specified an invalid argument, request body or query param.
-              - $ref: '#/components/schemas/ModelError'
+            - type: object
+              required:
+              - code
+              properties:
+                code:
+                  type: string
+                  enum:
+                  - INVALID_ARGUMENT
+                  default: INVALID_ARGUMENT
+                  description: Client specified an invalid argument, request body
+                    or query param.
+            - "$ref": "#/components/schemas/ModelError"
           examples:
             response:
               value:
-                status: "400"
+                status: '400'
                 code: INVALID_ARGUMENT
-                message: Client specified an invalid argument, request body or query param
+                message: Client specified an invalid argument, request body or query
+                  param
     Unauthenticated:
       description: Authentication problem with the client request
       headers:
@@ -248,23 +271,25 @@ components:
         application/json:
           schema:
             allOf:
-              - type: object
-                required:
-                  - code
-                properties:
-                  code:
-                    type: string
-                    enum:
-                      - UNAUTHENTICATED
-                    default: UNAUTHENTICATED
-                    description: Request not authenticated due to missing, invalid, or expired credentials.
-              - $ref: '#/components/schemas/ModelError'
+            - type: object
+              required:
+              - code
+              properties:
+                code:
+                  type: string
+                  enum:
+                  - UNAUTHENTICATED
+                  default: UNAUTHENTICATED
+                  description: Request not authenticated due to missing, invalid,
+                    or expired credentials.
+            - "$ref": "#/components/schemas/ModelError"
           examples:
             response:
               value:
-                status: "401"
+                status: '401'
                 code: UNAUTHENTICATED
-                message: Request not authenticated due to missing, invalid, or expired credentials
+                message: Request not authenticated due to missing, invalid, or expired
+                  credentials
     NotAuthenticatedByIpPermissionDenied:
       description: |-
         Client does not have sufficient permission.
@@ -278,11 +303,11 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/NotAuthenticatedByIpPermissionDenied'
+            "$ref": "#/components/schemas/NotAuthenticatedByIpPermissionDenied"
           examples:
             response:
               value:
-                status: "403"
+                status: '403'
                 code: NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_IP
                 message: Client must authenticate via IP to use this service
     Internal:
@@ -296,21 +321,21 @@ components:
         application/json:
           schema:
             allOf:
-              - type: object
-                required:
-                  - code
-                properties:
-                  code:
-                    type: string
-                    enum:
-                      - INTERNAL
-                    default: INTERNAL
-                    description: Unknown server error.Typically a server bug.
-              - $ref: '#/components/schemas/ModelError'
+            - type: object
+              required:
+              - code
+              properties:
+                code:
+                  type: string
+                  enum:
+                  - INTERNAL
+                  default: INTERNAL
+                  description: Unknown server error.Typically a server bug.
+            - "$ref": "#/components/schemas/ModelError"
           examples:
             response:
               value:
-                status: "500"
+                status: '500'
                 code: INTERNAL
                 message: Server error
     Unavailable:
@@ -324,25 +349,26 @@ components:
         application/json:
           schema:
             allOf:
-              - type: object
-                required:
-                  - code
-                properties:
-                  code:
-                    type: string
-                    enum:
-                      - UNAVAILABLE
-                    default: UNAVAILABLE
-                    description: Request timeout exceeded
-              - $ref: '#/components/schemas/ModelError'
+            - type: object
+              required:
+              - code
+              properties:
+                code:
+                  type: string
+                  enum:
+                  - UNAVAILABLE
+                  default: UNAVAILABLE
+                  description: Request timeout exceeded
+            - "$ref": "#/components/schemas/ModelError"
           examples:
             response:
               value:
-                status: "503"
+                status: '503'
                 code: UNAVAILABLE
                 message: Service unavailable
     Timeout:
-      description: Request time exceeded. If it happens repeatedly, consider reducing the request complexity
+      description: Request time exceeded. If it happens repeatedly, consider reducing
+        the request complexity
       headers:
         x-correlator:
           description: Correlation id for the different services
@@ -352,21 +378,21 @@ components:
         application/json:
           schema:
             allOf:
-              - type: object
-                required:
-                  - code
-                properties:
-                  code:
-                    type: string
-                    enum:
-                      - TIMEOUT
-                    default: TIMEOUT
-                    description: Request timeout exceeded
-              - $ref: '#/components/schemas/ModelError'
+            - type: object
+              required:
+              - code
+              properties:
+                code:
+                  type: string
+                  enum:
+                  - TIMEOUT
+                  default: TIMEOUT
+                  description: Request timeout exceeded
+            - "$ref": "#/components/schemas/ModelError"
           examples:
             response:
               value:
-                status: "504"
+                status: '504'
                 code: TIMEOUT
                 message: Request timeout exceeded. Try later.
 externalDocs:
