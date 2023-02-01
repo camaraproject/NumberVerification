@@ -28,7 +28,7 @@ Two endpoints are defined in Number Verification API:
 
 **Authentication**
 
-Security access keys such as OAuth 2.0 3-legged Access Tokens used by Client applications to invoke this API with dedicated scope. Client must authenticate via IP to use this service.
+Security access keys such as OAuth 2.0 3-legged Access Tokens used by Client applications to invoke this API with dedicated scope. Client **must authenticate via IP** to use this service.
 
 Sample API invocations are presented in Section 4.6.
 
