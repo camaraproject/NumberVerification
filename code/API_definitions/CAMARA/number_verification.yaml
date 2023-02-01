@@ -132,6 +132,56 @@ paths:
       security:
         - three_legged:
           - number-verification-share-read
+  /verify-smv:     
+    post:
+      tags:
+        - Silent Mobile Verification
+      summary: Validates that the MSISDN of the mobile device connected via the cellular network is using the IP address of the connection to the server of the service that is querying the API.
+      description: |-
+        The Mobile User inform MSISDN to verification.
+         - BackEnd APP or Web Partner Application Server pass the IP address to TIM API GTW to challenge and validate MSISDN with IP matched.
+         - It returns true/false depending on if the phone number received as input matches the device IP number associated to the mobile network operator data connection.
+      operationId: smvPhoneNumberVerify
+      parameters:
+        - in: header
+          name: x-correlator
+          required: false
+          description: Correlation id for the different services
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NumberVerificationRequestBody'
+        required: true  
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-correlator:
+              description: Correlation id for the different services
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NumberVerificationMatchResponse'
+        '400':
+          $ref: '#/components/responses/InvalidArgument'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/NotAuthenticatedByIpPermissionDenied'
+        '500':
+          $ref: '#/components/responses/Internal'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+        '504':
+          $ref: '#/components/responses/Timeout'
+      security:
+        - three_legged:
+          - number-verification-verify-read        
 components:
   securitySchemes:
     three_legged:
@@ -144,6 +194,7 @@ components:
       oneOf:
           - $ref: '#/components/schemas/PhoneNumber'
           - $ref: '#/components/schemas/HashedPhoneNumber'
+          - $ref: '#/components/schemas/ueId'
     PhoneNumber:
       type: object
       properties:
@@ -158,6 +209,30 @@ components:
           description: Hashed phone number. SHA-256 (in hexadecimal representation) of the mobile phone number in 'E164 with +' format
           type: string
           example: 32f67ab4e4312618b09cd23ed8ce41b13e095fe52b73b2e8da8ef49830e50dba
+    ueId:
+      type: object
+      properties:
+        consentGranted:
+          description: Indicates whether service provider have consent from mobile phone number's owner to perform this request
+          type: boolean        
+        externalId:
+          description: ueId externalId
+          type: string
+        msisdn:
+          description: Mobile phone number (MSISDN) to verify. The number must be in international format.
+          type: string
+        ipv4Addr:
+          description: IPv4 address of the mobile device that will be verified with operator.
+          type: string
+        ipv6Addr:
+          description: IPv6 address of the mobile device that will be verified with operator.
+          type: string       
+        uePort:
+          description: Port of the mobile device that will be verified with operator. Can be used only when "ipv4Addr" is also provided.
+          type: integer  
+        callbackUrl:
+          description: An URL that will be called to provide verification result when the process is complete.
+          type: string
     NumberVerificationMatchResponse:
       type: object
       description: Number verification result
