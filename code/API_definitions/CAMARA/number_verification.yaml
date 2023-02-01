@@ -14,7 +14,7 @@ info:
     This API currently provides two endpoints where both require a **3-legged token** and authentication via **mobile network** (excluding for example by SMS/OTP or user/password as an authentication method):
     - The first one checks if the user mobile phone number matches the phone number associated with the mobile device. It can receive either a hashed phone number or a clear phone number as input and it compares the received input with the authenticated user's phone number associated to the access token in order to respond **true/false**.
     - The next one retrieves the phone number associated to the user's token and returns it so the verification can be made by the service provider.
-  version: 0.1.0
+  version: 0.2.0
   termsOfService: http://example.com/terms/
   contact:
     name: API Support
@@ -78,7 +78,7 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthenticated'
         '403':
-          $ref: '#/components/responses/NotAuthenticatedByIpPermissionDenied'
+          $ref: '#/components/responses/PhoneNumberVerificationPermissionDenied'
         '500':
           $ref: '#/components/responses/Internal'
         '503':
@@ -122,7 +122,7 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthenticated'
         '403':
-          $ref: '#/components/responses/NotAuthenticatedByIpPermissionDenied'
+          $ref: '#/components/responses/PhoneNumberVerificationPermissionDenied'
         '500':
           $ref: '#/components/responses/Internal'
         '503':
@@ -194,7 +194,7 @@ components:
         message:
           type: string
           description: A human readable description of what the event represent
-    NotAuthenticatedByIpPermissionDenied:
+    PhoneNumberVerificationPermissionDenied:
       allOf:
         - type: object
           required:
@@ -205,6 +205,7 @@ components:
               enum:
                 - PERMISSION_DENIED
                 - NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_IP
+                - NUMBER_VERIFICATION.INVALID_TOKEN_CONTEXT
               default: PERMISSION_DENIED
               description: Client does not have sufficient permissions to perform this action.
         - $ref: '#/components/schemas/ModelError'
@@ -265,11 +266,12 @@ components:
                 status: "401"
                 code: UNAUTHENTICATED
                 message: Request not authenticated due to missing, invalid, or expired credentials
-    NotAuthenticatedByIpPermissionDenied:
+    PhoneNumberVerificationPermissionDenied:
       description: |-
         Client does not have sufficient permission.
-        In addition to regular scenario of `PERMISSION_DENIED`, another scenario may exist:
+        In addition to regular scenario of `PERMISSION_DENIED`, other scenarios may exist:
           - Client authentication was not via mobile network. In order to check the authentication method, AMR parameter value in the 3-legged user's access token can be used and make sure that the authentication was not either by SMS+OTP nor username/password (`{"code": "NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_IP","message": "Client must authenticate via IP to use this service"}`)
+          - Phone number cannot be deducted from access token context.(`{"code": "NUMBER_VERIFICATION.INVALID_TOKEN_CONTEXT","message": "Phone number cannot be deducted from access token context"}`)
       headers:
         x-correlator:
           description: Correlation id for the different services
@@ -278,7 +280,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/NotAuthenticatedByIpPermissionDenied'
+            $ref: '#/components/schemas/PhoneNumberVerificationPermissionDenied'
           examples:
             response:
               value:
