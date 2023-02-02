@@ -188,8 +188,9 @@ components:
         - message
       properties:
         status:
-          type: string
-          pattern: '^[1-5][0-9][0-9]$'
+          type: integer
+          minimum: 100
+          maximum: 600
           description: HTTP response status code
         message:
           type: string
@@ -235,7 +236,7 @@ components:
           examples:
             response:
               value:
-                status: "400"
+                status: 400
                 code: INVALID_ARGUMENT
                 message: Client specified an invalid argument, request body or query param
     Unauthenticated:
@@ -263,7 +264,7 @@ components:
           examples:
             response:
               value:
-                status: "401"
+                status: 401
                 code: UNAUTHENTICATED
                 message: Request not authenticated due to missing, invalid, or expired credentials
     PhoneNumberVerificationPermissionDenied:
@@ -284,7 +285,7 @@ components:
           examples:
             response:
               value:
-                status: "403"
+                status: 403
                 code: NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_IP
                 message: Client must authenticate via IP to use this service
     Internal:
@@ -312,7 +313,7 @@ components:
           examples:
             response:
               value:
-                status: "500"
+                status: 500
                 code: INTERNAL
                 message: Server error
     Unavailable:
@@ -340,7 +341,7 @@ components:
           examples:
             response:
               value:
-                status: "503"
+                status: 503
                 code: UNAVAILABLE
                 message: Service unavailable
     Timeout:
@@ -368,7 +369,7 @@ components:
           examples:
             response:
               value:
-                status: "504"
+                status: 504
                 code: TIMEOUT
                 message: Request timeout exceeded. Try later.
 externalDocs:
