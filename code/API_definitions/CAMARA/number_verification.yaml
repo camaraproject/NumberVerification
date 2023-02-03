@@ -189,8 +189,8 @@ components:
       properties:
         status:
           type: integer
-          minimum: 100
-          maximum: 600
+          minimum: 400
+          maximum: 599
           description: HTTP response status code
         message:
           type: string
