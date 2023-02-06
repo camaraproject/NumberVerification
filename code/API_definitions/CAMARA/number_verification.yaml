@@ -132,11 +132,68 @@ paths:
       security:
         - three_legged:
           - number-verification-share-read
+  /verify-ip:     
+    post:
+      tags:
+        - IP PhoneNumber Verify
+      summary: Validates that the MSISDN of the mobile device connected via the cellular network is using the IP address of the connection to the server of the service that is querying the API.
+      description: |-
+        The Mobile User inform MSISDN to verification.
+         - BackEnd APP or Web Partner Application Server pass the IP address to TIM API GTW to challenge and validate MSISDN with IP matched.
+         - It returns true/false depending on if the phone number received as input matches the device IP number associated to the mobile network operator data connection.
+      operationId: ipPhoneNumberVerify
+      parameters:
+        - in: header
+          name: x-correlator
+          required: false
+          description: Correlation id for the different services
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+               $ref: '#/components/schemas/ueId'
+        required: true  
+      responses:
+        '200':
+          description: OK
+          headers:
+            x-correlator:
+              description: Correlation id for the different services
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NumberVerificationMatchResponse'
+        '400':
+          $ref: '#/components/responses/InvalidArgument'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/NotAuthenticatedByIpPermissionDenied'
+        '500':
+          $ref: '#/components/responses/Internal'
+        '503':
+          $ref: '#/components/responses/Unavailable'
+        '504':
+          $ref: '#/components/responses/Timeout'
+      security:
+        - oAuth2ClientCredentials:
+          - verify-ip        
 components:
   securitySchemes:
     three_legged:
       type: openIdConnect
       openIdConnectUrl: https://example.com/.well-known/openid-configuration
+    oAuth2ClientCredentials:
+          type: oauth2
+          description: Client Credentials – Intended for the server-to-server authentication between service provider and MNO.
+          flows: 
+            clientCredentials: 
+              tokenUrl: https://api.example.com/oauth2/token/
+              scopes: {}
   schemas:
     NumberVerificationRequestBody:
       type: object
@@ -158,6 +215,21 @@ components:
           description: Hashed phone number. SHA-256 (in hexadecimal representation) of the mobile phone number in 'E164 with +' format
           type: string
           example: 32f67ab4e4312618b09cd23ed8ce41b13e095fe52b73b2e8da8ef49830e50dba
+    ueId:
+      type: object
+      properties:
+        msisdn:
+          description: Mobile phone number (MSISDN) to verify. The number must be in international format.
+          type: string
+        ipv4Addr:
+          description: IPv4 address of the mobile device that will be verified with operator.
+          type: string
+        ipv6Addr:
+          description: IPv6 address of the mobile device that will be verified with operator.
+          type: string       
+        uePort:
+          description: Port of the mobile device that will be verified with operator. Can be used only when "ipv4Addr" is also provided.
+          type: integer  
     NumberVerificationMatchResponse:
       type: object
       description: Number verification result
