@@ -42,12 +42,12 @@ paths:
     post:
       tags:
         - Phone number verify
-      summary: Verifies if the received hashed phone number matches the phone number associated with the access token
+      summary: Verifies if the received hashed/clear phone number matches the phone number associated with the access token
       description: |-
         Verifies if the specified phone number (clear or hashed format) matches the one that the user is currently using.
          - The number verification will be done for the user that has authenticated via mobile network and so their `sub` is in the access token
          - It returns true/false depending on if the hashed phone number received as input matches the authenticated user's `device phone number` associated to the access token
-      operationId: hashedPhoneNumberVerify
+      operationId: phoneNumberVerify
       parameters:
         - in: header
           name: x-correlator
