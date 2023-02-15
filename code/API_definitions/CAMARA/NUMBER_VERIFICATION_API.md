@@ -23,12 +23,12 @@ Before starting to use the API, the developer needs to know about the below spec
 
 Two endpoints are defined in Number Verification API:
 
-- POST /number-verification/v0/verify : Verifies if the specified phone number (clear or hashed format) matches the one that the user is currently using.
+- POST /number-verification/v0/verify : Verifies if the specified phone number (plain text or hashed format) matches the one that the user is currently using.
 - GET /number-verification/v0/device-phone-number : Returns the phone number associated with the access token so API clients can verify the number themselves.
 
 **Authentication**
 
-Security access keys such as OAuth 2.0 3-legged Access Tokens used by Client applications to invoke this API with dedicated scope. Client **must authenticate via IP** to use this service.
+Security access keys such as OAuth 2.0 3-legged Access Tokens used by Client applications to invoke this API with dedicated scope. Client **must use network based authentication methods** to use this service. 
 
 Sample API invocations are presented in Section 4.6.
 
@@ -50,7 +50,7 @@ Following table defines API endpoints of exposed REST based for Number Verificat
 
 | **Endpoint** | **Operation** | **Description** |
 | -------- | --------- | ----------- |
-| POST /number-verification/v0/verify | **Request to verify a number** | Create request in order to verify if the specified phone number (clear or hashed format) matches the one that the user is currently using |
+| POST /number-verification/v0/verify | **Request to verify a number** | Create request in order to verify if the specified phone number (plain text or hashed format) matches the one that the user is currently using |
 | GET /number-verification/v0/device-phone-number | **Request to get the device phone number** | Create a request to get the phone number associated with the access token so the API clients can verify the number themselves |
 
 
