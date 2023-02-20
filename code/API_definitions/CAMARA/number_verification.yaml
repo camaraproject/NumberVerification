@@ -140,7 +140,7 @@ paths:
       description: |-
         The Mobile User inform MSISDN to verification.
          - BackEnd APP or Web Partner Application Server pass the IP address to TIM API GTW to challenge and validate MSISDN with IP matched.
-         - It returns true/false depending on if the phone number received as input matches the device IP number associated to the mobile network operator data connection.
+         - It returns true/false depending on if the phone number and IP address received as input match the device IP address associated to the mobile network operator data connection.
       operationId: ipPhoneNumberVerify
       parameters:
         - in: header
