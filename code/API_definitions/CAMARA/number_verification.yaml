@@ -14,7 +14,7 @@ info:
     This API currently provides two endpoints where both require a **3-legged token** and authentication via **mobile network** (excluding for example by SMS/OTP or user/password as an authentication method):
     - The first one checks if the user mobile phone number matches the phone number associated with the mobile device. It can receive either a hashed phone number or a clear phone number as input and it compares the received input with the authenticated user's phone number associated to the access token in order to respond **true/false**.
     - The next one retrieves the phone number associated to the user's token and returns it so the verification can be made by the service provider.
-  version: 0.1.0
+  version: 0.2.0
   termsOfService: http://example.com/terms/
   contact:
     name: API Support
@@ -37,6 +37,8 @@ tags:
     description: API operation to verify a phone number received as input. It can be received either in clear or hashed format.
   - name: Phone number share
     description: API operation to return the phone number associated to the access token.
+  - name: IP phone number verify
+    description: API operation to verify a phone number and IP match received as inputs. IP can be received either in IPv6 or IPv4 format.    
 paths:
   /verify:
     post:
@@ -132,16 +134,16 @@ paths:
       security:
         - three_legged:
           - number-verification-share-read
-  /verify-smv:     
+  /verify-ip:     
     post:
       tags:
-        - Silent Mobile Verification
-      summary: Validates that the MSISDN of the mobile device connected via the cellular network is using the IP address of the connection to the server of the service that is querying the API.
+        - IP phone number verify
+      summary: Validates that the phone number of the mobile device connected via the cellular network is using the IP address of the connection to the server of the service that is querying the API.
       description: |-
-        The Mobile User inform MSISDN to verification.
-         - BackEnd APP or Web Partner Application Server pass the IP address to TIM API GTW to challenge and validate MSISDN with IP matched.
-         - It returns true/false depending on if the phone number received as input matches the device IP number associated to the mobile network operator data connection.
-      operationId: smvPhoneNumberVerify
+        The Mobile User inform phone number to verification.
+         - BackEnd APP or Web Partner Application Server pass the IP address to MNO API GTW to challenge and validate phone number with IP matched.
+         - It returns true/false depending on if the phone number and IP address received as input match the device IP address associated to the mobile network operator data connection.
+      operationId: ipPhoneNumberVerify
       parameters:
         - in: header
           name: x-correlator
@@ -153,7 +155,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NumberVerificationRequestBody'
+               $ref: '#/components/schemas/ueId'
         required: true  
       responses:
         '200':
@@ -169,10 +171,6 @@ paths:
                 $ref: '#/components/schemas/NumberVerificationMatchResponse'
         '400':
           $ref: '#/components/responses/InvalidArgument'
-        '401':
-          $ref: '#/components/responses/Unauthenticated'
-        '403':
-          $ref: '#/components/responses/NotAuthenticatedByIpPermissionDenied'
         '500':
           $ref: '#/components/responses/Internal'
         '503':
@@ -180,13 +178,20 @@ paths:
         '504':
           $ref: '#/components/responses/Timeout'
       security:
-        - three_legged:
-          - number-verification-verify-read        
+        - oAuth2ClientCredentials:
+          - verify-ip        
 components:
   securitySchemes:
     three_legged:
       type: openIdConnect
       openIdConnectUrl: https://example.com/.well-known/openid-configuration
+    oAuth2ClientCredentials:
+          type: oauth2
+          description: Client Credentials – Intended for the server-to-server authentication between service provider and MNO.
+          flows: 
+            clientCredentials: 
+              tokenUrl: https://api.example.com/oauth2/token/
+              scopes: {}
   schemas:
     NumberVerificationRequestBody:
       type: object
@@ -194,7 +199,6 @@ components:
       oneOf:
           - $ref: '#/components/schemas/PhoneNumber'
           - $ref: '#/components/schemas/HashedPhoneNumber'
-          - $ref: '#/components/schemas/ueId'
     PhoneNumber:
       type: object
       properties:
@@ -211,14 +215,10 @@ components:
           example: 32f67ab4e4312618b09cd23ed8ce41b13e095fe52b73b2e8da8ef49830e50dba
     ueId:
       type: object
+      required:
+        - phone_number
       properties:
-        consentGranted:
-          description: Indicates whether service provider have consent from mobile phone number's owner to perform this request
-          type: boolean        
-        externalId:
-          description: ueId externalId
-          type: string
-        msisdn:
+        phone_number:
           description: Mobile phone number (MSISDN) to verify. The number must be in international format.
           type: string
         ipv4Addr:
@@ -230,9 +230,6 @@ components:
         uePort:
           description: Port of the mobile device that will be verified with operator. Can be used only when "ipv4Addr" is also provided.
           type: integer  
-        callbackUrl:
-          description: An URL that will be called to provide verification result when the process is complete.
-          type: string
     NumberVerificationMatchResponse:
       type: object
       description: Number verification result
