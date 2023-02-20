@@ -135,7 +135,7 @@ paths:
   /verify-ip:     
     post:
       tags:
-        - IP PhoneNumber Verify
+        - IP phone number verify
       summary: Validates that the MSISDN of the mobile device connected via the cellular network is using the IP address of the connection to the server of the service that is querying the API.
       description: |-
         The Mobile User inform MSISDN to verification.
