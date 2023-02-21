@@ -271,7 +271,7 @@ components:
       description: |-
         Client does not have sufficient permission.
         In addition to regular scenario of `PERMISSION_DENIED`, other scenarios may exist:
-          - Client authentication was not via mobile network. In order to check the authentication method, AMR parameter value in the 3-legged user's access token can be used and make sure that the authentication was not either by SMS+OTP nor username/password (`{"code": "NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK","message": "Client must authenticate via IP to use this service"}`)
+          - Client authentication was not via mobile network. In order to check the authentication method, AMR parameter value in the 3-legged user's access token can be used and make sure that the authentication was not either by SMS+OTP nor username/password (`{"code": "NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK","message": "Client must authenticate via the mobile network to use this service"}`)
           - Phone number cannot be deducted from access token context.(`{"code": "NUMBER_VERIFICATION.INVALID_TOKEN_CONTEXT","message": "Phone number cannot be deducted from access token context"}`)
       headers:
         x-correlator:
@@ -287,7 +287,7 @@ components:
               value:
                 status: 403
                 code: NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK
-                message: Client must authenticate via IP to use this service
+                message: Client must authenticate via the mobile network to use this service
     Internal:
       description: Server error
       headers:

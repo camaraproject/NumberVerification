@@ -87,7 +87,7 @@ Following table provides an overview of common error names, codes, and messages 
 |1	|400 |	INVALID_ARGUMENT |	"Client specified an invalid argument, request body or query param" |
 |2	|401 |	UNAUTHENTICATED |	"Request not authenticated due to missing, invalid, or expired credentials" |
 |3	|403 |	PERMISSION_DENIED |	"Client does not have sufficient permissions to perform this action" |
-|4	|403 |	NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK |	"Client must authenticate via IP to use this service" |
+|4	|403 |	NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK |	"Client must authenticate via the mobile network to use this service" |
 |5	|403 |	NUMBER_VERIFICATION.INVALID_TOKEN_CONTEXT |	"Phone number cannot be deducted from access token context" |
 |6	|500 |	INTERNAL | "Server error" |
 |7	|503 |	UNAVAILABLE | "Service unavailable" |
