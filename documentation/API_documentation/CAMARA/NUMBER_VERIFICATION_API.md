@@ -23,12 +23,12 @@ Before starting to use the API, the developer needs to know about the below spec
 
 Two endpoints are defined in Number Verification API:
 
-- POST /number-verification/v0/verify : Verifies if the specified phone number (clear or hashed format) matches the one that the user is currently using.
+- POST /number-verification/v0/verify : Verifies if the specified phone number (plain text or hashed format) matches the one that the user is currently using.
 - GET /number-verification/v0/device-phone-number : Returns the phone number associated with the access token so API clients can verify the number themselves.
 
 **Authentication**
 
-Security access keys such as OAuth 2.0 3-legged Access Tokens used by Client applications to invoke this API with dedicated scope. Client must authenticate via IP to use this service.
+Security access keys such as OAuth 2.0 3-legged Access Tokens used by Client applications to invoke this API with dedicated scope. Client **must use network based authentication methods** to use this service. 
 
 Sample API invocations are presented in Section 4.6.
 
@@ -50,7 +50,7 @@ Following table defines API endpoints of exposed REST based for Number Verificat
 
 | **Endpoint** | **Operation** | **Description** |
 | -------- | --------- | ----------- |
-| POST /number-verification/v0/verify | **Request to verify a number** | Create request in order to verify if the specified phone number (clear or hashed format) matches the one that the user is currently using |
+| POST /number-verification/v0/verify | **Request to verify a number** | Create request in order to verify if the specified phone number (plain text or hashed format) matches the one that the user is currently using |
 | GET /number-verification/v0/device-phone-number | **Request to get the device phone number** | Create a request to get the phone number associated with the access token so the API clients can verify the number themselves |
 
 
@@ -61,7 +61,7 @@ Following table defines API endpoints of exposed REST based for Number Verificat
 | -------------------------- |
 | **HTTP Request**<br> POST /number-verification/v0/verify<br>**Query Parameters**<br> No query parameters are defined.<br>**Path Parameters**<br> No path parameters are defined.<br>**Request Body Parameters**<br> **One of:** <br> **phone_number**: A phone number belonging to the user. 'E164 with +' format.<br> **hashed_phone_number**: Hashed phone number. SHA-256 (in hexadecimal representation) of the mobile phone number in 'E164 with +' format.
 
- <br>**Response**<br> **200: OK**<br>  Response body: <br>**device_phone_number_verified** : Boolean <br> **400:** **INVALID_ARGUMENT**<br> **401:** **UNAUTHENTICATED** <br> **403:** **PERMISSION_DENIED** <br> **403:** **NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_IP** <br> **500:** **INTERNAL**<br> **503:** **UNAVAILABLE**<br> **504:** **TIMEOUT**<br>
+ <br>**Response**<br> **200: OK**<br>  Response body: <br>**device_phone_number_verified** : Boolean <br> **400:** **INVALID_ARGUMENT** <br> **401:** **UNAUTHENTICATED** <br> **403:** **PERMISSION_DENIED** <br> **403:** **NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK** <br> **403:** **NUMBER_VERIFICATION.INVALID_TOKEN_CONTEXT** <br> **500:** **INTERNAL**<br> **503:** **UNAVAILABLE**<br> **504:** **TIMEOUT**<br>
 <br>
 
 <br>
@@ -70,7 +70,7 @@ Following table defines API endpoints of exposed REST based for Number Verificat
 | -------------------------- |
 | **HTTP Request**<br> GET /number-verification/v0/device-phone-number<br>**Query Parameters**<br> No query parameters are defined.<br>**Path Parameters**<br> No path parameters are defined.<br>**Request Body Parameters**<br> No body
 
- <br>**Response**<br> **200: OK**<br>  Response body: <br>**device_phone_number** : The device phone number associated to the access token. 'E164 with +' format. <br> **400:** **INVALID_ARGUMENT**<br> **401:** **UNAUTHENTICATED** <br> **403:** **PERMISSION_DENIED** <br> **403:** **NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_IP** <br> **500:** **INTERNAL**<br> **503:** **UNAVAILABLE**<br> **504:** **TIMEOUT**<br>
+ <br>**Response**<br> **200: OK**<br>  Response body: <br>**device_phone_number** : The device phone number associated to the access token. 'E164 with +' format. <br> **400:** **INVALID_ARGUMENT**<br> **401:** **UNAUTHENTICATED** <br> **403:** **PERMISSION_DENIED** <br> **403:** **NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK** <br>  **403:** **NUMBER_VERIFICATION.INVALID_TOKEN_CONTEXT** <br> **500:** **INTERNAL** <br> **503:** **UNAVAILABLE**<br> **504:** **TIMEOUT**<br>
 <br>
 
 <br>
@@ -87,10 +87,11 @@ Following table provides an overview of common error names, codes, and messages 
 |1	|400 |	INVALID_ARGUMENT |	"Client specified an invalid argument, request body or query param" |
 |2	|401 |	UNAUTHENTICATED |	"Request not authenticated due to missing, invalid, or expired credentials" |
 |3	|403 |	PERMISSION_DENIED |	"Client does not have sufficient permissions to perform this action" |
-|4	|403 |	NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_IP |	"Client must authenticate via IP to use this service" |
-|5	|500 |	INTERNAL | "Server error" |
-|6	|503 |	UNAVAILABLE | "Service unavailable" |
-|7	|504 |	TIMEOUT | "Request timeout exceeded. Try later." |
+|4	|403 |	NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK |	"Client must authenticate via the mobile network to use this service" |
+|5	|403 |	NUMBER_VERIFICATION.INVALID_TOKEN_CONTEXT |	"Phone number cannot be deducted from access token context" |
+|6	|500 |	INTERNAL | "Server error" |
+|7	|503 |	UNAVAILABLE | "Service unavailable" |
+|8	|504 |	TIMEOUT | "Request timeout exceeded. Try later." |
 
 <br>
 
