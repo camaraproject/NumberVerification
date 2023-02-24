@@ -1,0 +1,37 @@
+@startuml
+
+title "MC Verified MSISDN"
+
+actor "Mobile App\nCustomer" as user
+box "Customer's Device" 
+    participant "Developer's App" as mApp
+end box
+
+box "MC IDGW"
+participant "/authrize" as auth
+participant "/token" as token
+participant "/userinfo" as userInfo
+end box
+
+activate user
+user -> mApp: opens Developer's App
+activate mApp
+mApp -> auth: scope=openid mc_verified_msisdn\n&state={...}\n&{query params defined inside MC specs}
+activate auth
+auth -> auth: Verified\nMSISDN\nflow
+note right: MNO detects device MSISDN\nusing mobile data session details
+mApp <- auth: {code} (auth successful)
+deactivate auth
+mApp -> token: code={code}
+activate token
+mApp <- token: tokens {id_token, access_token}
+deactivate token
+mApp -> userInfo: access_token={access_token,msisdn}
+activate userInfo
+mApp <- userInfo: {"device_msisdn_verified": true}
+deactivate userInfo
+deactivate mApp
+user <- mApp: user inside app
+
+
+@enduml
