@@ -8,13 +8,14 @@ info:
     In this API **phone number** term refers to the mobile phone number
 
     # API Functionality 
-    It enables a Service Provider (SP) to verify the phone number of the mobile device being used to access their service where the mobile device is accessing the *service provider* over a mobile network (WiFi connections are out of this API scope) either by getting the comparison result or receiving the phone number of the device that it is used, so they can verify it themselves.
+    It enables a Service Provider (SP) to verify the phone number of the mobile device being used to access their service where the mobile device is accessing the *service provider* over a mobile network (WiFi connections are out of this API scope) either by getting the comparison result or receiving the phone number of the device that it is used, so they can verify it themselves. Also enables a Service Provider (SP) to verify if the ip number match the mobile device number connected in MNO mobile network. 
 
     # Resources and Operations overview
-    This API currently provides two endpoints where both require a **3-legged token** and authentication via **mobile network** (excluding for example by SMS/OTP or user/password as an authentication method):
+    This API currently provides three endpoints where first two require a **3-legged token** and authentication via **mobile network** (excluding for example by SMS/OTP or user/password as an authentication method):
     - The first one checks if the user mobile phone number matches the phone number associated with the mobile device. It can receive either a hashed phone number or a clear phone number as input and it compares the received input with the authenticated user's phone number associated to the access token in order to respond **true/false**.
     - The next one retrieves the phone number associated to the user's token and returns it so the verification can be made by the service provider.
-  version: 0.2.0
+    The third endpoint checks if the user mobile phone number matches the ip number associated with the mobile device connected in MNO mobile network.
+  version: 0.3.0
   termsOfService: http://example.com/terms/
   contact:
     name: API Support
@@ -171,6 +172,10 @@ paths:
                 $ref: '#/components/schemas/NumberVerificationMatchResponse'
         '400':
           $ref: '#/components/responses/InvalidArgument'
+        '401':
+          $ref: '#/components/responses/Unauthenticated'
+        '403':
+          $ref: '#/components/responses/NotAuthenticatedByIpPermissionDenied'          
         '500':
           $ref: '#/components/responses/Internal'
         '503':
@@ -179,7 +184,7 @@ paths:
           $ref: '#/components/responses/Timeout'
       security:
         - oAuth2ClientCredentials:
-          - verify-ip        
+          - number-verification-verify-ip-read       
 components:
   securitySchemes:
     three_legged:
@@ -187,11 +192,12 @@ components:
       openIdConnectUrl: https://example.com/.well-known/openid-configuration
     oAuth2ClientCredentials:
           type: oauth2
-          description: Client Credentials – Intended for the server-to-server authentication between service provider and MNO.
+          description: Client Credentials - Intended for the server-to-server authentication between service provider and MNO.
           flows: 
             clientCredentials: 
               tokenUrl: https://api.example.com/oauth2/token/
-              scopes: {}
+              scopes:
+                number-verification-verify-ip-read: verify ip
   schemas:
     NumberVerificationRequestBody:
       type: object
@@ -203,9 +209,7 @@ components:
       type: object
       properties:
         phone_number:
-          description: A phone number belonging to the user. 'E164 with +' format
-          type: string
-          example: '+346661113334'
+          $ref: '#/components/schemas/DevicePhoneNumber'
     HashedPhoneNumber:
       type: object
       properties:

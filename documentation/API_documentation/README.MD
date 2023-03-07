@@ -52,8 +52,8 @@ Upon successful onboarding following details are shared:
 
 |Flavour|Details Page|
 |---|---|
-|CAMARA|[DetailsPage](../../code/API_definitions/CAMARA/NUMBER_VERIFICATION_API.md)|
-|Mobile Connect|[DetailsPage](../../code/API_definitions/MobileConnect/MC_VERIFIED_MSISDN.md)|
+|CAMARA|[DetailsPage](../../documentation/API_documentation/CAMARA/NUMBER_VERIFICATION_API.md)|
+|Mobile Connect|[DetailsPage](../../documentation/API_documentation/MobileConnect/MC_VERIFIED_MSISDN.md)|
 
 ### Endpoint definitions
 
@@ -61,6 +61,7 @@ Upon successful onboarding following details are shared:
 |---|---|---|
 |CAMARA|AuthN/AuthZ||
 ||resource|/verify|
+||resource|/device-phone-number|
 |Mobile Connect|AuthN|/authorize<br>/token|
 ||resource|/userinfo|
 
@@ -74,7 +75,7 @@ Described inside yaml files.
 
 |No|Version|Changelog|
 |:---:|---:|:---|
-|1|0.5.0|Camara & Mobile Connect flavours available|
+|1|0.1.0|Camara & Mobile Connect flavours available|
 
 ## API Spec
 
