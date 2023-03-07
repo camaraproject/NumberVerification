@@ -15,8 +15,6 @@ info:
     - The first one checks if the user mobile phone number matches the phone number associated with the mobile device. It can receive either a hashed phone number or a clear phone number as input and it compares the received input with the authenticated user's phone number associated to the access token in order to respond **true/false**.
     - The next one retrieves the phone number associated to the user's token and returns it so the verification can be made by the service provider.
     The third endpoint checks if the user mobile phone number matches the ip number associated with the mobile device connected in MNO mobile network.
-  
-    
   version: 0.3.0
   termsOfService: http://example.com/terms/
   contact:
@@ -200,7 +198,6 @@ components:
               tokenUrl: https://api.example.com/oauth2/token/
               scopes:
                 number-verification-verify-ip-read: verify ip
-
   schemas:
     NumberVerificationRequestBody:
       type: object
