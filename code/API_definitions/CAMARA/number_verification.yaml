@@ -12,7 +12,7 @@ info:
 
     # Resources and Operations overview
     This API currently provides two endpoints where both require a **3-legged token** and authentication via **mobile network** (excluding for example by SMS/OTP or user/password as an authentication method):
-    - The first one checks if the user mobile phone number matches the phone number associated with the mobile device. It can receive either a hashed phone number or a clear phone number as input and it compares the received input with the authenticated user's phone number associated to the access token in order to respond **true/false**.
+    - The first one checks if the user mobile phone number matches the phone number associated with the mobile device. It can receive either a hashed or a plain text phone number as input and it compares the received input with the authenticated user's phone number associated to the access token in order to respond **true/false**.
     - The next one retrieves the phone number associated to the user's token and returns it so the verification can be made by the service provider.
   version: 0.2.0
   termsOfService: http://example.com/terms/
@@ -34,7 +34,7 @@ servers:
         description: Base path for the number verification API
 tags:
   - name: Phone number verify
-    description: API operation to verify a phone number received as input. It can be received either in clear or hashed format.
+    description: API operation to verify a phone number received as input. It can be received either in plain text or hashed format.
   - name: Phone number share
     description: API operation to return the phone number associated to the access token.
   - name: IP phone number verify
@@ -44,12 +44,12 @@ paths:
     post:
       tags:
         - Phone number verify
-      summary: Verifies if the received hashed phone number matches the phone number associated with the access token
+      summary: Verifies if the received hashed/plain text phone number matches the phone number associated with the access token
       description: |-
-        Verifies if the specified phone number (clear or hashed format) matches the one that the user is currently using.
+        Verifies if the specified phone number (plain text or hashed format) matches the one that the user is currently using.
          - The number verification will be done for the user that has authenticated via mobile network and so their `sub` is in the access token
          - It returns true/false depending on if the hashed phone number received as input matches the authenticated user's `device phone number` associated to the access token
-      operationId: hashedPhoneNumberVerify
+      operationId: phoneNumberVerify
       parameters:
         - in: header
           name: x-correlator
@@ -80,7 +80,7 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthenticated'
         '403':
-          $ref: '#/components/responses/NotAuthenticatedByIpPermissionDenied'
+          $ref: '#/components/responses/PhoneNumberVerificationPermissionDenied'
         '500':
           $ref: '#/components/responses/Internal'
         '503':
@@ -124,7 +124,7 @@ paths:
         '401':
           $ref: '#/components/responses/Unauthenticated'
         '403':
-          $ref: '#/components/responses/NotAuthenticatedByIpPermissionDenied'
+          $ref: '#/components/responses/PhoneNumberVerificationPermissionDenied'
         '500':
           $ref: '#/components/responses/Internal'
         '503':
@@ -260,13 +260,14 @@ components:
         - message
       properties:
         status:
-          type: string
-          pattern: '^[1-5][0-9][0-9]$'
+          type: integer
+          minimum: 400
+          maximum: 599
           description: HTTP response status code
         message:
           type: string
           description: A human readable description of what the event represent
-    NotAuthenticatedByIpPermissionDenied:
+    PhoneNumberVerificationPermissionDenied:
       allOf:
         - type: object
           required:
@@ -276,7 +277,8 @@ components:
               type: string
               enum:
                 - PERMISSION_DENIED
-                - NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_IP
+                - NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK
+                - NUMBER_VERIFICATION.INVALID_TOKEN_CONTEXT
               default: PERMISSION_DENIED
               description: Client does not have sufficient permissions to perform this action.
         - $ref: '#/components/schemas/ModelError'
@@ -306,7 +308,7 @@ components:
           examples:
             response:
               value:
-                status: "400"
+                status: 400
                 code: INVALID_ARGUMENT
                 message: Client specified an invalid argument, request body or query param
     Unauthenticated:
@@ -334,14 +336,15 @@ components:
           examples:
             response:
               value:
-                status: "401"
+                status: 401
                 code: UNAUTHENTICATED
                 message: Request not authenticated due to missing, invalid, or expired credentials
-    NotAuthenticatedByIpPermissionDenied:
+    PhoneNumberVerificationPermissionDenied:
       description: |-
         Client does not have sufficient permission.
-        In addition to regular scenario of `PERMISSION_DENIED`, another scenario may exist:
-          - Client authentication was not via mobile network. In order to check the authentication method, AMR parameter value in the 3-legged user's access token can be used and make sure that the authentication was not either by SMS+OTP nor username/password (`{"code": "NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_IP","message": "Client must authenticate via IP to use this service"}`)
+        In addition to regular scenario of `PERMISSION_DENIED`, other scenarios may exist:
+          - Client authentication was not via mobile network. In order to check the authentication method, AMR parameter value in the 3-legged user's access token can be used and make sure that the authentication was not either by SMS+OTP nor username/password (`{"code": "NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK","message": "Client must authenticate via the mobile network to use this service"}`)
+          - Phone number cannot be deducted from access token context.(`{"code": "NUMBER_VERIFICATION.INVALID_TOKEN_CONTEXT","message": "Phone number cannot be deducted from access token context"}`)
       headers:
         x-correlator:
           description: Correlation id for the different services
@@ -350,13 +353,13 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/NotAuthenticatedByIpPermissionDenied'
+            $ref: '#/components/schemas/PhoneNumberVerificationPermissionDenied'
           examples:
             response:
               value:
-                status: "403"
-                code: NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_IP
-                message: Client must authenticate via IP to use this service
+                status: 403
+                code: NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK
+                message: Client must authenticate via the mobile network to use this service
     Internal:
       description: Server error
       headers:
@@ -382,7 +385,7 @@ components:
           examples:
             response:
               value:
-                status: "500"
+                status: 500
                 code: INTERNAL
                 message: Server error
     Unavailable:
@@ -410,7 +413,7 @@ components:
           examples:
             response:
               value:
-                status: "503"
+                status: 503
                 code: UNAVAILABLE
                 message: Service unavailable
     Timeout:
@@ -438,7 +441,7 @@ components:
           examples:
             response:
               value:
-                status: "504"
+                status: 504
                 code: TIMEOUT
                 message: Request timeout exceeded. Try later.
 externalDocs:
