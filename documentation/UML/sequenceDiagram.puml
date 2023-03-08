@@ -8,7 +8,7 @@ box "Customer's Device"
 end box
 
 box "MC IDGW"
-participant "/authrize" as auth
+participant "/authorize" as auth
 participant "/token" as token
 participant "/userinfo" as userInfo
 end box
