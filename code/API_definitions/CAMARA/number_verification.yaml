@@ -14,7 +14,7 @@ info:
     This API currently provides two endpoints where both require a **3-legged token** and authentication via **mobile network** (excluding for example by SMS/OTP or user/password as an authentication method):
     - The first one checks if the user mobile phone number matches the phone number associated with the mobile device. It can receive either a hashed or a plain text phone number as input and it compares the received input with the authenticated user's phone number associated to the access token in order to respond **true/false**.
     - The next one retrieves the phone number associated to the user's token and returns it so the verification can be made by the service provider.
-  version: 0.2.0
+  version: 0.3.0
   termsOfService: http://example.com/terms/
   contact:
     name: API Support
@@ -147,14 +147,14 @@ components:
     PhoneNumber:
       type: object
       properties:
-        phone_number:
+        phoneNumber:
           description: A phone number belonging to the user. 'E164 with +' format
           type: string
           example: '+346661113334'
     HashedPhoneNumber:
       type: object
       properties:
-        hashed_phone_number:
+        hashedPhoneNumber:
           description: Hashed phone number. SHA-256 (in hexadecimal representation) of the mobile phone number in 'E164 with +' format
           type: string
           example: 32f67ab4e4312618b09cd23ed8ce41b13e095fe52b73b2e8da8ef49830e50dba
@@ -162,17 +162,17 @@ components:
       type: object
       description: Number verification result
       required:
-        - device_phone_number_verified
+        - devicePhoneNumberVerified
       properties:
-        device_phone_number_verified:
+        devicePhoneNumberVerified:
           $ref: '#/components/schemas/DevicePhoneNumberVerified'
     NumberVerificationShareResponse:
       type: object
       description: Number verification share result
       required:
-        - device_phone_number
+        - devicePhoneNumber
       properties:
-        device_phone_number:
+        devicePhoneNumber:
           $ref: '#/components/schemas/DevicePhoneNumber'
     DevicePhoneNumber:
       description: The device phone number associated to the access token. 'E164 with +' format
