@@ -249,7 +249,7 @@ components:
                 status: 403
                 code: PERMISSION_DENIED
                 message: Client does not have sufficient permissions to perform this action
-            PhoneNumberVerificationPermissionDenied:
+            UserNotAuthenticatedByMobileNetwork:
               value:
                 status: 403
                 code: NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK
