@@ -208,7 +208,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
+            $ref: '#/components/schemas/ErrorInfo'
           example:
             status: 400
             code: INVALID_ARGUMENT
@@ -223,7 +223,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
+            $ref: '#/components/schemas/ErrorInfo'
           example:
             status: 401
             code: UNAUTHENTICATED
@@ -242,7 +242,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
+            $ref: '#/components/schemas/ErrorInfo'
           examples:
             PermissionDenied:
               value:
@@ -269,7 +269,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
+            $ref: '#/components/schemas/ErrorInfo'
           example:
             status: 500
             code: INTERNAL
@@ -284,7 +284,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
+            $ref: '#/components/schemas/ErrorInfo'
           example:
             status: 503
             code: UNAVAILABLE
@@ -299,7 +299,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/ErrorInfo"
+            $ref: '#/components/schemas/ErrorInfo'
           example:
             status: 504
             code: TIMEOUT
