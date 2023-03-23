@@ -262,7 +262,7 @@ components:
       properties:
         sub:
           type: string
-          description: subject identifier 
+          description: subject identifier to bind the request.
           format: uuid
         device_msisdn_verified:
           type: boolean
