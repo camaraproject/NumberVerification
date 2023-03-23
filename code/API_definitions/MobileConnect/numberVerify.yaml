@@ -262,12 +262,12 @@ components:
       properties:
         sub:
           type: string
+          description: subject identifier 
           format: uuid
         device_msisdn_verified:
           type: boolean
       required:
         - device_msisdn_verified
-        - sub
     oidc_auth_response:
       type: object
       properties:
