@@ -59,9 +59,9 @@ Following table defines API endpoints of exposed REST based for Number Verificat
 
 | **Request to verify a number** |
 | -------------------------- |
-| **HTTP Request**<br> POST /number-verification/v0/verify<br>**Query Parameters**<br> No query parameters are defined.<br>**Path Parameters**<br> No path parameters are defined.<br>**Request Body Parameters**<br> **One of:** <br> **phone_number**: A phone number belonging to the user. 'E164 with +' format.<br> **hashed_phone_number**: Hashed phone number. SHA-256 (in hexadecimal representation) of the mobile phone number in 'E164 with +' format.
+| **HTTP Request**<br> POST /number-verification/v0/verify<br>**Query Parameters**<br> No query parameters are defined.<br>**Path Parameters**<br> No path parameters are defined.<br>**Request Body Parameters**<br> **One of:** <br> **phoneNumber**: A phone number belonging to the user. 'E164 with +' format.<br> **hashedPhoneNumber**: Hashed phone number. SHA-256 (in hexadecimal representation) of the mobile phone number in 'E164 with +' format.
 
- <br>**Response**<br> **200: OK**<br>  Response body: <br>**device_phone_number_verified** : Boolean <br> **400:** **INVALID_ARGUMENT** <br> **401:** **UNAUTHENTICATED** <br> **403:** **PERMISSION_DENIED** <br> **403:** **NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK** <br> **403:** **NUMBER_VERIFICATION.INVALID_TOKEN_CONTEXT** <br> **500:** **INTERNAL**<br> **503:** **UNAVAILABLE**<br> **504:** **TIMEOUT**<br>
+ <br>**Response**<br> **200: OK**<br>  Response body: <br>**devicePhoneNumberVerified** : Boolean <br> **400:** **INVALID_ARGUMENT** <br> **401:** **UNAUTHENTICATED** <br> **403:** **PERMISSION_DENIED** <br> **403:** **NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK** <br> **403:** **NUMBER_VERIFICATION.INVALID_TOKEN_CONTEXT** <br> **500:** **INTERNAL**<br> **503:** **UNAVAILABLE**<br> **504:** **TIMEOUT**<br>
 <br>
 
 <br>
@@ -70,7 +70,7 @@ Following table defines API endpoints of exposed REST based for Number Verificat
 | -------------------------- |
 | **HTTP Request**<br> GET /number-verification/v0/device-phone-number<br>**Query Parameters**<br> No query parameters are defined.<br>**Path Parameters**<br> No path parameters are defined.<br>**Request Body Parameters**<br> No body
 
- <br>**Response**<br> **200: OK**<br>  Response body: <br>**device_phone_number** : The device phone number associated to the access token. 'E164 with +' format. <br> **400:** **INVALID_ARGUMENT**<br> **401:** **UNAUTHENTICATED** <br> **403:** **PERMISSION_DENIED** <br> **403:** **NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK** <br>  **403:** **NUMBER_VERIFICATION.INVALID_TOKEN_CONTEXT** <br> **500:** **INTERNAL** <br> **503:** **UNAVAILABLE**<br> **504:** **TIMEOUT**<br>
+ <br>**Response**<br> **200: OK**<br>  Response body: <br>**devicePhoneNumber** : The device phone number associated to the access token. 'E164 with +' format. <br> **400:** **INVALID_ARGUMENT**<br> **401:** **UNAUTHENTICATED** <br> **403:** **PERMISSION_DENIED** <br> **403:** **NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK** <br>  **403:** **NUMBER_VERIFICATION.INVALID_TOKEN_CONTEXT** <br> **500:** **INTERNAL** <br> **503:** **UNAVAILABLE**<br> **504:** **TIMEOUT**<br>
 <br>
 
 <br>
@@ -109,14 +109,14 @@ Please note, the credentials for API authentication purposes need to be adjusted
 
 | Snippet 1. Request code  |
 | ----------------------------------------------- |
-| curl -X 'POST' `https://sample-base-url/number-verification/v0/verify`   <br>    -H 'accept: application/json' <br>    -H 'Content-Type: application/json'<br>    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbG...."<br>    -d '{ "hashed_phone_number": "32f67ab4e4312618b09cd23ed8ce41b13e095fe52b73b2e8da8ef49830e50dba"}'  |
-| The response will be: <br> 200 <br>   -d '{ "device_phone_number_verified": true }'|
+| curl -X 'POST' `https://sample-base-url/number-verification/v0/verify`   <br>    -H 'accept: application/json' <br>    -H 'Content-Type: application/json'<br>    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbG...."<br>    -d '{ "hashedPhoneNumber": "32f67ab4e4312618b09cd23ed8ce41b13e095fe52b73b2e8da8ef49830e50dba"}'  |
+| The response will be: <br> 200 <br>   -d '{ "devicePhoneNumberVerified": true }'|
 <br>
 
 | Snippet 2. Validate code  |
 | ----------------------------------------------- |
 | curl -X 'GET' `https://sample-base-url/number-verification/v0/device-phone-number`   <br>    -H 'accept: application/json' <br>    -H 'Content-Type: application/json'<br>    -H "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbG...."<br> |
-| The response will be: <br> 200 <br>   -d '{ "device_phone_number": "+346661113334" }'|
+| The response will be: <br> 200 <br>   -d '{ "devicePhoneNumber": "+346661113334" }'|
 <br>
 
 
