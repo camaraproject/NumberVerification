@@ -13,8 +13,7 @@ Repository to describe, develop, document and test the NumberVerification API fa
 
 * Service APIs for “NumberVerification” (see APIBacklog.md)  
 * It provides the customer with the ability to:  
-  * verify the phone number of the device connected to the mobile data network.
-  * NOTE: The scope of this API family should be limited (at least at a first stage) to 4G and 5G.  
+  * verify the phone number associated with the SIM used in the device connected to the mobile data network.
 * Describe, develop, document and test the APIs (with 1-2 Telcos)  
 * Started: October 2022
 * Location: virtually  
