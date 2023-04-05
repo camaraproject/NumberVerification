@@ -32,7 +32,7 @@
 - participants identified that current API descriptions might be confusing for software developers - two API definitions: MobileConnect & Camara flavors
 - Mobile Identity APIs are commercially available and software developers are familiar with existing API design - making a change to existing standard might not be identified by software developers community as a positive change, due to existing Mobile Connect implementations
 - additionally, recent changes inside commonalities working group describing the [notation of APIs](https://github.com/camaraproject/WorkingGroups/blob/main/Commonalities/documentation/API-design-guidelines.md#42-inputoutput-resource-definition), requires adoption of Mobile Connect API definition to be compliant with CAMARA
-- there is a willingness assess benefits developers can get when having APIs similar to MC but not exactly aligned with them nor with 3GPP/TMF.
+- there is a willingness to assess benefits developers can get when having APIs fully compliant to MC but not same from one implementation to another .
 
 ### OTP Validation
 
