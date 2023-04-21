@@ -16,10 +16,10 @@ info:
     - The next one retrieves the phone number associated to the user's token and returns it so the verification can be made by the service provider.
 
     # Sequence Diagram
-    The following diagram will help to clarify the end-to-end process, including previous steps prior to this API call.
+    The following [diagram](https://github.com/monamok/NumberVerification/blob/18d864fb891dabb97082458b8a3e5b850c3602ec/documentation/API_documentation/CAMARA/uml_v0.3.jpg) will help to clarify the end-to-end process, including previous steps prior to this API call.
     
-    <img src="https://github.com/camaraproject/NumberVerification/blob/main/documentation/API_documentation/assets/images/figure1.png" />
-
+    ![UML Sequence Diagram](https://github.com/monamok/NumberVerification/blob/18d864fb891dabb97082458b8a3e5b850c3602ec/documentation/API_documentation/CAMARA/uml_v0.3.jpg?raw=true)
+    
     **Additional details:**
     - **1:** The authentication must be automatic without any user interactions. It must be mobile network based. Other authentication methods such as SMS OTP or user/password are incompatibles as the goal is to validate the mobile phone number that is accessing the App. So it is required to be authentication via mobile network.
 
