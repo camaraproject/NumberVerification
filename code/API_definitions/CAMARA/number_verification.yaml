@@ -3,7 +3,7 @@ info:
   title: Number Verification
   description: |-
     Service Enabling Network Function API to verify that the provided **mobile phone number** is the one used in the device. It verifies that the user is using a device with the same *mobile phone number* as it is declared.
-    It also make it possible for a Service provider to verify the number itself by returning the phone number associated to the authenticated user's access token.
+    It also makes it possible for a Service provider to verify the number itself by returning the phone number associated to the authenticated user's access token.
     
     In this API **phone number** term refers to the mobile phone number
 
@@ -11,17 +11,17 @@ info:
     It enables a Service Provider (SP) to verify the phone number of the mobile device being used to access their service where the mobile device is accessing the *service provider* over a mobile network (WiFi connections are out of this API scope) either by getting the comparison result or receiving the phone number of the device that it is used, so they can verify it themselves.
 
     # Resources and Operations overview
-    This API currently provides two endpoints where both require a **3-legged token** and authentication via **mobile network** (excluding for example by SMS/OTP or user/password as an authentication method):
+    This API currently provides two endpoints where both require a **3-legged token** and authentication via **mobile network** (**excluding** for example by SMS/OTP or user/password as an authentication method):
     - The first one checks if the user mobile phone number matches the phone number associated with the mobile device. It can receive either a hashed or a plain text phone number as input and it compares the received input with the authenticated user's phone number associated to the access token in order to respond **true/false**.
     - The next one retrieves the phone number associated to the user's token and returns it so the verification can be made by the service provider.
 
     # Sequence Diagram
-    The following [diagram](https://github.com/monamok/NumberVerification/blob/18d864fb891dabb97082458b8a3e5b850c3602ec/documentation/API_documentation/CAMARA/uml_v0.3.jpg) will help to clarify the end-to-end process, including previous steps prior to this API call.
+    Number Verification API uses **OAUTH 2.0 Authorization Code grant** which allows three-legged Access Tokens. The following [diagram](https://github.com/monamok/NumberVerification/blob/18d864fb891dabb97082458b8a3e5b850c3602ec/documentation/API_documentation/CAMARA/uml_v0.3.jpg) will help to clarify the end-to-end process, including previous steps prior to this API call.
     
     ![UML Sequence Diagram](https://github.com/monamok/NumberVerification/blob/18d864fb891dabb97082458b8a3e5b850c3602ec/documentation/API_documentation/CAMARA/uml_v0.3.jpg?raw=true)
     
     **Additional details:**
-    - **1:** The authentication must be automatic without any user interactions. It must be mobile network based. Other authentication methods such as SMS OTP or user/password are incompatibles as the goal is to validate the mobile phone number that is accessing the App. So it is required to be authentication via mobile network.
+    - **1:** The authentication must be automatic without any user interactions. It must be mobile network based with authorization code. Other authentication methods such as SMS OTP or user/password are incompatible, as the goal is to validate the mobile phone number that is accessing the App. So it is required to be authentication via mobile network and without the user being involved.
 
     - **2:** The way in which the phone_number is retrieved depends on the implementation. For example, access token may be a self contained encrypted JWT, so API can decrypt and identify phone_number. Some other implementations might request the phone_number associated to the token from Authserver.
 
