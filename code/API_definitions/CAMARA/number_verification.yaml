@@ -16,15 +16,13 @@ info:
     - The next one retrieves the phone number associated to the user's token and returns it so the verification can be made by the service provider.
 
     # Sequence Diagram
-    Number Verification API uses **OAUTH 2.0 Authorization Code grant** which allows three-legged Access Tokens. The following diagram will help to clarify the end-to-end process, including previous steps prior to this API call.
+    Number Verification API uses the **standard [OAuth2 Authorization Code grant](https://www.rfc-editor.org/rfc/rfc6749#section-4.1)**. The following diagram will help to clarify the end-to-end process, including previous steps prior to this API call.
     
     ![UML Sequence Diagram](https://github.com/monamok/NumberVerification/blob/feat/documentation_in_yaml/documentation/API_documentation/CAMARA/uml_v0.3.jpg?raw=true)
     
     **Additional details:**
 
-    The flow is the `standard OAuth2 Authorization Code Grant` (https://www.rfc-editor.org/rfc/rfc6749#section-4.1)
-
-    - **(1):** Authentication must be automatic without any user interactions. Authentication methods such as SMS OTP or user/password are incompatible, as the goal is to validate the mobile phone number that is accessing the App. So it is required to be authentication via mobile network and without the user being involved. the use of parameter prompt=none (as described in OIDC Connect https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest), ensures no user interaction.
+    - **(1):** Authentication must be automatic without any user interactions. Authentication methods such as SMS OTP or user/password are incompatible, as the goal is to validate the mobile phone number that is accessing the App. So it is required to be authentication via mobile network and without the user being involved. the use of parameter prompt=none, as described in **[OIDC Connect](https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest)**, ensures no user interaction.
 
     - **(2):** The way in which the phone_number is retrieved depends on the implementation. For example, access token may be a self contained encrypted JWT, so API can decrypt and identify phone_number. Some other implementations might request the phone_number associated to the token from Authserver.
   version: 0.3.1
