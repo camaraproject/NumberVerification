@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Number Verification
-  description: |-
+  description: |
     Service Enabling Network Function API to verify that the provided **mobile phone number** is the one used in the device. It verifies that the user is using a device with the same *mobile phone number* as it is declared.
     It also makes it possible for a Service provider to verify the number itself by returning the phone number associated to the authenticated user's access token.
     
@@ -54,7 +54,7 @@ paths:
       tags:
         - Phone number verify
       summary: Verifies if the received hashed/plain text phone number matches the phone number associated with the access token
-      description: |-
+      description: |
         Verifies if the specified phone number (plain text or hashed format) matches the one that the user is currently using.
          - The number verification will be done for the user that has authenticated via mobile network and so their `sub` is in the access token
          - It returns true/false depending on if the hashed phone number received as input matches the authenticated user's `device phone number` associated to the access token
@@ -104,7 +104,7 @@ paths:
       tags:
         - Phone number share
       summary: Returns the phone number associated with the access token
-      description: |-
+      description: |
         Returns the phone number so the API clients can verify the number themselves:
          - It will be done for the user that has authenticated via mobile network and so their `sub` is in the access token
          - It returns the authenticated user's `device phone number` associated to the access token
@@ -240,7 +240,7 @@ components:
             code: UNAUTHENTICATED
             message: Request not authenticated due to missing, invalid, or expired credentials
     PhoneNumberVerificationPermissionDenied403:
-      description: |-
+      description: |
         Client does not have sufficient permission.
         In addition to regular scenario of `PERMISSION_DENIED`, other scenarios may exist:
           - Client authentication was not via mobile network. In order to check the authentication method, AMR parameter value in the 3-legged user's access token can be used and make sure that the authentication was not either by SMS+OTP nor username/password (`{"code": "NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK","message": "Client must authenticate via the mobile network to use this service"}`)
