@@ -262,6 +262,7 @@ components:
       properties:
         sub:
           type: string
+          description: subject identifier containing the PCR (Pseudonymous Customer Reference ). Always be returned in the Resource Response so that the Resource Response is tied with the ID Token and the User in this context.
           format: uuid
         device_msisdn_verified:
           type: boolean
