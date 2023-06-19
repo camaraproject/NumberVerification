@@ -159,14 +159,14 @@ components:
       type: object
       properties:
         phoneNumber:
-          description: A phone number belonging to the user. 'E164 with +' format
+          description: A phone number belonging to the user in **E.164 format (starting with country code)**. Optionally prefixed with '+'.
           type: string
           example: '+346661113334'
     HashedPhoneNumber:
       type: object
       properties:
         hashedPhoneNumber:
-          description: Hashed phone number. SHA-256 (in hexadecimal representation) of the mobile phone number in 'E164 with +' format
+          description: Hashed phone number. SHA-256 (in hexadecimal representation) of the mobile phone number in **E.164 format (starting with country code)**. Optionally prefixed with '+'.
           type: string
           example: 32f67ab4e4312618b09cd23ed8ce41b13e095fe52b73b2e8da8ef49830e50dba
     NumberVerificationMatchResponse:
@@ -186,7 +186,7 @@ components:
         devicePhoneNumber:
           $ref: '#/components/schemas/DevicePhoneNumber'
     DevicePhoneNumber:
-      description: The device phone number associated to the access token. 'E164 with +' format
+      description: The device phone number associated to the access token in **E.164 format (starting with country code)**. Optionally prefixed with '+'.
       type: string
       example: '+346661113334'
     DevicePhoneNumberVerified:
