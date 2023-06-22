@@ -18,7 +18,7 @@ info:
     # Sequence Diagram
     Number Verification API uses the **standard [OAuth2 Authorization Code grant](https://www.rfc-editor.org/rfc/rfc6749#section-4.1)**. The following diagram will help to clarify the end-to-end process, including previous steps prior to this API call.
     
-    ![UML Sequence Diagram](https://github.com/monamok/NumberVerification/blob/feat/documentation_in_yaml/documentation/API_documentation/CAMARA/uml_v0.3.jpg?raw=true)
+    ![UML Sequence Diagram](https://github.com/camaraproject/NumberVerification/blob/main/documentation/API_documentation/CAMARA/uml_v0.3.jpg?raw=true)
     
     **Additional details:**
 
