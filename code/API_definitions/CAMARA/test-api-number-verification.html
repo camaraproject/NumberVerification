@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mocha@8.1.3/mocha.min.css">
+    <title>Tests</title>
+</head>
+
+<body>
+    <div id="mocha"></div>
+</body>
+
+</html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/10.2.0/mocha.min.js"
+    integrity="sha512-jsP/sG70bnt0xNVJt+k9NxQqGYvRrLzWhI+46SSf7oNJeCwdzZlBvoyrAN0zhtVyolGcHNh/9fEgZppG2pH+eA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.jsdelivr.net/npm/chai@4.2.0/chai.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+    mocha.setup("bdd");
+    mocha.timeout(20000);
+    const expect = chai.expect;
+
+    const version = '0.3.1'; // supported spec version
+
+    // set up values
+    const apiRoot = 'http://localhost:9091';
+    const basePath = 'one-time-passcode/v0';
+    const baseURL = `${apiRoot}/${basePath}`;
+    let token = "";
+
+    // Test Suite
+
+    describe("Number Verification API Tests", function () {
+
+
+        // Authentication test case
+        describe('Authentication Tests', function () {
+
+            it('should include OAuth2 client credentials security', async () => {
+                // TODO: Write the test case to verify OAuth2 client credentials security
+            });
+
+            it('should include three-legged OAuth2 security with location-verification-read scope',
+                async () => {
+                    // TODO: Write the test case to verify three-legged OAuth2 security with location-verification-read scope
+                });
+
+            it("Successful Authentication should return a token", async function () {
+                let response = await axios.post(`${baseURL}/authenticate`, {
+                    username: 'test-user',
+                    password: 'test-pass'
+                });
+                expect(response.status).to.equal(200);
+                token = response.data.token;
+                expect(token).to.be.a('string');
+            });
+        });
+
+        // Authorization test case
+        describe('Authorization Tests', function () {
+
+            // TODO: Write test cases to verify authorization for different user roles and permissions
+            it("TODO: Write test cases to verify authorization for different user roles and permissions ",
+                function () {
+                    expect("0").to.equal("1");
+                });
+
+            it("Unauthorized request should return 401", async function () {
+                try {
+                    let response = await axios.post(`${baseURL}/send-code`);
+                } catch (error) {
+                    expect(error.response.status).to.equal(401);
+                }
+            });
+
+            it("Authorized request should return 200", async function () {
+                let response = await axios.post(`${baseURL}/send-code`, {}, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                expect(response.status).to.equal(200);
+            });
+        });
+
+        // Security test case
+        describe('Security Tests', function () {
+
+            //TODO: Write test cases to verify security measures such as encryption, input validation, etc.
+            it("TODO: Write test cases to verify security measures such as encryption, input validation, etc.",
+                function () {
+                    expect("0").to.equal("1");
+                });
+
+            it("Invalid token should return 403", async function () {
+                try {
+                    let response = await axios.post(`${baseURL}/verifications`, {
+                        device: 'device1',
+                        area: 'area1'
+                    }, {
+                        headers: {
+                            Authorization: `Bearer ${'invalidToken'}`
+                        }
+                    });
+                } catch (error) {
+                    expect(error.response.status).to.equal(403);
+                }
+            });
+
+            it("No token should return 401", async function () {
+                try {
+                    let response = await axios.post(`${baseURL}/verifications`, {
+                        device: 'device1',
+                        area: 'area1'
+                    });
+                } catch (error) {
+                    expect(error.response.status).to.equal(401);
+                }
+            });
+        });
+
+        // Tests for specific URI like /verifications
+        const basePath = 'https://{host}{basePath}';
+        const phoneNumberVerifyAPI = `${basePath}/verify`;
+        const phoneNumberShareAPI = `${basePath}/device-phone-number`;
+
+        describe('Number Verification API Test Suite', () => {
+            describe('POST /verify', () => {
+                it('should return true when phoneNumber matches', async () => {
+                    const response = await axios.post(phoneNumberVerifyAPI, {
+                        phoneNumber: '+346661113334'
+                    });
+                    expect(response.status).to.eql(200);
+                    expect(response.data.devicePhoneNumberVerified).to.be.true;
+                });
+
+                it('should return false when phoneNumber does not match', async () => {
+                    const response = await axios.post(phoneNumberVerifyAPI, {
+                        phoneNumber: '+346661113335'
+                    });
+                    expect(response.status).to.eql(200);
+                    expect(response.data.devicePhoneNumberVerified).to.be.false;
+                });
+
+                it('should return error when phoneNumber format is invalid', async () => {
+                    try {
+                        await axios.post(phoneNumberVerifyAPI, {
+                            phoneNumber: 'invalidNumber'
+                        });
+                    } catch (err) {
+                        expect(err.response.status).to.eql(400);
+                        assert.match(err.response.data.code, /INVALID_ARGUMENT/);
+                    }
+                });
+            });
+
+            describe('GET /device-phone-number', () => {
+                it('should return devicePhoneNumber when requested', async () => {
+                    const response = await axios.get(phoneNumberShareAPI);
+                    expect(response.status).to.eql(200);
+                    assert.match(response.data.devicePhoneNumber, /\+[\d]{1,14}/);
+                });
+
+                it('should return an error with status 403 when no authentication',
+        async () => {
+                    try {
+                        await axios.get(phoneNumberShareAPI);
+                    } catch (err) {
+                        expect(err.response.status).to.eql(403);
+                        assert.match(err.response.data.code,
+                            /NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK/
+                            );
+                    }
+                });
+            });
+        });
+
+        // Performance test
+        describe('Performance tests', () => {
+            it('should complete the API requests within a specific time', function (done) {
+                this.timeout(2000); // Set timeout to 2000 ms
+
+                axios.post(phoneNumberVerifyAPI, {
+                    phoneNumber: '+346661113334'
+                }, (err, res) => {
+                    if (err) {
+                        done(err);
+                    }
+                    expect(res.status).to.eql(200);
+                    done();
+                });
+            });
+        });
+
+
+    });
+    mocha.run();
+</script>
