@@ -1,7 +1,7 @@
 # Overview
 
 Number Verification API is used to verify that the provided **mobile phone number** is the one used in the device. It verifies that the user is using a device with the same *mobile phone number* as it is declared.
-It also makes it possible for a Service provider to verify the number itself by returning the phone number associated to the authenticated user's access token.
+It also makes it possible for a Service provider to verify the number itself by returning the phone number associated to the authenticated user's access token. This API derives from the GSMA Mobile Connect Account Takeover Protection specification [Mobile Connect Number Verify](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.54-Mobile-Connect-Verified-MSISDN-Definition-and-Technical-Requirements-1.0.pdf).  For more about Mobile Connect, please see [about Mobile Connect](https://mobileconnect.io/).
 
 ## 1\. Introduction
 
