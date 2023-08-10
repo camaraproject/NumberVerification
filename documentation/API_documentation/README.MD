@@ -8,7 +8,7 @@ CAMARA Number Verify API aims to deliver proof of device possession, that is att
 
 ### Quick start
 
-1. Download one of yaml file.
+1. Download yaml file.
 2. Contact CAMARA API maintainers to get guidance on the onboarding process:
 
    * [Deutsche Telekom - Dawid Wróblewski](https://github.com/DT-DawidWroblewski)
