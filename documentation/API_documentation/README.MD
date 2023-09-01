@@ -4,7 +4,9 @@
 
 ### Introduction
 
-CAMARA Number Verify API aims to deliver proof of device possession, that is attached to SIM card and MSISDN, using mobile network authentication. This API derives from the GSMA Mobile Connect Account Takeover Protection specification [Mobile Connect Number Verify](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.54-Mobile-Connect-Verified-MSISDN-Definition-and-Technical-Requirements-1.0.pdf).  For more about Mobile Connect, please see [about Mobile Connect](https://mobileconnect.io/).
+CAMARA Number Verify API aims to deliver proof of device possession, that is attached to SIM card and MSISDN, using mobile network authentication. 
+
+[GSMA Mobile Connect Verified MSISDN specification](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.54-Mobile-Connect-Verified-MSISDN-Definition-and-Technical-Requirements-1.0.pdf) was used as source of input for this API.  For more about Mobile Connect, please see [Mobile Connect website](https://mobileconnect.io/).
 
 ### Quick start
 
@@ -36,9 +38,9 @@ Described inside yaml file.
 
 |No|Version|Changelog|
 |:---:|---:|:---|
-|1|0.1.0|Camara & Mobile Connect flavours available|
-|2|0.2.0|Camara only version<br>(Mobile Connect archived)|
+|1|0.1.0|Camara & Mobile Connect flavors available|
+|2|0.2.1|Camara only version<br>|
 
 ## API Spec
 
-[API definition (code)](../../code/API_definitions/CAMARA/number_verification.yaml)
+[API definition (code)](../../code/API_definitions/number_verification.yaml)
