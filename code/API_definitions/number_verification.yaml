@@ -8,8 +8,15 @@ info:
     
     In this API **phone number** term refers to the mobile phone number
 
+<<<<<<< HEAD:code/API_definitions/number_verification.yaml
     [GSMA Mobile Connect Verified MSISDN specification](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.54-Mobile-Connect-Verified-MSISDN-Definition-and-Technical-Requirements-1.0.pdf) was used as source of input for this API.  For more about Mobile Connect, please see [Mobile Connect website](https://mobileconnect.io/).
     
+=======
+    # Relevant Definitions and Concepts
+
+    - **Network-Based Authentication**: Authentication mechanism based on the identification of the endpoint of a network connection. Network operators know to which user a network resource is assigned at a given moment, for example the mobile phone number associated to a specific mobile network connection.
+  
+>>>>>>> 034c633de3c07203f1adaffa8bbf2a318f849494:code/API_definitions/CAMARA/number_verification.yaml
     # API Functionality 
     This enables a Service Provider (SP) to verify the phone number of the mobile device being used to access their service where the mobile device is accessing the *service provider* over a mobile network (WiFi connections are out of this API scope). This can happen either by getting the comparison result or receiving the phone number of the device that is used, so they can verify it themselves.
 
@@ -28,6 +35,10 @@ info:
     - **(1):** Authentication must be automatic without any user interactions. Authentication methods such as SMS OTP or user/password are incompatible, as the goal is to validate the mobile phone number that is accessing the App. So it is required to be authentication via mobile network and without the user being involved. the use of parameter prompt=none, as described in **[OIDC Connect](https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest)**, ensures no user interaction.
 
     - **(2):** The way in which the phone_number is retrieved depends on the implementation. For example, access token may be a self contained encrypted JWT, so API can decrypt and identify phone_number. Some other implementations might request the phone_number associated to the token from Authserver.
+<<<<<<< HEAD:code/API_definitions/number_verification.yaml
+=======
+  version: 0.4.0-wip
+>>>>>>> 034c633de3c07203f1adaffa8bbf2a318f849494:code/API_definitions/CAMARA/number_verification.yaml
   termsOfService: http://example.com/terms/
   contact:
     name: API Support
@@ -61,7 +72,7 @@ paths:
         - Phone number verify
       summary: Verifies if the received hashed/plain text phone number matches the phone number associated with the access token
       description: |
-        Verifies if the specified phone number (plain text or hashed format) matches the one that the user is currently using.
+        Verifies if the specified phone number (either in plain text or hashed format) matches the one that the user is currently using. Only one of the plain or hashed formats must be provided.
          - The number verification will be done for the user that has authenticated via mobile network and so their `sub` is in the access token
          - It returns true/false depending on if the hashed phone number received as input matches the authenticated user's `device phone number` associated to the access token
       operationId: phoneNumberVerify
@@ -157,20 +168,14 @@ components:
   schemas:
     NumberVerificationRequestBody:
       type: object
-      description: Payload to verify the phone number
-      oneOf:
-          - $ref: '#/components/schemas/PhoneNumber'
-          - $ref: '#/components/schemas/HashedPhoneNumber'
-    PhoneNumber:
-      type: object
+      description: Payload to verify the phone number.
+      minProperties: 1
+      maxProperties: 1
       properties:
         phoneNumber:
           description: A phone number belonging to the user in **E.164 format (starting with country code)**. Optionally prefixed with '+'.
           type: string
           example: '+346661113334'
-    HashedPhoneNumber:
-      type: object
-      properties:
         hashedPhoneNumber:
           description: Hashed phone number. SHA-256 (in hexadecimal representation) of the mobile phone number in **E.164 format (starting with country code)**. Optionally prefixed with '+'.
           type: string
