@@ -6,6 +6,8 @@ info:
     It also makes it possible for a Service provider to verify the number itself by returning the phone number associated to the authenticated user's access token.
     
     In this API **phone number** term refers to the mobile phone number
+    
+    [GSMA Mobile Connect Verified MSISDN specification](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.54-Mobile-Connect-Verified-MSISDN-Definition-and-Technical-Requirements-1.0.pdf) was used as source of input for this API.  For more about Mobile Connect, please see [Mobile Connect website](https://mobileconnect.io/).
 
     # Relevant Definitions and Concepts
 
