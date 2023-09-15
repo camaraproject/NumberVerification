@@ -62,16 +62,11 @@ paths:
       summary: Verifies if the received hashed/plain text phone number matches the phone number associated with the access token
       description: |
         Verifies if the specified phone number (either in plain text or hashed format) matches the one that the user is currently using. Only one of the plain or hashed formats must be provided.
-         - The number verification will be done for the user that has authenticated via mobile network and so their `sub` is in the access token
-         - It returns true/false depending on if the hashed phone number received as input matches the authenticated user's `device phone number` associated to the access token
+        - The number verification will be done for the user that has authenticated via mobile network and so their `sub` is in the access token
+        - It returns true/false depending on if the hashed phone number received as input matches the authenticated user's `device phone number` associated to the access token
       operationId: phoneNumberVerify
       parameters:
-        - in: header
-          name: X-Correlator
-          required: false
-          description: Correlation id for the different services
-          schema:
-            type: string
+        - $ref: '#/components/parameters/X-Correlator'
       requestBody:
         content:
           application/json:
@@ -83,9 +78,7 @@ paths:
           description: OK
           headers:
             X-Correlator:
-              description: Correlation id for the different services
-              schema:
-                type: string
+              $ref: '#/components/headers/X-Correlator'
           content:
             application/json:
               schema:
@@ -103,8 +96,8 @@ paths:
         '504':
           $ref: '#/components/responses/Generic504'
       security:
-        - three_legged:
-          - number-verification-verify-read
+        - openId:
+          - number-verification:verify
   /device-phone-number:
     get:
       tags:
@@ -112,24 +105,17 @@ paths:
       summary: Returns the phone number associated with the access token
       description: |
         Returns the phone number so the API clients can verify the number themselves:
-         - It will be done for the user that has authenticated via mobile network and so their `sub` is in the access token
-         - It returns the authenticated user's `device phone number` associated to the access token
+        - It will be done for the user that has authenticated via mobile network and so their `sub` is in the access token
+        - It returns the authenticated user's `device phone number` associated to the access token
       operationId: phoneNumberShare
       parameters:
-        - in: header
-          name: X-Correlator
-          required: false
-          description: Correlation id for the different services
-          schema:
-            type: string
+        - $ref: '#/components/parameters/X-Correlator'
       responses:
         '200':
           description: OK
           headers:
             X-Correlator:
-              description: Correlation id for the different services
-              schema:
-                type: string
+              $ref: '#/components/headers/X-Correlator'
           content:
             application/json:
               schema:
@@ -147,13 +133,26 @@ paths:
         '504':
           $ref: '#/components/responses/Generic504'
       security:
-        - three_legged:
-          - number-verification-share-read
+        - openId:
+          - number-verification:device-phone-number:read
 components:
   securitySchemes:
-    three_legged:
+    openId:
       type: openIdConnect
       openIdConnectUrl: https://example.com/.well-known/openid-configuration
+  headers:
+    X-Correlator:
+      description: Correlation id for the different services
+      schema:
+        type: string
+  parameters:
+    X-Correlator:
+      name: X-Correlator
+      in: header
+      required: false
+      description: Correlation id for the different services
+      schema:
+        type: string
   schemas:
     NumberVerificationRequestBody:
       type: object
@@ -213,9 +212,7 @@ components:
       description: Problem with the client request
       headers:
         X-Correlator:
-          description: Correlation id for the different services
-          schema:
-            type: string
+          $ref: '#/components/headers/X-Correlator'
       content:
         application/json:
           schema:
@@ -228,9 +225,7 @@ components:
       description: Authentication problem with the client request
       headers:
         X-Correlator:
-          description: Correlation id for the different services
-          schema:
-            type: string
+          $ref: '#/components/headers/X-Correlator'
       content:
         application/json:
           schema:
@@ -247,9 +242,7 @@ components:
           - Phone number cannot be deducted from access token context.(`{"code": "NUMBER_VERIFICATION.INVALID_TOKEN_CONTEXT","message": "Phone number cannot be deducted from access token context"}`)
       headers:
         X-Correlator:
-          description: Correlation id for the different services
-          schema:
-            type: string
+          $ref: '#/components/headers/X-Correlator'
       content:
         application/json:
           schema:
@@ -274,9 +267,7 @@ components:
       description: Server error
       headers:
         X-Correlator:
-          description: Correlation id for the different services
-          schema:
-            type: string
+          $ref: '#/components/headers/X-Correlator'
       content:
         application/json:
           schema:
@@ -289,9 +280,7 @@ components:
       description: Service unavailable. Typically the server is down.
       headers:
         X-Correlator:
-          description: Correlation id for the different services
-          schema:
-            type: string
+          $ref: '#/components/headers/X-Correlator'
       content:
         application/json:
           schema:
@@ -304,9 +293,7 @@ components:
       description: Request time exceeded. If it happens repeatedly, consider reducing the request complexity
       headers:
         X-Correlator:
-          description: Correlation id for the different services
-          schema:
-            type: string
+          $ref: '#/components/headers/X-Correlator'
       content:
         application/json:
           schema:
