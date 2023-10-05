@@ -74,7 +74,12 @@ paths:
         - It returns true/false depending on if the hashed phone number received as input matches the authenticated user's `device phone number` associated to the access token
       operationId: phoneNumberVerify
       parameters:
-        - $ref: '#/components/parameters/X-Correlator'
+        - in: header
+          name: X-Correlator
+          required: false
+          description: Correlation id for the different services
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -86,7 +91,9 @@ paths:
           description: OK
           headers:
             X-Correlator:
-              $ref: '#/components/headers/X-Correlator'
+              description: Correlation id for the different services
+              schema:
+                type: string
           content:
             application/json:
               schema:
@@ -117,13 +124,20 @@ paths:
         - It returns the authenticated user's `device phone number` associated to the access token
       operationId: phoneNumberShare
       parameters:
-        - $ref: '#/components/parameters/X-Correlator'
+        - in: header
+          name: X-Correlator
+          required: false
+          description: Correlation id for the different services
+          schema:
+            type: string
       responses:
         '200':
           description: OK
           headers:
             X-Correlator:
-              $ref: '#/components/headers/X-Correlator'
+              description: Correlation id for the different services
+              schema:
+                type: string
           content:
             application/json:
               schema:
@@ -148,19 +162,6 @@ components:
     openId:
       type: openIdConnect
       openIdConnectUrl: https://example.com/.well-known/openid-configuration
-  headers:
-    X-Correlator:
-      description: Correlation id for the different services
-      schema:
-        type: string
-  parameters:
-    X-Correlator:
-      name: X-Correlator
-      in: header
-      required: false
-      description: Correlation id for the different services
-      schema:
-        type: string
   schemas:
     NumberVerificationRequestBody:
       type: object
@@ -220,7 +221,9 @@ components:
       description: Problem with the client request
       headers:
         X-Correlator:
-          $ref: '#/components/headers/X-Correlator'
+          description: Correlation id for the different services
+          schema:
+            type: string
       content:
         application/json:
           schema:
@@ -233,7 +236,9 @@ components:
       description: Authentication problem with the client request
       headers:
         X-Correlator:
-          $ref: '#/components/headers/X-Correlator'
+          description: Correlation id for the different services
+          schema:
+            type: string
       content:
         application/json:
           schema:
@@ -250,7 +255,9 @@ components:
           - Phone number cannot be deducted from access token context.(`{"code": "NUMBER_VERIFICATION.INVALID_TOKEN_CONTEXT","message": "Phone number cannot be deducted from access token context"}`)
       headers:
         X-Correlator:
-          $ref: '#/components/headers/X-Correlator'
+          description: Correlation id for the different services
+          schema:
+            type: string
       content:
         application/json:
           schema:
@@ -275,7 +282,9 @@ components:
       description: Server error
       headers:
         X-Correlator:
-          $ref: '#/components/headers/X-Correlator'
+          description: Correlation id for the different services
+          schema:
+            type: string
       content:
         application/json:
           schema:
@@ -288,7 +297,9 @@ components:
       description: Service unavailable. Typically the server is down.
       headers:
         X-Correlator:
-          $ref: '#/components/headers/X-Correlator'
+          description: Correlation id for the different services
+          schema:
+            type: string
       content:
         application/json:
           schema:
@@ -301,7 +312,9 @@ components:
       description: Request time exceeded. If it happens repeatedly, consider reducing the request complexity
       headers:
         X-Correlator:
-          $ref: '#/components/headers/X-Correlator'
+          description: Correlation id for the different services
+          schema:
+            type: string
       content:
         application/json:
           schema:
