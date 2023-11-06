@@ -70,7 +70,7 @@ paths:
       summary: Verifies if the received hashed/plain text phone number matches the phone number associated with the access token
       description: |
         Verifies if the specified phone number (either in plain text or hashed format) matches the one that the user is currently using. Only one of the plain or hashed formats must be provided.
-        - The number verification will be done for the user that has authenticated via mobile network and so their `sub` is in the access token
+        - The number verification will be done for the user that has authenticated via mobile network
         - It returns true/false depending on if the hashed phone number received as input matches the authenticated user's `device phone number` associated to the access token
       operationId: phoneNumberVerify
       parameters:
@@ -120,7 +120,7 @@ paths:
       summary: Returns the phone number associated with the access token
       description: |
         Returns the phone number so the API clients can verify the number themselves:
-        - It will be done for the user that has authenticated via mobile network and so their `sub` is in the access token
+        - It will be done for the user that has authenticated via mobile network
         - It returns the authenticated user's `device phone number` associated to the access token
       operationId: phoneNumberShare
       parameters:
