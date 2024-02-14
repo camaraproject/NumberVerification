@@ -49,14 +49,11 @@ info:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-  - url: https://{host}{basePath}
+  - url: '{apiRoot}/number-verification/v0'
     variables:
-      host:
-        default: api.example.com
-        description: Host that serves the API
-      basePath:
-        default: /number-verification/v0
-        description: Base path for the number verification API
+      apiRoot:
+        default: http://localhost:9091
+        description: API root
 tags:
   - name: Phone number verify
     description: API operation to verify a phone number received as input. It can be received either in plain text or hashed format.
