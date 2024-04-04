@@ -167,11 +167,12 @@ components:
       maxProperties: 1
       properties:
         phoneNumber:
-          description: A phone number belonging to the user in **E.164 format (starting with country code)**. Optionally prefixed with '+'.
           type: string
-          example: '+346661113334'
+          pattern: '^\+[1-9][0-9]{4,14}$'
+          example: '+123456789'
+          description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
         hashedPhoneNumber:
-          description: Hashed phone number. SHA-256 (in hexadecimal representation) of the mobile phone number in **E.164 format (starting with country code)**. Optionally prefixed with '+'.
+          description: Hashed phone number. SHA-256 (in hexadecimal representation) of the mobile phone number in **E.164 format (starting with country code)**. Prefixed with '+'.
           type: string
           example: 32f67ab4e4312618b09cd23ed8ce41b13e095fe52b73b2e8da8ef49830e50dba
     NumberVerificationMatchResponse:
@@ -191,9 +192,10 @@ components:
         devicePhoneNumber:
           $ref: '#/components/schemas/DevicePhoneNumber'
     DevicePhoneNumber:
-      description: The device phone number associated to the access token in **E.164 format (starting with country code)**. Optionally prefixed with '+'.
       type: string
-      example: '+346661113334'
+      pattern: '^\+[1-9][0-9]{4,14}$'
+      example: '+123456789'
+      description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
     DevicePhoneNumberVerified:
       description: Number verification. True, if it matches
       type: boolean
