@@ -1,6 +1,6 @@
 | Org                    | Name                                                |
 | -----------------------| ----------------------------------------------------|
-| Deutsche Telekom AG | Dawid Wróblewski |
+| Deutsche Telekom AG | Axel Nennker |
 | KDDI | Toshiyasu Wakayama |
 | Telefónica | José Luis Urien |
 | Telefónica | Fernando Prado Cabrillo |
