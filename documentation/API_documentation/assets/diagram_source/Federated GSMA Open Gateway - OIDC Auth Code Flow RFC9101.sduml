@@ -62,7 +62,7 @@ API_CONSUMER_FE->API_CONSUMER_BE:Verify the number
 
 API_CONSUMER_BE->API_CONSUMER_BE:Prepare Signed Request Object
 
-note right of API_CONSUMER_BE:**Request Object JWT:**\n• iss = Application Backend client_id\n• aud = https://auth.operator-z.com\n• response_type = code\n• client_id = Application Backend client_id\n• redirect_uri = https://application-backend.com/call-back\n• scope = dpv:FraudPreventionAndDetection#number-verification:verify\n• state\n• nonce\n• max_age\n• prompt = none\n• jti\n• exp\n• iat\n• nbf
+note right of API_CONSUMER_BE:**Request Object JWT:**\n• iss = Application Backend client_id\n• aud = https://auth.operator-z.com\n• response_type = code\n• client_id = Application Backend client_id\n• redirect_uri = https://application-backend.com/call-back\n• scope = number-verification:verify\n• purpose = dpv:FraudPreventionAndDetection\n• state\n• nonce\n• max_age\n• prompt = none\n• jti\n• exp\n• iat\n• nbf
 
 
 API_CONSUMER_BE-->API_CONSUMER_FE:HTTP/1.1 302 Found\nLocation: https://auth.operator-z.com/authorize?\n \nLocation Query String:\n• client_id\n• request
@@ -98,7 +98,7 @@ end
 
 OP_Z_AUTHSVC->OP_Z_AUTHSVC:Prepare Signed Request Object
 
-note right of OP_Z_AUTHSVC:**Request Object JWT:**\n• iss = Operator Z client_id\n• aud = https://auth.operator-y.com\n• response_type = code\n• client_id = Operator Z client_id\n• redirect_uri = https://operator-z.com/call-back\n• scope = dpv:FraudPreventionAndDetection#number-verification:verify\n• state\n• nonce\n• max_age\n• prompt = none\n• jti\n• exp\n• iat\n• nbf
+note right of OP_Z_AUTHSVC:**Request Object JWT:**\n• iss = Operator Z client_id\n• aud = https://auth.operator-y.com\n• response_type = code\n• client_id = Operator Z client_id\n• redirect_uri = https://operator-z.com/call-back\n• scope = number-verification:verify\n• purpose = dpv:FraudPreventionAndDetection\n• state\n• nonce\n• max_age\n• prompt = none\n• jti\n• exp\n• iat\n• nbf
 
 OP_Z_AUTHSVC-->OP_Z_APIGW:HTTP/1.1 302 Found\n Location: https://auth.operator-y.com/authorize?\n\nLocation Query String:\n• client_id\n• request
 
