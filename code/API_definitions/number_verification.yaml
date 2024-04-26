@@ -5,7 +5,7 @@ info:
     Service Enabling Network Function API to verify that the provided **mobile phone number** is the one used in the device. It verifies that the user is using a device with the same *mobile phone number* as it is declared.
     It also makes it possible for a Service provider to verify the number itself by returning the phone number associated to the authenticated user's access token.
     
-    In this API **phone number** term refers to the mobile phone number
+    In this API **phone number** term refers to the mobile phone number.
 
     # Introduction
 
@@ -16,7 +16,7 @@ info:
 
     # Relevant Definitions and Concepts
 
-    - **Network-Based Authentication**: Authentication mechanism based on the identification of the endpoint of a network connection. Network operators know to which user a network resource is assigned at a given moment, for example the mobile phone number associated to a specific mobile network connection.
+    - **Network-Based Authentication**: Authentication mechanism based on the identification of the endpoint of a network connection. Network operators know to which subscriber a network resource is assigned at a given moment, for example the mobile phone number associated to a specific mobile network connection.
   
     # API Functionality 
     This enables a Service Provider (SP) to verify the phone number of the mobile device being used to access their service where the mobile device is accessing the *service provider* over a mobile network (WiFi connections are out of this API scope). This can happen either by getting the comparison result or receiving the phone number of the device that is used, so they can verify it themselves.
