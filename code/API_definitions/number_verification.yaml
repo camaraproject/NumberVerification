@@ -17,8 +17,8 @@ info:
     # Relevant Definitions and Concepts
 
     - **Network-Based Authentication**: Authentication mechanism based on the identification of the endpoint of a network connection. Network operators know to which subscriber a network resource is assigned at a given moment, for example the mobile phone number associated to a specific mobile network connection.
-  
-    # API Functionality 
+
+    # API Functionality
 
     This enables a Service Provider (SP) to verify the phone number of the mobile device being used to access their service where the mobile device is accessing the *service provider* over a mobile network (WiFi connections are out of this API scope). This can happen either by getting the comparison result or receiving the phone number of the device that is used, so they can verify it themselves.
 
