@@ -1,7 +1,7 @@
-| Org                    | Name                                                |
-| -----------------------| ----------------------------------------------------|
-| Deutsche Telekom AG | Axel Nennker |
-| KDDI | Toshiyasu Wakayama |
-| Telefónica | José Luis Urien |
-| Telefónica | Fernando Prado Cabrillo |
-| Orange | Ludovic Robert |
+| Org                    | Name                        | GitHub UserName            |
+| -----------------------| ----------------------------|----------------------------|
+| Deutsche Telekom AG | Axel Nennker | AxelNennker |
+| KDDI | Toshiyasu Wakayama | ToshiWakayama-KDDI |
+| Telefónica | José Luis Urien | jlurien |
+| Telefónica | Fernando Prado Cabrillo | fernandopradocabrillo |
+| Orange | Ludovic Robert | bigludo7 |
