@@ -30,10 +30,10 @@ The API definition(s) are based on
 **number-verification 1.0.0-rc.1** is the first release-candidate version for the v1.0.0 of the number verification API.
 
 - API definition **with inline documentation**:
-    - OpenAPI [YAML spec file](https://github.com/camaraproject/NumberVerification/blob/release-1.0.0/code/API_definitions/number_verification.yaml)
-    - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/blob/release-1.0.0/code/API_definitions/number_verification.yaml&nocors)
-    - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/blob/release-1.0.0/code/API_definitions/number_verification.yaml)
-  - 
+    - OpenAPI [YAML spec file](https://github.com/camaraproject/NumberVerification/blob/r1.1/code/API_definitions/number_verification.yaml)
+    - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/blob/r1.1/code/API_definitions/number_verification.yaml&nocors)
+    - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/blob/r1.1/code/API_definitions/number_verification.yaml)
+    
 **number-verification 1.0.0-rc.1 is the first stable version for CAMARA Number Verification API**
 
 This version contains significant changes compared to v0.3.1, and it is not backward compatible.
