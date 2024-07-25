@@ -79,10 +79,18 @@ Initital release of Camara Number Verification API
 * Telefonica Proposal by @monamok in https://github.com/camaraproject/NumberVerification/pull/3
 * Adding API documentation by @monamok in https://github.com/camaraproject/NumberVerification/pull/6
 * Initial content for Number Verify by @DT-DawidWroblewski in https://github.com/camaraproject/NumberVerification/pull/2
+* main readme update by @DT-DawidWroblewski in https://github.com/camaraproject/NumberVerification/pull/12
+* reshaping the content (+readme.md update) by @DT-DawidWroblewski in https://github.com/camaraproject/NumberVerification/pull/13
+* fixing links by @DT-DawidWroblewski in https://github.com/camaraproject/NumberVerification/pull/14
+* fixing links by @DT-DawidWroblewski in https://github.com/camaraproject/NumberVerification/pull/15
 * New specific 403 token error and guidelines alignment by @monamok in https://github.com/camaraproject/NumberVerification/pull/19
+* repo fine tunining by @DT-DawidWroblewski in https://github.com/camaraproject/NumberVerification/pull/23
+* Repo fine tuning recovery by @monamok in https://github.com/camaraproject/NumberVerification/pull/22
 * adding puml by @DT-DawidWroblewski in https://github.com/camaraproject/NumberVerification/pull/24
 * guidelines alignment errors and camel case by @monamok in https://github.com/camaraproject/NumberVerification/pull/30
+* updating content insde readme.md by @DT-DawidWroblewski in https://github.com/camaraproject/NumberVerification/pull/34
 * Change 'sub' cardinality + add attribute description by @bigludo7 in https://github.com/camaraproject/NumberVerification/pull/32
+* Adding PR and Issues commonalities templates by @monamok in https://github.com/camaraproject/NumberVerification/pull/40
 * Embed documentation in API Spec by @monamok in https://github.com/camaraproject/NumberVerification/pull/38
 
 **Full Changelog**: https://github.com/camaraproject/NumberVerification/commits/v0.3.1
