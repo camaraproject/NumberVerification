@@ -16,7 +16,8 @@ Checklist for number_verification in version b1.0.0-rc1.1
 |  8 | Enhanced API test cases & documentation      |   O   |         O         |    O    |    M   |   N   | link |
 |  9 | Test result statement                        |   O   |         O         |    O    |    M   |   N   | link |
 | 10 | API release numbering convention applied     |   M   |         M         |    M    |    M   |   Y   |      |
-| 11 | Change log updated                           |   M   |         M         |    M    |    M   |   N   | [PR121](https://github.com/camaraproject/NumberVerification/pull/121) |
+| 11 | Change log updated                           |   M   |         M         |    M    |    M   |   N   | [link](/CHANGELOG.md) |
+
 | 12 | Previous public-release was certified        |   O   |         O         |    O    |    M   |   Y   |      |
 
 
