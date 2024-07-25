@@ -69,4 +69,20 @@ This version contains significant changes compared to v0.3.1, and it is not back
 - @maxl2287 made their first contribution by adding a pattern for PhoneNumber in /verify  [PR68](https://github.com/camaraproject/NumberVerification/issues/76)
 - @bigludo7 made their first contribution by making change following megalinter integration [PR103](https://github.com/camaraproject/NumberVerification/pull/103)
 
+**Full Changelog**: https://github.com/camaraproject/NumberVerification/compare/v0.3.1...r1.1
 
+## v0.3.1
+
+Initital release of Camara Number Verification API
+
+## What's Changed
+* Telefonica Proposal by @monamok in https://github.com/camaraproject/NumberVerification/pull/3
+* Adding API documentation by @monamok in https://github.com/camaraproject/NumberVerification/pull/6
+* Initial content for Number Verify by @DT-DawidWroblewski in https://github.com/camaraproject/NumberVerification/pull/2
+* New specific 403 token error and guidelines alignment by @monamok in https://github.com/camaraproject/NumberVerification/pull/19
+* adding puml by @DT-DawidWroblewski in https://github.com/camaraproject/NumberVerification/pull/24
+* guidelines alignment errors and camel case by @monamok in https://github.com/camaraproject/NumberVerification/pull/30
+* Change 'sub' cardinality + add attribute description by @bigludo7 in https://github.com/camaraproject/NumberVerification/pull/32
+* Embed documentation in API Spec by @monamok in https://github.com/camaraproject/NumberVerification/pull/38
+
+**Full Changelog**: https://github.com/camaraproject/NumberVerification/commits/v0.3.1
