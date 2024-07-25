@@ -4,7 +4,8 @@ Checklist for number_verification in version b1.0.0-rc1.1
 
 | Nr | API release assets  | alpha | release-candidate |  public-release<br>initial | public-release<br> stable | Status | Comments |
 |----|----------------------------------------------|:-----:|:-----------------:|:-------:|:------:|:----:|:----:|
-|  1 | API definition                               |   M   |         M         |    M    |    M   |   Y   | [link](https://github.com/camaraproject/NumberVerification/blob/main/code/API_definitions/number_verification.yaml) |
+|  1 | API definition                               |   M   |         M         |    M    |    M   |   Y   | [link](/code/API_definitions/number_verification.yaml) |
+
 |  2 | Design guidelines from Commonalities applied |   O   |         M         |    M    |    M   |  Y    |      |
 |  3 | Guidelines from ICM applied                  |   O   |         M         |    M    |    M   |   Y   |      |
 |  4 | API versioning convention applied            |   M   |         M         |    M    |    M   |   Y   |      |
