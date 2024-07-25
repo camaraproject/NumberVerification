@@ -27,7 +27,7 @@ Repository to describe, develop, document and test the NumberVerification API fa
 ## Status and released versions
 
 * Note: Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until a new release is created. For example, changes may be reverted before a release is created. **For best results, use the latest available release**.
-* **The latest available release and version of CAMARA Number Verification API is 1.0.0-rc.1 This is the first stable version candidate of the API**. It is suitable for implementors and could be use with customers in productive environments.
+* **The latest pre-release of CAMARA Number Verification API is 1.0.0-rc.1 This is the release candidate of the first stable version of the API**. It is suitable for implementors.
 * The Release Tag is [r1.1](https://github.com/camaraproject/NumberVerification/releases/tag/r1.1).
   - API definition **with inline documentation**:
     - OpenAPI [YAML spec file](https://github.com/camaraproject/NumberVerification/blob/r1.1/code/API_definitions/number_verification.yaml)
