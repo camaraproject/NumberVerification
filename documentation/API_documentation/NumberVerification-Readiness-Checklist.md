@@ -1,6 +1,6 @@
 # API Readiness Checklist
 
-Checklist for number_verification in version b1.0.0-rc1.1
+Checklist for number_verification 1.0.0-rc.1 in release r1.1
 
 | Nr | API release assets  | alpha | release-candidate |  public-release<br>initial | public-release<br> stable | Status | Comments |
 |----|----------------------------------------------|:-----:|:-----------------:|:-------:|:------:|:----:|:----:|
