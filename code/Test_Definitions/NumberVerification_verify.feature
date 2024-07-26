@@ -36,13 +36,13 @@ Feature: Camara Number Verification API verify
       | +00012230304913849 |
       | 123                |
       | ++49565456787      |
-    
+
 
   @NumberVerification_verify100_match_true
   Scenario:  verify phone number NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1, network connection and access token matches NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
     Given they use the base url over a mobile connection
     And the resource is "/verify"
-    And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow or CIBA
+    And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
     And one of the scopes associated with the access token is number-verification:verify
     When the HTTPS "POST" request is sent
     And the mobile connection is associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
@@ -58,7 +58,7 @@ Feature: Camara Number Verification API verify
   Scenario:  verify phone number NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1, network connection and access token matches NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER2
     Given they use the base url over a mobile connection
     And the resource is "/verify"
-    And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow or CIBA
+    And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
     And one of the scopes associated with the access token is number-verification:verify
     When the HTTPS "POST" request is sent
     And the mobile connection is associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
@@ -73,7 +73,7 @@ Feature: Camara Number Verification API verify
   Scenario:  verify phone number but no phonenumber in request
     Given they use the base url over a mobile connection
     And the resource is "/verify"
-    And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow or CIBA
+    And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
     And one of the scopes associated with the access token is number-verification:verify
     When the HTTPS "POST" request is sent
     And the mobile connection is associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
@@ -89,7 +89,7 @@ Feature: Camara Number Verification API verify
   Scenario:  verify phone number with valid access token but scope number-verification:verify is missing
     Given they use the base url over a mobile connection
     And the resource is "/verify"
-    And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow or CIBA
+    And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
     And none of the scopes associated with the access token is number-verification:verify
     When the HTTPS "POST" request is sent
     And the mobile connection is associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
