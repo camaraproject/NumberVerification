@@ -64,7 +64,7 @@ Feature: Camara Number Verification API verify
 
 
   @NumberVerification_verify101_match_false
-  Scenario:  verify phone number NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1, network connection and access token matches NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER2
+  Scenario:  verify phone number NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 but access token is associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER2
     Given they use the base url over a mobile connection
     And the resource is "/verify"
     And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
