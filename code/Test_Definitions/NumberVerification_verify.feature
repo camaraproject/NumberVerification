@@ -1,13 +1,13 @@
 
 
-@NumberVerification
-Feature: Camara Number Verification API
+@NumberVerification_verify
+Feature: Camara Number Verification API verify
 
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specified in
 # https://raw.githubusercontent.com/camaraproject/NumberVerification/main/code/API_definitions/number_verification.yaml
 
-  Background: Common Number Verification setup
+  Background: Common Number Verification verify setup
     Given the resource "/number-verification/v0"  as  base url
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
