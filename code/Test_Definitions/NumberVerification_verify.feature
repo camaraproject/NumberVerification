@@ -13,6 +13,8 @@ Feature: Camara Number Verification API verify
 # Testing assets:
 # * a mobile device with SIM card with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
 # * a mobile device with SIM card with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER2
+# * a mobile device with SIM card with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER_HASHED1
+# * a mobile device with SIM card with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER_HASHED2
 
 
 
@@ -61,6 +63,20 @@ Feature: Camara Number Verification API verify
     Then the response status code is 200
     And the response property "$.devicePhoneNumberVerified" is true
 
+  @NumberVerification_verify300_match_hashed_true
+  Scenario:  verify hashed phone number hashed NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1, network connection and access token matches NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
+    Given they use the base url
+    And the resource is "/verify"
+    And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
+    And one of the scopes associated with the access token is number-verification:verify
+    When the HTTPS "POST" request is sent
+    And the request body has the field hashedPhoneNumber with a value of NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER_HASHED1
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response body complies with the OAS schema at "/components/schemas/NumberVerificationMatchResponse"
+    Then the response status code is 200
+    And the response property "$.devicePhoneNumberVerified" is true
+
 
   @NumberVerification_verify101_match_false
   Scenario:  verify phone number NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 but access token is associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER2
@@ -70,6 +86,20 @@ Feature: Camara Number Verification API verify
     And one of the scopes associated with the access token is number-verification:verify
     When the HTTPS "POST" request is sent
     And the request body has the field phoneNumber with a value of NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER2
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response body complies with the OAS schema at "/components/schemas/NumberVerificationMatchResponse"
+    Then the response status code is 200
+    And the response property "$.devicePhoneNumberVerified" is false
+
+  @NumberVerification_verify301_match_false
+  Scenario:  verify hashed phone number NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 but access token is associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER2
+    Given they use the base url
+    And the resource is "/verify"
+    And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
+    And one of the scopes associated with the access token is number-verification:verify
+    When the HTTPS "POST" request is sent
+    And the request body has the field hashedPhoneNumber with a value of NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER_HASHED2
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
     And the response body complies with the OAS schema at "/components/schemas/NumberVerificationMatchResponse"
