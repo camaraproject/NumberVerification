@@ -49,7 +49,7 @@ Feature: Camara Number Verification API verify
 
   @NumberVerification_verify100_match_true
   Scenario:  verify phone number NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1, network connection and access token matches NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
-    Given they use the base url over a mobile connection
+    Given they use the base url
     And the resource is "/verify"
     And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
     And one of the scopes associated with the access token is number-verification:verify
@@ -65,7 +65,7 @@ Feature: Camara Number Verification API verify
 
   @NumberVerification_verify101_match_false
   Scenario:  verify phone number NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 but access token is associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER2
-    Given they use the base url over a mobile connection
+    Given they use the base url
     And the resource is "/verify"
     And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
     And one of the scopes associated with the access token is number-verification:verify
@@ -80,7 +80,7 @@ Feature: Camara Number Verification API verify
 
   @NumberVerification_verify200_missing_phone_number_in_request
   Scenario:  verify phone number but no phonenumber in request
-    Given they use the base url over a mobile connection
+    Given they use the base url
     And the resource is "/verify"
     And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
     And one of the scopes associated with the access token is number-verification:verify
@@ -97,7 +97,7 @@ Feature: Camara Number Verification API verify
 
   @NumberVerification_verify201_missing_scope
   Scenario:  verify phone number with valid access token but scope number-verification:verify is missing
-    Given they use the base url over a mobile connection
+    Given they use the base url
     And the resource is "/verify"
     And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
     And none of the scopes associated with the access token is number-verification:verify
@@ -114,7 +114,7 @@ Feature: Camara Number Verification API verify
 
   @NumberVerification_verify202_expired_access_token
   Scenario:  verify phone number with expired access token
-    Given they use the base url over a mobile connection
+    Given they use the base url
     And the resource is "/verify"
     And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
     And one of the scopes associated with the access token is number-verification:verify
