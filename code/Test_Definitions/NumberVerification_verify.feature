@@ -58,7 +58,7 @@ Feature: Camara Number Verification API verify
     And the request body has the field phoneNumber with a value of NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-    And the response body complies with the OAS schema at "/components/schemas/SendCodeResponse"
+    And the response body complies with the OAS schema at "/components/schemas/NumberVerificationMatchResponse"
     Then the response status code is 200
     And the response property "$.devicePhoneNumberVerified" is true
 
@@ -74,7 +74,7 @@ Feature: Camara Number Verification API verify
     And the request body has the field phoneNumber with a value of NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER2
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-    And the response body complies with the OAS schema at "/components/schemas/SendCodeResponse"
+    And the response body complies with the OAS schema at "/components/schemas/NumberVerificationMatchResponse"
     Then the response status code is 200
     And the response property "$.devicePhoneNumberVerified" is false
 
@@ -89,7 +89,7 @@ Feature: Camara Number Verification API verify
     And the request body has NO the field phoneNumber
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-    And the response body complies with the OAS schema at "/components/schemas/SendCodeResponse"
+    And the response body complies with the OAS schema at "/components/schemas/NumberVerificationMatchResponse"
     Then the response status code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
@@ -106,7 +106,7 @@ Feature: Camara Number Verification API verify
     And the request body has the field phoneNumber with a value of NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-    And the response body complies with the OAS schema at "/components/schemas/SendCodeResponse"
+    And the response body complies with the OAS schema at "/components/schemas/NumberVerificationMatchResponse"
     Then the response status code is 401
     And the response property "$.status" is 401
     And the response property "$.code" is "UNAUTHENTICATED"
@@ -124,7 +124,7 @@ Feature: Camara Number Verification API verify
     And the request body has the field phoneNumber with a value of NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-    And the response body complies with the OAS schema at "/components/schemas/SendCodeResponse"
+    And the response body complies with the OAS schema at "/components/schemas/NumberVerificationMatchResponse"
     Then the response status code is 401
     And the response property "$.status" is 401
     And the response property "$.code" is "AUTHENTICATION_REQUIRED"
