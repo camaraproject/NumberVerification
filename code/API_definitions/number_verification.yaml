@@ -321,7 +321,7 @@ components:
       description: Request time exceeded. If it happens repeatedly, consider reducing the request complexity
       headers:
         x-correlator:
-          $ref: "#/components/headers/x-correlator"g
+          $ref: "#/components/headers/x-correlator"
       content:
         application/json:
           schema:
