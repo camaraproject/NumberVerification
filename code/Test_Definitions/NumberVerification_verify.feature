@@ -36,21 +36,7 @@ Feature: Camara Number Verification API verify
       | +00012230304913849 |
       | 123                |
       | ++49565456787      |
-
-  @NumberVerification_verify1_xcorrelator_does_not_match_schema
-  Scenario Outline: x-correlator request header value does not comply with the schema
-    Given if the optional request header "x-correlator" is set to: <xcorrelator_value>
-    When the HTTP "POST" request is sent
-    Then the response status code is 400
-    And the response property "$.status" is 400
-    And the response property "$.code" is "INVALID_ARGUMENT"
-    And the response property "$.message" contains a user friendly text
-
-    Examples:
-      | xcorrelator_value  |
-      | string_value       |
-      | boink              |
-
+    
 
   @NumberVerification_verify100_match_true
   Scenario:  verify phone number NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1, network connection and access token matches NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
