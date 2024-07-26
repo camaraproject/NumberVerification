@@ -6,6 +6,15 @@ Feature: Camara Number Verification API verify
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specified in
 # https://raw.githubusercontent.com/camaraproject/NumberVerification/main/code/API_definitions/number_verification.yaml
+#
+# Implementation indications:
+# * api_root: API root of the server URL
+# 
+# Testing assets:
+# * a mobile device with SIM card with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
+# * a mobile device with SIM card with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER2
+
+
 
   Background: Common Number Verification verify setup
     Given the resource "/number-verification/v0"  as  base url
