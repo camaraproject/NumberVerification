@@ -39,7 +39,7 @@ Feature: Camara Number Verification API
 
   @NumberVerification_verify1_xcorrelator_does_not_match_schema
   Scenario Outline: x-correlator request header value does not comply with the schema
-    Given the request header "x-correlator" is set to: <xcorrelator_value>
+    Given if the optional request header "x-correlator" is set to: <xcorrelator_value>
     When the HTTP "POST" request is sent
     Then the response status code is 400
     And the response property "$.status" is 400
@@ -68,7 +68,7 @@ Feature: Camara Number Verification API
     And the response property "$.devicePhoneNumberVerified" is true
 
 
-  @NumberVerification_verify2_nonempty_match_false
+  @NumberVerification_verify101_match_false
   Scenario:  verify phone number NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1, network connection and access token matches NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER2
     Given they use the base url over a mobile connection
     And the resource is "/verify"
@@ -82,6 +82,55 @@ Feature: Camara Number Verification API
     And the response body complies with the OAS schema at "/components/schemas/SendCodeResponse"
     Then the response status code is 200
     And the response property "$.devicePhoneNumberVerified" is false
+
+  @NumberVerification_verify200_missing_phone_number_in_request
+  Scenario:  verify phone number but no phonenumber in request
+    Given they use the base url over a mobile connection
+    And the resource is "/verify"
+    And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow or CIBA
+    And one of the scopes associated with the access token is number-verification:verify
+    When the HTTPS "POST" request is sent
+    And the mobile connection is associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
+    And the request body has NO the field phoneNumber
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response body complies with the OAS schema at "/components/schemas/SendCodeResponse"
+    Then the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
+
+  @NumberVerification_verify201_missing_scope
+  Scenario:  verify phone number with valid access token but scope number-verification:verify is missing
+    Given they use the base url over a mobile connection
+    And the resource is "/verify"
+    And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow or CIBA
+    And none of the scopes associated with the access token is number-verification:verify
+    When the HTTPS "POST" request is sent
+    And the mobile connection is associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
+    And the request body has NO the field phoneNumber
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response body complies with the OAS schema at "/components/schemas/SendCodeResponse"
+    Then the response property "$.status" is 401
+    And the response property "$.code" is "UNAUTHENTICATED"
+    And the response property "$.message" is "Request not authenticated due to missing, invalid, or expired credentials."
+
+  @NumberVerification_verify202_expired_access_token
+  Scenario:  verify phone number with expired access token
+    Given they use the base url over a mobile connection
+    And the resource is "/verify"
+    And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow or CIBA
+    And one of the scopes associated with the access token is number-verification:verify
+    When the HTTPS "POST" request is sent
+    And the access token has expired
+    And the mobile connection is associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
+    And the request body has NO the field phoneNumber
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response body complies with the OAS schema at "/components/schemas/SendCodeResponse"
+    Then the response property "$.status" is 401
+    And the response property "$.code" is "AUTHENTICATION_REQUIRED"
+    And the response property "$.message" is "New authentication is required."
 
 
 
