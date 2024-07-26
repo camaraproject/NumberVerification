@@ -9,7 +9,7 @@ Feature: Camara Number Verification API verify
 #
 # Implementation indications:
 # * api_root: API root of the server URL
-# 
+#
 # Testing assets:
 # * a mobile device with SIM card with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
 # * a mobile device with SIM card with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER2
@@ -102,7 +102,7 @@ Feature: Camara Number Verification API verify
     And none of the scopes associated with the access token is number-verification:verify
     When the HTTPS "POST" request is sent
     And the mobile connection is associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
-    And the request body has NO the field phoneNumber
+    And the request body has the field phoneNumber with a value of NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
     And the response body complies with the OAS schema at "/components/schemas/SendCodeResponse"
@@ -114,12 +114,12 @@ Feature: Camara Number Verification API verify
   Scenario:  verify phone number with expired access token
     Given they use the base url over a mobile connection
     And the resource is "/verify"
-    And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow or CIBA
+    And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
     And one of the scopes associated with the access token is number-verification:verify
     When the HTTPS "POST" request is sent
     And the access token has expired
     And the mobile connection is associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
-    And the request body has NO the field phoneNumber
+    And the request body has the field phoneNumber with a value of NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
     And the response body complies with the OAS schema at "/components/schemas/SendCodeResponse"
