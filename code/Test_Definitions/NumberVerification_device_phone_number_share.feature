@@ -33,6 +33,7 @@ Feature: Camara Number Verification API device phone number share
     And they acquired a valid access token associated with NUMBERVERIFY_SHARE_PHONENUMBER1 through OIDC authorization code flow
     And one of the scopes associated with the access token is number-verification:device-phone-number:read
     When the HTTPS "GET" request is sent
+    And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "/components/schemas/NumberVerificationShareResponse"
     Then the response status code is 200
@@ -45,6 +46,7 @@ Feature: Camara Number Verification API device phone number share
     And they acquired a valid access token associated with NUMBERVERIFY_SHARE_PHONENUMBER1 through OIDC authorization code flow
     And none of the scopes associated with the access token is number-verification:device-phone-number:read
     When the HTTPS "GET" request is sent
+    And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
     And the request body has the field phoneNumber with a value of NUMBERVERIFY_SHARE_PHONENUMBER1
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
@@ -61,6 +63,7 @@ Feature: Camara Number Verification API device phone number share
     And they acquired a valid access token associated with NUMBERVERIFY_SHARE_PHONENUMBER1 through OIDC authorization code flow
     And one of the scopes associated with the access token is number-verification:device-phone-number:read
     When the HTTPS "GET" request is sent
+    And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
     And the access token has expired
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"

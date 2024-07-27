@@ -56,6 +56,7 @@ Feature: Camara Number Verification API verify
     And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
     And one of the scopes associated with the access token is number-verification:verify
     When the HTTPS "POST" request is sent
+    And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
     And the request body has the field phoneNumber with a value of NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
@@ -70,6 +71,7 @@ Feature: Camara Number Verification API verify
     And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
     And one of the scopes associated with the access token is number-verification:verify
     When the HTTPS "POST" request is sent
+    And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
     And the request body has the field hashedPhoneNumber with a value of NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER_HASHED1
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
@@ -85,6 +87,7 @@ Feature: Camara Number Verification API verify
     And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
     And one of the scopes associated with the access token is number-verification:verify
     When the HTTPS "POST" request is sent
+    And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
     And the request body has the field phoneNumber with a value of NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER2
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
@@ -99,6 +102,7 @@ Feature: Camara Number Verification API verify
     And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
     And one of the scopes associated with the access token is number-verification:verify
     When the HTTPS "POST" request is sent
+    And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
     And the request body has the field hashedPhoneNumber with a value of NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER_HASHED2
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
@@ -113,6 +117,7 @@ Feature: Camara Number Verification API verify
     And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
     And one of the scopes associated with the access token is number-verification:verify
     When the HTTPS "POST" request is sent
+    And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
     And the request body has NO the field phoneNumber
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
@@ -129,6 +134,7 @@ Feature: Camara Number Verification API verify
     And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
     And none of the scopes associated with the access token is number-verification:verify
     When the HTTPS "POST" request is sent
+    And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
     And the request body has the field phoneNumber with a value of NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
@@ -145,6 +151,7 @@ Feature: Camara Number Verification API verify
     And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
     And one of the scopes associated with the access token is number-verification:verify
     When the HTTPS "POST" request is sent
+    And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
     And the access token has expired
     And the request body has the field phoneNumber with a value of NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER
     And the response header "x-correlator" has same value as the request header "x-correlator"
