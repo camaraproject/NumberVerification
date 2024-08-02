@@ -38,7 +38,8 @@ Feature: Camara Number Verification API verify
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
-
+    And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
+    
     Examples:
       | phone_number_value |
       | string_value       |
@@ -53,7 +54,6 @@ Feature: Camara Number Verification API verify
   Scenario:  verify phone number NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1, network connection and access token matches NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
     Given they use the base url
     And the resource is "/verify"
-    And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
     And one of the scopes associated with the access token is number-verification:verify
     When the HTTPS "POST" request is sent
     And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
@@ -68,7 +68,6 @@ Feature: Camara Number Verification API verify
   Scenario:  verify hashed phone number hashed NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1, network connection and access token matches NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
     Given they use the base url
     And the resource is "/verify"
-    And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
     And one of the scopes associated with the access token is number-verification:verify
     When the HTTPS "POST" request is sent
     And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
@@ -84,7 +83,6 @@ Feature: Camara Number Verification API verify
   Scenario:  verify phone number NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 but access token is associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER2
     Given they use the base url
     And the resource is "/verify"
-    And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
     And one of the scopes associated with the access token is number-verification:verify
     When the HTTPS "POST" request is sent
     And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
@@ -99,7 +97,6 @@ Feature: Camara Number Verification API verify
   Scenario:  verify hashed phone number NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 but access token is associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER2
     Given they use the base url
     And the resource is "/verify"
-    And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
     And one of the scopes associated with the access token is number-verification:verify
     When the HTTPS "POST" request is sent
     And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
@@ -114,7 +111,6 @@ Feature: Camara Number Verification API verify
   Scenario:  verify phone number but no phonenumber in request
     Given they use the base url
     And the resource is "/verify"
-    And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
     And one of the scopes associated with the access token is number-verification:verify
     When the HTTPS "POST" request is sent
     And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
@@ -131,7 +127,6 @@ Feature: Camara Number Verification API verify
   Scenario:  verify phone number with valid access token but scope number-verification:verify is missing
     Given they use the base url
     And the resource is "/verify"
-    And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
     And none of the scopes associated with the access token is number-verification:verify
     When the HTTPS "POST" request is sent
     And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
@@ -148,7 +143,6 @@ Feature: Camara Number Verification API verify
   Scenario:  verify phone number with expired access token
     Given they use the base url
     And the resource is "/verify"
-    And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
     And one of the scopes associated with the access token is number-verification:verify
     When the HTTPS "POST" request is sent
     And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
