@@ -25,12 +25,12 @@ Feature: Camara Number Verification API device phone number share
     And NUMBERVERIFY_SHARE_PHONENUMBER1 is compliant with the schema DevicePhoneNumber
     And NUMBERVERIFY_SHARE_PHONENUMBER2 is compliant with the schema DevicePhoneNumber
     And NUMBERVERIFY_SHARE_PHONENUMBER1 is different to NUMBERVERIFY_SHARE_PHONENUMBER2
+    And they acquired a valid access token associated with NUMBERVERIFY_SHARE_PHONENUMBER1 through OIDC authorization code flow
 
   @NumberVerification_phone_number_share100_match_true
   Scenario:  share phone number NUMBERVERIFY_SHARE_PHONENUMBER1, network connection and access token matches NUMBERVERIFY_SHARE_PHONENUMBER1
     Given they use the base url
     And the resource is "/device-phone-number"
-    And they acquired a valid access token associated with NUMBERVERIFY_SHARE_PHONENUMBER1 through OIDC authorization code flow
     And one of the scopes associated with the access token is number-verification:device-phone-number:read
     When the HTTPS "GET" request is sent
     And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
@@ -43,7 +43,6 @@ Feature: Camara Number Verification API device phone number share
   Scenario:  share phone number with valid access token but scope number-verification:device-phone-number:read is missing
     Given they use the base url
     And the resource is "/device-phone-number"
-    And they acquired a valid access token associated with NUMBERVERIFY_SHARE_PHONENUMBER1 through OIDC authorization code flow
     And none of the scopes associated with the access token is number-verification:device-phone-number:read
     When the HTTPS "GET" request is sent
     And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
@@ -60,7 +59,6 @@ Feature: Camara Number Verification API device phone number share
   Scenario:  share phone number with expired access token
     Given they use the base url
     And the resource is "/device-phone-number"
-    And they acquired a valid access token associated with NUMBERVERIFY_SHARE_PHONENUMBER1 through OIDC authorization code flow
     And one of the scopes associated with the access token is number-verification:device-phone-number:read
     When the HTTPS "GET" request is sent
     And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
