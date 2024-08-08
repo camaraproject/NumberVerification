@@ -10,8 +10,8 @@ Checklist for number_verification 1.0.0-rc.1 in release r1.1
 |  4 | API versioning convention applied            |   M   |         M         |    M    |    M   |   Y   |      |
 |  5 | API documentation                            |   M   |         M         |    M    |    M   |   Y   | Embed documentation into API spec - [link](/code/API_definitions/number_verification.yaml)  |
 |  6 | User stories                                 |   O   |         O         |    O    |    M   |   tbd   | [PR #129](https://github.com/camaraproject/NumberVerification/pull/129/files) |
-|  7 | Basic API test cases & documentation         |   O   |         M         |    M    |    M   |   N   | link |
-|  8 | Enhanced API test cases & documentation      |   O   |         O         |    O    |    M   |   N   | link |
+|  7 | Basic API test cases & documentation         |   O   |         M         |    M    |    M   |   tbd   | [PR #124](https://github.com/camaraproject/NumberVerification/pull/124/files) |
+|  8 | Enhanced API test cases & documentation      |   O   |         O         |    O    |    M   |   tbd  | [PR #124](https://github.com/camaraproject/NumberVerification/pull/124/files) |
 |  9 | Test result statement                        |   O   |         O         |    O    |    M   |   N   | link |
 | 10 | API release numbering convention applied     |   M   |         M         |    M    |    M   |   Y   |      |
 | 11 | Change log updated                           |   M   |         M         |    M    |    M   |   N   | [link](/CHANGELOG.md) |
