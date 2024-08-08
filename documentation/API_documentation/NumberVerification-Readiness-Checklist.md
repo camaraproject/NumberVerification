@@ -9,7 +9,7 @@ Checklist for number_verification 1.0.0-rc.1 in release r1.1
 |  3 | Guidelines from ICM applied                  |   O   |         M         |    M    |    M   |   Y   |      |
 |  4 | API versioning convention applied            |   M   |         M         |    M    |    M   |   Y   |      |
 |  5 | API documentation                            |   M   |         M         |    M    |    M   |   Y   | Embed documentation into API spec - [link](/code/API_definitions/number_verification.yaml)  |
-|  6 | User stories                                 |   O   |         O         |    O    |    M   |   N   | [link](documentation/API_documentation/) |
+|  6 | User stories                                 |   O   |         O         |    O    |    M   |   tbd   | [PR #129](https://github.com/camaraproject/NumberVerification/pull/129/files) |
 |  7 | Basic API test cases & documentation         |   O   |         M         |    M    |    M   |   N   | link |
 |  8 | Enhanced API test cases & documentation      |   O   |         O         |    O    |    M   |   N   | link |
 |  9 | Test result statement                        |   O   |         O         |    O    |    M   |   N   | link |
