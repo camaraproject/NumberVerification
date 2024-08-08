@@ -156,6 +156,21 @@ Feature: Camara Number Verification API verify
     And the response property "$.code" is "AUTHENTICATION_REQUIRED"
     And the response property "$.message" is "New authentication is required."
 
-
+  @NumberVerification_verify203_both_phone_number_and_hashed_in_request
+  Scenario:  verify phone number but no phonenumber in request
+    Given they use the base url
+    And the resource is "/verify"
+    And one of the scopes associated with the access token is number-verification:verify
+    When the HTTPS "POST" request is sent
+    And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
+    And the request body has the field phoneNumber with a value of NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
+    And the request body has the field hashedPhoneNumber with a value of NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER_HASHED1
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response body complies with the OAS schema at "/components/schemas/NumberVerificationMatchResponse"
+    Then the response status code is 400
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
 
 
