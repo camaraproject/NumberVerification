@@ -1,50 +1,88 @@
-# Changelog
+# Changelog Number Verification API
 
-## v0.4.0-wip [Work in Progress]
 
-## Please note:
+## Table of contents
 
-- This is *work-in-progress* version, it should be considered as a draft
-- There are bug fixes to be expected and incompatible changes in upcoming versions 
-- The release is suitable for implementors, but it is not recommended to use the API with customers in productive environments
-- Version numbers before v0.4.0-wip were used during the development of this version but not released
+- **[r1.1](#r11)**
+- [v0.3.1](#v031)
+
+
+**Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until it has been released. For example, changes may be reverted before a release is published. For the best results, use the latest published release.**
+
+
+
+# r1.1 - rc
+
+## Release Notes
+
+This release contains the definition and documentation of
+* Number Verification API 1.0.0-rc.1
+
+
+
+The API definition(s) are based on
+* Commonalities v0.4.0
+* Identity and Consent Management v0.2.0
+
+
+## Number Verification v1.0.0-rc.1
+
+
+**number-verification 1.0.0-rc.1** is the first release-candidate version for the v1.0.0 of the number verification API.
+
+- API definition **with inline documentation**:
+    - OpenAPI [YAML spec file](https://github.com/camaraproject/NumberVerification/blob/r1.1/code/API_definitions/number_verification.yaml)
+    - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r1.1/code/API_definitions/number_verification.yaml&nocors)
+    - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r1.1/code/API_definitions/number_verification.yaml)
+    
+**number-verification 1.0.0-rc.1 is the first stable version for CAMARA Number Verification API**
+
+This version contains significant changes compared to v0.3.1, and it is not backward compatible.
 
 ### Added
 
-- Merge pull request #58 from fernandopradocabrillo/update-documentation-and-remove-deprecated-files
-- include documentation inside yaml file, remove deprecated files and fix image link
-- Merge pull request #57 from fernandopradocabrillo/update-tef-codeowners
-- update codeowners from Telefónica
-- Merge pull request #56 from camaraproject/bigludo7-patch-1
-- Merge pull request #58 from fernandopradocabrillo/update-documentation-and-remove-deprecated-files
-- include documentation inside yaml file, remove deprecated files and fix image link
-- Merge pull request #57 from fernandopradocabrillo/update-tef-codeowners
-- update codeowners from Telefónica
-- Merge pull request #56 from camaraproject/bigludo7-patch-1
-- Update number_verification.yaml
-- Merge pull request #53 from DT-DawidWroblewski/main
-- update to yaml
-- Merge branch 'main' of https://github.com/DT-DawidWroblewski/NumberVerification
-- adding fixes to PR
-- Merge pull request #52 from jlurien/chore/replace-polymorphism-requestBody
-- Replace polymorphism in requestBody of POST /verify
-- Update documentation/API_documentation/README.MD
-- Merge pull request #50 from monamok/chore/update_documentation
-- cleaning repo
-- Relevant definition section added
-- Merge pull request #43 from monamok/chore/phone_number_description_alignment
-- error code copy/pase typo removed
-- updating uml url
-- phoneNumber descriptions aligned to the other APIs
+* User Story in documentation/API_documentation directory by @bigludo7 [PR118](https://github.com/camaraproject/NumberVerification/pull/118)
+* Test Definition in Test_Definitions directory [To be done]
 
 ### Changed
 
-* N/A
+* Aligned with CAMARA design guidelines & Identity Consent management
+* Make the '+' mandatory for the phone number by @fernandopradocabrillo [PR90](https://github.com/camaraproject/NumberVerification/pull/90)
+* Cosmetic change following megalinter integration by @bigludo7 [PR103](https://github.com/camaraproject/NumberVerification/pull/103)
+* Update Authorization and authentication part accordingly to ICM by @fernandopradocabrillo [PR88](https://github.com/camaraproject/NumberVerification/issues/88)
+* Adding a pattern for PhoneNumber in /verify by @maxl2287 [PR68](https://github.com/camaraproject/NumberVerification/issues/76)
+* Clarify use of 'user' and 'subscriber' wording by @AxelNennker [PR102](https://github.com/camaraproject/NumberVerification/pull/102)
 
 ### Fixed
 
-* N/A
+* Replaced OAuth2 auth code flow by OIDC auth code flow by @AxelNennker [PR109](https://github.com/camaraproject/NumberVerification/pull/109)
 
 ### Removed
 
-* N/A
+* n/a
+
+## New Contributors 
+
+- @AxelNennker made their first contribution in clarifying use of 'user' and 'subscriber' wording by @AxelNennker [PR102](https://github.com/camaraproject/NumberVerification/pull/102)
+- @rartych made their first contribution in GitHub workflows [#108](https://github.com/camaraproject/NumberVerification/pull/108)
+- @fernandopradocabrillo made their first contribution by updating Authorization and authentication part accordingly to ICM [PR88](https://github.com/camaraproject/NumberVerification/issues/88)
+- @maxl2287 made their first contribution by adding a pattern for PhoneNumber in /verify  [PR68](https://github.com/camaraproject/NumberVerification/issues/76)
+- @bigludo7 made their first contribution by making change following megalinter integration [PR103](https://github.com/camaraproject/NumberVerification/pull/103)
+
+**Full Changelog**: https://github.com/camaraproject/NumberVerification/compare/v0.3.1...r1.1
+
+## v0.3.1
+
+Initital release of Camara Number Verification API
+
+## What's Changed
+* Telefonica Proposal by @monamok in https://github.com/camaraproject/NumberVerification/pull/3
+* Adding API documentation by @monamok in https://github.com/camaraproject/NumberVerification/pull/6
+* Initial content for Number Verify by @DT-DawidWroblewski in https://github.com/camaraproject/NumberVerification/pull/2
+* New specific 403 token error and guidelines alignment by @monamok in https://github.com/camaraproject/NumberVerification/pull/19
+* adding puml by @DT-DawidWroblewski in https://github.com/camaraproject/NumberVerification/pull/24
+* guidelines alignment errors and camel case by @monamok in https://github.com/camaraproject/NumberVerification/pull/30
+* Change 'sub' cardinality + add attribute description by @bigludo7 in https://github.com/camaraproject/NumberVerification/pull/32
+* Embed documentation in API Spec by @monamok in https://github.com/camaraproject/NumberVerification/pull/38
+
+**Full Changelog**: https://github.com/camaraproject/NumberVerification/commits/v0.3.1
