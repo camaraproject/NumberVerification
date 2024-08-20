@@ -28,13 +28,13 @@ Two endpoints are defined in Number Verification API:
 
 **Authentication**
 
-Security access keys such as OAuth 2.0 3-legged Access Tokens used by Client applications to invoke this API with dedicated scope. Client **must use network based authentication methods** to use this service. 
+Security access keys such as OpenId Connect 3-legged Access Tokens used by Client applications to invoke this API with dedicated scope. Client **must use network based authentication methods** to use this service. 
 
 Sample API invocations are presented in Section 4.6.
 
 ## 3\. Authentication and Authorization
 
-Number Verification API uses OAUTH 2.0 auth_code grant which allows three-legged Access Tokens. [[1]](#1)
+Number Verification API uses OpenId Connect 2.0 authorization code grant which allows three-legged Access Tokens. [[1]](#1)
 
 ## 4\. API Documentation
 
