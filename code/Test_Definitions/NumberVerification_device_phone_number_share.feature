@@ -50,8 +50,8 @@ Feature: Camara Number Verification API device phone number share
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
     And the response body complies with the OAS schema at "/components/schemas/NumberVerificationShareResponse"
-    Then the response status code is 401
-    And the response property "$.status" is 401
+    Then the response status code is 403
+    And the response property "$.status" is 403
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" is "Request not authenticated due to missing, invalid, or expired credentials."
 
