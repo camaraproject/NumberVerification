@@ -114,7 +114,7 @@ Feature: Camara Number Verification API verify
     And one of the scopes associated with the access token is number-verification:verify
     When the HTTPS "POST" request is sent
     And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
-    And the request body has NO the field phoneNumber
+    And the request body has NO the field phoneNumber or hashedPhoneNumber
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
     And the response body complies with the OAS schema at "/components/schemas/NumberVerificationMatchResponse"
