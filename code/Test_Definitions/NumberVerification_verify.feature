@@ -117,7 +117,7 @@ Feature: Camara Number Verification API verify
     And the request body has NO the field phoneNumber or hashedPhoneNumber
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-    And the response body complies with the OAS schema at "/components/schemas/NumberVerificationMatchResponse"
+    And the response body complies with the OAS schema at "/components/schemas/ErrorInfo"
     Then the response status code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
@@ -133,7 +133,7 @@ Feature: Camara Number Verification API verify
     And the request body has the field phoneNumber with a value of NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-    And the response body complies with the OAS schema at "/components/schemas/NumberVerificationMatchResponse"
+    And the response body complies with the OAS schema at "/components/schemas/ErrorInfo"
     Then the response status code is 403
     And the response property "$.status" is 403
     And the response property "$.code" is "UNAUTHENTICATED"
@@ -150,7 +150,7 @@ Feature: Camara Number Verification API verify
     And the request body has the field phoneNumber with a value of NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-    And the response body complies with the OAS schema at "/components/schemas/NumberVerificationMatchResponse"
+    And the response body complies with the OAS schema at "/components/schemas/ErrorInfo"
     Then the response status code is 401
     And the response property "$.status" is 401
     And the response property "$.code" is "AUTHENTICATION_REQUIRED"
@@ -167,10 +167,25 @@ Feature: Camara Number Verification API verify
     And the request body has the field hashedPhoneNumber with a value of NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER_HASHED1
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-    And the response body complies with the OAS schema at "/components/schemas/NumberVerificationMatchResponse"
+    And the response body complies with the OAS schema at "/components/schemas/ErrorInfo"
     Then the response status code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
 
-
+  @NumberVerification_phone_number_verify204_no_phonenumber_associated_with_access_token
+  Scenario:  verify phone number with valid access token that is not associated with a phone number
+    Given they use the base url
+    And the resource is "/verify"
+    And one of the scopes associated with the access token is number-verification:verify
+    When the HTTPS "GET" request is sent
+    And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
+    And the access token is not associated with a phone number
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response body complies with the OAS schema at "/components/schemas/ErrorInfo"
+    Then the response status code is 403
+    And the response property "$.status" is 403
+    And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
+    And the response property "$.message" is "Phone number cannot be deducted from access token context."
+    
