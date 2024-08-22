@@ -49,7 +49,7 @@ Feature: Camara Number Verification API device phone number share
     And the request body has the field phoneNumber with a value of NUMBERVERIFY_SHARE_PHONENUMBER1
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-    And the response body complies with the OAS schema at "/components/schemas/NumberVerificationShareResponse"
+    And the response body complies with the OAS schema at "/components/schemas/ErrorInfo"
     Then the response status code is 403
     And the response property "$.status" is 403
     And the response property "$.code" is "UNAUTHENTICATED"
@@ -65,12 +65,26 @@ Feature: Camara Number Verification API device phone number share
     And the access token has expired
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
-    And the response body complies with the OAS schema at "/components/schemas/NumberVerificationShareResponse"
+    And the response body complies with the OAS schema at "/components/schemas/ErrorInfo"
     Then the response status code is 401
     And the response property "$.status" is 401
     And the response property "$.code" is "AUTHENTICATION_REQUIRED"
     And the response property "$.message" is "New authentication is required."
 
-
+  @NumberVerification_phone_number_share203_no_phonenumber_associated_with_access_token
+  Scenario:  share phone number with valid access token that is not associated with a phone number
+    Given they use the base url
+    And the resource is "/device-phone-number"
+    And one of the scopes associated with the access token is number-verification:device-phone-number:read
+    When the HTTPS "GET" request is sent
+    And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
+    And the access token is not associated with a phone number
+    And the response header "x-correlator" has same value as the request header "x-correlator"
+    And the response header "Content-Type" is "application/json"
+    And the response body complies with the OAS schema at "/components/schemas/ErrorInfo"
+    Then the response status code is 403
+    And the response property "$.status" is 403
+    And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
+    And the response property "$.message" is "Phone number cannot be deducted from access token context."
 
 
