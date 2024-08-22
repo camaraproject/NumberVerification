@@ -1,3 +1,10 @@
+
+---------
+
+**Please note that this document is deprecated. API documentation is now in the YAML file**
+
+---------
+
 # Overview
 
 Number Verification API is used to verify that the provided **mobile phone number** is the one used in the device. It verifies that the user is using a device with the same *mobile phone number* as it is declared.
