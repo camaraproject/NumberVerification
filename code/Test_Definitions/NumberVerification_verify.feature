@@ -190,7 +190,7 @@ Feature: Camara Number Verification API verify
     And the response property "$.message" is "Phone number cannot be deducted from access token context."
     
 
-@NumberVerification_phone_number_verify205_must_have_used_network_authentication
+  @NumberVerification_phone_number_verify205_must_have_used_network_authentication
   Scenario:  verify phone number with valid access token but network authentication was not used
     Given they use the base url
     And the resource is "/verify"
