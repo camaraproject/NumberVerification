@@ -4,7 +4,7 @@
 ## Table of contents
 
 - **[r1.2](#r12)**
-- **[r1.1](#r11-rc)**
+- **[r1.1](#r11)**
 - **[v0.3.1](#v031)**
 
 
@@ -62,7 +62,7 @@ The API definition(s) are based on
 * N/A
 
 
-# r1.1 - rc
+# r1.1
 
 ## Release Notes
 
