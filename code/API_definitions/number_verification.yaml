@@ -50,13 +50,13 @@ info:
 
     # Further info and support
     [GSMA Mobile Connect Verified MSISDN specification](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.54-Mobile-Connect-Verified-MSISDN-Definition-and-Technical-Requirements-1.0.pdf) was used as source of input for this API.  For more about Mobile Connect, please see [Mobile Connect website](https://mobileconnect.io/).
-  version: wip
+  version: 1.0.0
   x-camara-commonalities: 0.4.0
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-  - url: '{apiRoot}/number-verification/v1rc1'
+  - url: '{apiRoot}/number-verification/v1'
     variables:
       apiRoot:
         default: http://localhost:9091
