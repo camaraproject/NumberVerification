@@ -23,7 +23,7 @@ The API definition(s) are based on
 
 ## number_verification 1.0.0
 
-**number_verification 1.0.0 is the public release for v1.0.0 of the NumberVerification API.**
+**number_verification 1.0.0 is the release of the first stable version of the NumberVerification API.**
 
 - API definition **with inline documentation**:
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r1.2/code/API_definitions/number_verification.yaml&nocors)
