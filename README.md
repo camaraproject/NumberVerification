@@ -46,4 +46,4 @@ Repository to describe, develop, document and test the NumberVerification API fa
 
 ## Relevant Information
 
-Since April 4th 2024 WG meeting minutes are placed in [Number Verification Wiki Confluence site](https://wiki.camaraproject.org/display/CAM/Number+Verification)
+Since April 4th 2024 WG meeting minutes are placed in [Number Verification Wiki Confluence site](https://wiki.camaraproject.org/display/CAM/NumberVerification)
