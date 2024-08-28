@@ -15,25 +15,26 @@
 ## Release Notes
 
 This release contains the definition and documentation of
-* number_verification 1.0.0
+* number-verification 1.0.0
 
 The API definition(s) are based on
 * Commonalities v0.4.0
 * Identity and Consent Management v0.2.0
 
-## number_verification 1.0.0
+## number-verification 1.0.0
 
-**number_verification 1.0.0 is the release of the first stable version of the NumberVerification API.**
+**number-verification 1.0.0 is the release of the first stable version of the NumberVerification API.**
 
 - API definition **with inline documentation**:
-  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r1.2/code/API_definitions/number_verification.yaml&nocors)
-  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r1.2/code/API_definitions/number_verification.yaml)
-  - OpenAPI [YAML spec file](https://github.com/camaraproject/NumberVerification/blob/r1.2/code/API_definitions/number_verification.yaml)
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r1.2/code/API_definitions/number-verification.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r1.2/code/API_definitions/number-verification.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/NumberVerification/blob/r1.2/code/API_definitions/number-verification.yaml)
 
 **Main Changes**
 
 * API and test definitions updated to conform to the Commonalities v0.4.0 and Identity and Consent Management v0.2.0 guidelines included in the CAMARA Fall24 meta-release
 * Additional documentation & test cases added.
+* Changed name of the file itself from number_verification.yaml to number-verification.yaml
 
 
 ### Added
