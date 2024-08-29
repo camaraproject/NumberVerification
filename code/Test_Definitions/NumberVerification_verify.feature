@@ -5,7 +5,7 @@ Feature: Camara Number Verification API verify
 
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specified in
-# https://raw.githubusercontent.com/camaraproject/NumberVerification/main/code/API_definitions/number-verification.yaml
+# /code/API_definitions/number-verification.yaml
 #
 # Implementation indications:
 # * api_root: API root of the server URL
