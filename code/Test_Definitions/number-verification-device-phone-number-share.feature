@@ -1,5 +1,3 @@
-
-
 @NumberVerification_device_phone_number_share
 Feature: Camara Number Verification API device phone number share
 
