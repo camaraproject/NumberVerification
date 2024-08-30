@@ -79,7 +79,7 @@ paths:
       operationId: phoneNumberVerify
       parameters:
         - in: header
-          name: X-Correlator
+          name: x-correlator
           required: false
           description: Correlation id for the different services
           schema:
@@ -94,7 +94,7 @@ paths:
         '200':
           description: OK
           headers:
-            X-Correlator:
+            x-correlator:
               description: Correlation id for the different services
               schema:
                 type: string
@@ -129,7 +129,7 @@ paths:
       operationId: phoneNumberShare
       parameters:
         - in: header
-          name: X-Correlator
+          name: x-correlator
           required: false
           description: Correlation id for the different services
           schema:
@@ -138,7 +138,7 @@ paths:
         '200':
           description: OK
           headers:
-            X-Correlator:
+            x-correlator:
               description: Correlation id for the different services
               schema:
                 type: string
