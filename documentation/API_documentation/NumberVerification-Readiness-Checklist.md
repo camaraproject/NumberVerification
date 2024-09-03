@@ -8,7 +8,8 @@ Checklist for number-verification 1.0.0 in release r1.2
 |  2 | Design guidelines from Commonalities applied |   O   |         M         |    M    |    M   |  Y    |      |
 |  3 | Guidelines from ICM applied                  |   O   |         M         |    M    |    M   |   Y   |      |
 |  4 | API versioning convention applied            |   M   |         M         |    M    |    M   |   Y   |      |
-|  5 | API documentation                            |   M   |         M         |    M    |    M   |   Y   | Embed documentation into API spec - [link](/code/API_definitions/number-verification.yaml)  |
+|  5 | API documentation                            |   M   |         M         |    M    |    M   |   Y   | Embedded documentation into API spec - [link](/code/API_definitions/number-verification.yaml)  |
+
 |  6 | User stories                                 |   O   |         O         |    O    |    M   |   Y   | [get](/documentation/API_documentation/NumberVerification_device_phone_number_User_Story.md) [verify](/documentation/API_documentation/NumberVerification_verify_User_Story.md) |
 |  7 | Basic API test cases & documentation         |   O   |         M         |    M    |    M   |   Y   | [get](code/Test_Definitions/number-verification-device-phone-number-share.feature) [verify](/code/Test_Definitions/number-verification-verify.feature) |
 |  8 | Enhanced API test cases & documentation      |   O   |         O         |    O    |    M   |   Y  | [get](code/Test_Definitions/number-verification-device-phone-number-share.feature) [verify](code/Test_Definitions/number-verification-verify.feature) |
