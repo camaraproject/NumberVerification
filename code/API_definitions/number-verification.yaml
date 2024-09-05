@@ -30,7 +30,7 @@ info:
     # Sequence Diagram
     Number Verification API uses the **standard [OIDC Authorization Code Flow](https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth)**. The following diagram will help to clarify the end-to-end process, including previous steps prior to this API call.
 
-    Note that the diagram shows just an example of a direct integration from developer's application and MNO's authserver and API, other scenarios of indirect integration via Aggregator/Channel Partner should also be considered. Specific authorization flows may apply, as defined by e.g. GSMA OGW
+    Note that the diagram shows just an example of a direct integration from developer's application and MNO's authserver and API, other scenarios of indirect integration via Aggregator/Channel Partner should also be considered. Specific authorization flows may apply, as defined by e.g. GSMA Open Gateway (OGW).
 
     ![UML Sequence Diagram](https://raw.githubusercontent.com/camaraproject/NumberVerification/main/documentation/API_documentation/assets/uml_v0.3.jpg)
 
