@@ -50,6 +50,7 @@ The API definition(s) are based on
 * Update Authorization and authentication part accordingly to ICM by @fernandopradocabrillo [PR88](https://github.com/camaraproject/NumberVerification/issues/88)
 * Adding a pattern for PhoneNumber in /verify by @maxl2287 [PR68](https://github.com/camaraproject/NumberVerification/issues/76)
 * Clarify use of 'user' and 'subscriber' wording by @AxelNennker [PR102](https://github.com/camaraproject/NumberVerification/pull/102)
+* Clarify that the sequence diagram in the yaml documentation is an example by @bigludo7 [PR139](https://github.com/camaraproject/NumberVerification/pull/139)
 
 ### Fixed
 
