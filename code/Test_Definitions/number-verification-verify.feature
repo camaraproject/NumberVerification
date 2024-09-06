@@ -1,11 +1,9 @@
-
-
 @NumberVerification_verify
 Feature: Camara Number Verification API verify
 
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specified in
-# https://raw.githubusercontent.com/camaraproject/NumberVerification/main/code/API_definitions/number_verification.yaml
+# /code/API_definitions/number-verification.yaml
 #
 # Implementation indications:
 # * api_root: API root of the server URL
@@ -16,10 +14,8 @@ Feature: Camara Number Verification API verify
 # * a mobile device with SIM card with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER_HASHED1
 # * a mobile device with SIM card with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER_HASHED2
 
-
-
   Background: Common Number Verification verify setup
-    Given the resource "/number-verification/v0"  as  base url
+    Given the resource "/number-verification/v1"  as  base url
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
@@ -39,7 +35,7 @@ Feature: Camara Number Verification API verify
     And the response property "$.code" is "INVALID_ARGUMENT"
     And the response property "$.message" contains a user friendly text
     And they acquired a valid access token associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 through OIDC authorization code flow
-    
+
     Examples:
       | phone_number_value |
       | string_value       |
@@ -48,7 +44,6 @@ Feature: Camara Number Verification API verify
       | +00012230304913849 |
       | 123                |
       | ++49565456787      |
-
 
   @NumberVerification_verify100_match_true
   Scenario:  verify phone number NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1, network connection and access token matches NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
@@ -77,7 +72,6 @@ Feature: Camara Number Verification API verify
     And the response body complies with the OAS schema at "/components/schemas/NumberVerificationMatchResponse"
     Then the response status code is 200
     And the response property "$.devicePhoneNumberVerified" is true
-
 
   @NumberVerification_verify101_match_false
   Scenario:  verify phone number NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 but access token is associated with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER2
@@ -157,7 +151,7 @@ Feature: Camara Number Verification API verify
     And the response property "$.message" is "New authentication is required."
 
   @NumberVerification_verify203_both_phone_number_and_hashed_in_request
-  Scenario:  verify phone number but no phonenumber in request
+  Scenario:  verify phone number but providing both plain and hashed phone number in the body
     Given they use the base url
     And the resource is "/verify"
     And one of the scopes associated with the access token is number-verification:verify
@@ -188,7 +182,6 @@ Feature: Camara Number Verification API verify
     And the response property "$.status" is 403
     And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
     And the response property "$.message" is "Phone number cannot be deducted from access token context."
-    
 
   @NumberVerification_phone_number_verify205_must_have_used_network_authentication
   Scenario:  verify phone number with valid access token but network authentication was not used

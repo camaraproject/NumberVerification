@@ -1,11 +1,9 @@
-
-
 @NumberVerification_device_phone_number_share
 Feature: Camara Number Verification API device phone number share
 
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specified in
-# https://raw.githubusercontent.com/camaraproject/NumberVerification/main/code/API_definitions/number_verification.yaml
+# /code/API_definitions/number-verification.yaml
 #
 # Implementation indications:
 # * api_root: API root of the server URL
@@ -15,7 +13,7 @@ Feature: Camara Number Verification API device phone number share
 # * a mobile device with SIM card with NUMBERVERIFY_SHARE_PHONENUMBER2
 
   Background: Common Number Verification phone number share setup
-    Given the resource "/device-phone-number/v0"  as  base url
+    Given the resource "/device-phone-number/v1"  as  base url
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
