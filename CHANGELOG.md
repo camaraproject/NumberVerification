@@ -59,10 +59,10 @@ The r1.3 fixes 4 test definition scenarios.**
 ### Fixed
 
 * Replaced OAuth2 auth code flow by OIDC auth code flow by @AxelNennker [PR109](https://github.com/camaraproject/NumberVerification/pull/109)
-* @NumberVerification_phone_number_share201_missing_scope: Changed code to PERMISSION_DENIED (previous was UNAUTHENTICATED  )
-* @NumberVerification_phone_number_share202_expired_access_token: Changed code to UNAUTHENTICATED (previous was AUTHENTICATION_REQUIRED  )
-* @NumberVerification_verify201_missing_scope: Changed code to PERMISSION_DENIED (previous was UNAUTHENTICATED  )
-* @NumberVerification_verify202_expired_access_token: Changed code to UNAUTHENTICATED (previous was AUTHENTICATION_REQUIRED  )
+* @NumberVerification_phone_number_share201_missing_scope: Changed code to PERMISSION_DENIED (previous was UNAUTHENTICATED) [PR148](https://github.com/camaraproject/NumberVerification/pull/148)
+* @NumberVerification_phone_number_share202_expired_access_token: Changed code to UNAUTHENTICATED (previous was AUTHENTICATION_REQUIRED) [PR148](https://github.com/camaraproject/NumberVerification/pull/148)
+* @NumberVerification_verify201_missing_scope: Changed code to PERMISSION_DENIED (previous was UNAUTHENTICATED) [PR148](https://github.com/camaraproject/NumberVerification/pull/148)
+* @NumberVerification_verify202_expired_access_token: Changed code to UNAUTHENTICATED (previous was AUTHENTICATION_REQUIRED) [PR148](https://github.com/camaraproject/NumberVerification/pull/148)
 
 ### Removed
 
