@@ -21,7 +21,7 @@ Repository to describe, develop, document and test the NumberVerification API fa
 
 ## Meetings
 
-* Current schedule, registration, & meeting links are available on the confluence page: [Meetings information](https://wiki.camaraproject.org/display/CAM/NumberVerification)
+* Current schedule, registration, & meeting links are available on the confluence page: [Meetings information](https://lf-camaraproject.atlassian.net/wiki/spaces/CAM/pages/14562399/NumberVerification)
 
 
 
@@ -29,11 +29,11 @@ Repository to describe, develop, document and test the NumberVerification API fa
 
 * Note: Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until a new release is created. For example, changes may be reverted before a release is created. **For best results, use the latest available release**.
 
-* `NEW`: Release r1.2 with version 1.0.0 of the API number-verification is available [here](https://github.com/camaraproject/NumberVerification/tree/r1.2)
+* `NEW`: Release r1.3 with version 1.0.0 of the API number-verification is available [here](https://github.com/camaraproject/NumberVerification/tree/r1.3)
   - API definition **with inline documentation**:
-    - OpenAPI [YAML spec file](https://github.com/camaraproject/NumberVerification/blob/r1.2/code/API_definitions/number-verification.yaml)
-    - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r1.2/code/API_definitions/number-verification.yaml&nocors)
-    - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r1.2/code/API_definitions/number-verification.yaml)
+    - OpenAPI [YAML spec file](https://github.com/camaraproject/NumberVerification/blob/r1.3/code/API_definitions/number-verification.yaml)
+    - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r1.3/code/API_definitions/number-verification.yaml&nocors)
+    - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r1.3/code/API_definitions/number-verification.yaml)
 
 * Previous releases and pre-releases of the repository are available in https://github.com/camaraproject/NumberVerification/releases 
 * For changes see [CHANGELOG.md](https://github.com/camaraproject/NumberVerification/blob/main/CHANGELOG.md)
