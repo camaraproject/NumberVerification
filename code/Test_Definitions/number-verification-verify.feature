@@ -148,7 +148,7 @@ Feature: Camara Number Verification API verify
     Then the response status code is 401
     And the response property "$.status" is 401
     And the response property "$.code" is "UNAUTHENTICATED"
-    And the response property "$.message" is "New authentication is required."
+    And the response property "$.message" is "Request not authenticated due to missing, invalid, or expired credentials."
 
   @NumberVerification_verify203_both_phone_number_and_hashed_in_request
   Scenario:  verify phone number but providing both plain and hashed phone number in the body
