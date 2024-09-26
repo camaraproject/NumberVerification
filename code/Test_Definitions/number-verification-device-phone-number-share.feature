@@ -51,7 +51,7 @@ Feature: Camara Number Verification API device phone number share
     Then the response status code is 403
     And the response property "$.status" is 403
     And the response property "$.code" is "PERMISSION_DENIED"
-    And the response property "$.message" is "Request not authenticated due to missing, invalid, or expired credentials."
+    And the response property "$.message" is "Client does not have sufficient permissions to perform this action."
 
   @NumberVerification_phone_number_share202_expired_access_token
   Scenario:  share phone number with expired access token
