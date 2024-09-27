@@ -36,29 +36,17 @@ The r1.3 fixes 4 test definition scenarios.**
 
 **Main Changes**
 
-* API and test definitions updated to conform to the Commonalities v0.4.0 and Identity and Consent Management v0.2.0 guidelines included in the CAMARA Fall24 meta-release
-* Additional documentation & test cases added.
-* Changed name of the file itself from number_verification.yaml to number-verification.yaml
+* Fixed test definitions accordingly to CAMARA commonalities & other APIs.
 
 
 ### Added
 
-* User Story in documentation/API_documentation directory by @bigludo7 [PR118](https://github.com/camaraproject/NumberVerification/pull/118)
-* Test Definition in Test_Definitions directory by @AxelNennker [PR124](https://github.com/camaraproject/NumberVerification/pull/124)
 
 ### Changed
 
-* Aligned with CAMARA design guidelines & Identity Consent management by @AxelNennker 
-* Make the '+' mandatory for the phone number by @fernandopradocabrillo [PR90](https://github.com/camaraproject/NumberVerification/pull/90)
-* Cosmetic change following megalinter integration by @bigludo7 [PR103](https://github.com/camaraproject/NumberVerification/pull/103)
-* Update Authorization and authentication part accordingly to ICM by @fernandopradocabrillo [PR88](https://github.com/camaraproject/NumberVerification/issues/88)
-* Adding a pattern for PhoneNumber in /verify by @maxl2287 [PR68](https://github.com/camaraproject/NumberVerification/issues/76)
-* Clarify use of 'user' and 'subscriber' wording by @AxelNennker [PR102](https://github.com/camaraproject/NumberVerification/pull/102)
-* Clarify that the sequence diagram in the yaml documentation is an example by @bigludo7 [PR139](https://github.com/camaraproject/NumberVerification/pull/139)
 
 ### Fixed
 
-* Replaced OAuth2 auth code flow by OIDC auth code flow by @AxelNennker [PR109](https://github.com/camaraproject/NumberVerification/pull/109)
 * @NumberVerification_phone_number_share201_missing_scope: Changed code to PERMISSION_DENIED (previous was UNAUTHENTICATED) [PR148](https://github.com/camaraproject/NumberVerification/pull/148)
 * @NumberVerification_phone_number_share202_expired_access_token: Changed code to UNAUTHENTICATED (previous was AUTHENTICATION_REQUIRED) [PR148](https://github.com/camaraproject/NumberVerification/pull/148)
 * @NumberVerification_verify201_missing_scope: Changed code to PERMISSION_DENIED (previous was UNAUTHENTICATED) [PR148](https://github.com/camaraproject/NumberVerification/pull/148)
@@ -66,7 +54,6 @@ The r1.3 fixes 4 test definition scenarios.**
 
 ### Removed
 
-* Removed documentation (replaced by doc in the yaml) by @AxelNennker [PR137](https://github.com/camaraproject/NumberVerification/pull/1379)
 
 ## New Contributors
 * N/A
