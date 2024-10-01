@@ -15,7 +15,7 @@
 
 ## Release Notes
 
-This release contains the definition and documentation of
+This patch release contains the definition and documentation of
 * number-verification 1.0.0
 
 The API definition(s) are based on
