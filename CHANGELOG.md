@@ -23,7 +23,7 @@ The API definition(s) are based on
 * Identity and Consent Management v0.2.0
 
 **Note:
-The r1.3 fixes 4 test definition scenarios.**
+The API definition is unchanged compared to [r1.2](#r12). The patch release r1.3 fixes only 4 test definition scenarios as listed below.**
 
 ## number-verification 1.0.0
 
