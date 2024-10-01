@@ -34,11 +34,6 @@ The API definition is unchanged compared to [r1.2](#r12). The patch release r1.3
   - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r1.3/code/API_definitions/number-verification.yaml)
   - OpenAPI [YAML spec file](https://github.com/camaraproject/NumberVerification/blob/r1.3/code/API_definitions/number-verification.yaml)
 
-**Main Changes**
-
-* Fixed test definitions accordingly to CAMARA commonalities & other APIs.
-
-
 ### Added
 
 
