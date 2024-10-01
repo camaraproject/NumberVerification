@@ -3,12 +3,57 @@
 
 ## Table of contents
 
+- **[r1.3](#r13)**
 - **[r1.2](#r12)**
 - **[r1.1](#r11)**
 - **[v0.3.1](#v031)**
 
 
 **Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until it has been released. For example, changes may be reverted before a release is published. For the best results, use the latest published release.**
+
+# r1.3
+
+## Release Notes
+
+This patch release contains the definition and documentation of
+* number-verification 1.0.0
+
+The API definition(s) are based on
+* Commonalities v0.4.0
+* Identity and Consent Management v0.2.0
+
+**Note:
+The API definition is unchanged compared to [r1.2](#r12). The patch release r1.3 fixes only 4 test definition scenarios as listed below.**
+
+## number-verification 1.0.0
+
+**number-verification 1.0.0 is the release of the first stable version of the NumberVerification API.**
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r1.3/code/API_definitions/number-verification.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r1.3/code/API_definitions/number-verification.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/NumberVerification/blob/r1.3/code/API_definitions/number-verification.yaml)
+
+### Added
+
+
+### Changed
+
+
+### Fixed
+
+* @NumberVerification_phone_number_share201_missing_scope: Changed code to PERMISSION_DENIED (previous was UNAUTHENTICATED) [PR148](https://github.com/camaraproject/NumberVerification/pull/148)
+* @NumberVerification_phone_number_share202_expired_access_token: Changed code to UNAUTHENTICATED (previous was AUTHENTICATION_REQUIRED) [PR148](https://github.com/camaraproject/NumberVerification/pull/148)
+* @NumberVerification_verify201_missing_scope: Changed code to PERMISSION_DENIED (previous was UNAUTHENTICATED) [PR148](https://github.com/camaraproject/NumberVerification/pull/148)
+* @NumberVerification_verify202_expired_access_token: Changed code to UNAUTHENTICATED (previous was AUTHENTICATION_REQUIRED) [PR148](https://github.com/camaraproject/NumberVerification/pull/148)
+
+### Removed
+
+
+## New Contributors
+* N/A
+
+
 
 # r1.2
 
