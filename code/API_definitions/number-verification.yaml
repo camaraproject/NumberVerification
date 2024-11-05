@@ -60,7 +60,7 @@ info:
     It is important to remark that in cases where personal user data is processed by the API, and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of 3-legged access tokens becomes mandatory.
     This measure ensures that the API remains in strict compliance with user privacy preferences and regulatory obligations, upholding the principles of transparency and user-centric data control.
 
-    In the case of the Number Verification API scenario and according to the API definition, 3-legged access tokens must be used by API clients to invoke this API with dedicated scope. 
+    In the case of the Number Verification API scenario and according to the API definition, 3-legged access tokens must be used by API clients to invoke this API with dedicated scope.
     The API client must authenticate on behalf of a specific user to use this service.
 
     # Further info and support
