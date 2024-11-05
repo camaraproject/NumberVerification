@@ -16,7 +16,7 @@ info:
 
     How an operator token is obtained is outside the scope.
     
-    The NumberVerification API verifes possession of a phone number in the background without requiring user interaction. 
+    The NumberVerification API verifes possession of a phone number in the background without requiring user interaction.
     There are neither OTPs (One-time passwords) received by SMS nor authenticator app downloads, so it is much simpler. 
     It can be used at sign up, login, or transaction time to validate that a user's SIM (Subscriber Identity Module) is both actively connected to the mobile network and not spoofed or cloned.
 
