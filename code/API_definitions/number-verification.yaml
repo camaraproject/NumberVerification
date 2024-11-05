@@ -15,7 +15,7 @@ info:
     Please see the CAMARA-Security-Interoperability.md on the format of the login_hint value for operator tokens.
 
     How an operator token is obtained is outside the scope.
- 
+
     The NumberVerification API verifes possession of a phone number in the background without requiring user interaction.
     There are neither OTPs (One-time passwords) received by SMS nor authenticator app downloads, so it is much simpler.
     It can be used at sign up, login, or transaction time to validate that a user's SIM (Subscriber Identity Module) is both actively connected to the mobile network and not spoofed or cloned.
@@ -69,7 +69,7 @@ info:
 
     [Operator Token TS.43 Service Entitlement Configuration](https://www.gsma.com/newsroom/gsma_resources/ts-43-service-entitlement-configuration/)
     [Operator Token Authorisation Sever – Authenticator Capabilities Group](https://www.gsma.com/newsroom/gsma_resources/asac-01-v1-0/)
-    
+
   version: 1.0.0
   x-camara-commonalities: 0.4.0
   license:
