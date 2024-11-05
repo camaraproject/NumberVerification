@@ -29,7 +29,7 @@ info:
 
     # API Functionality
 
-    This enables a Service Provider (SP) to verify the phone number of the mobile device being used to access their service. 
+    This enables a Service Provider (SP) to verify the phone number of the mobile device being used to access their service.
     This can happen either by getting the comparison result or receiving the phone number of the device that is used, so they can verify it themselves.
 
     # Resources and Operations overview
