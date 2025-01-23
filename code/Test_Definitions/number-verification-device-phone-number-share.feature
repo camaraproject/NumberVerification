@@ -69,21 +69,22 @@ Feature: Camara Number Verification API device phone number share
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" is "Request not authenticated due to missing, invalid, or expired credentials."
 
-  @NumberVerification_phone_number_share203_no_phonenumber_associated_with_access_token
-  Scenario:  share phone number with valid access token that is not associated with a phone number
-    Given they use the base url
-    And the resource is "/device-phone-number"
-    And one of the scopes associated with the access token is number-verification:device-phone-number:read
-    When the HTTPS "GET" request is sent
-    And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
-    And the access token is not associated with a phone number
-    And the response header "x-correlator" has same value as the request header "x-correlator"
-    And the response header "Content-Type" is "application/json"
-    And the response body complies with the OAS schema at "/components/schemas/ErrorInfo"
-    Then the response status code is 403
-    And the response property "$.status" is 403
-    And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
-    And the response property "$.message" is "Phone number cannot be deducted from access token context."
+#  @NumberVerification_phone_number_share203_no_phonenumber_associated_with_access_token
+#  Note: As 403 INVALID_TOKEN_CONTEXT code was removed this test is not anymore relevant.
+#  Scenario:  share phone number with valid access token that is not associated with a phone number
+#    Given they use the base url
+#    And the resource is "/device-phone-number"
+#    And one of the scopes associated with the access token is number-verification:device-phone-number:read
+#    When the HTTPS "GET" request is sent
+#    And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
+#    And the access token is not associated with a phone number
+#    And the response header "x-correlator" has same value as the request header "x-correlator"
+#    And the response header "Content-Type" is "application/json"
+#    And the response body complies with the OAS schema at "/components/schemas/ErrorInfo"
+#    Then the response status code is 403
+#    And the response property "$.status" is 403
+#    And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
+#    And the response property "$.message" is "Phone number cannot be deducted from access token context."
 
   @NumberVerification_phone_number_share205_must_have_used_network_authentication
   Scenario:  share phone number with valid access token but network authentication was not used
