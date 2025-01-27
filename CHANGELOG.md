@@ -42,6 +42,7 @@ The API definition(s) are based on
 ### Changed
 
 - Align error list & model with comm 0.5 by @bigludo7 in https://github.com/camaraproject/NumberVerification/pull/161
+- Add a pattern for x-correlator allowing zero-length string by @bigludo7 in https://github.com/camaraproject/NumberVerification/pull/164
 
 ### Removed
 
