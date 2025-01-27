@@ -80,12 +80,7 @@ paths:
         - It returns true/false depending on if the hashed phone number received as input matches the authenticated user's `device phone number` associated to the access token
       operationId: phoneNumberVerify
       parameters:
-        - in: header
-          name: x-correlator
-          required: false
-          description: Correlation id for the different services
-          schema:
-            type: string
+        - $ref: "#/components/parameters/x-correlator"
       requestBody:
         content:
           application/json:
@@ -97,9 +92,7 @@ paths:
           description: OK
           headers:
             x-correlator:
-              description: Correlation id for the different services
-              schema:
-                type: string
+              $ref: "#/components/headers/x-correlator"
           content:
             application/json:
               schema:
@@ -124,20 +117,13 @@ paths:
         - It returns the authenticated user's `device phone number` associated to the access token
       operationId: phoneNumberShare
       parameters:
-        - in: header
-          name: x-correlator
-          required: false
-          description: Correlation id for the different services
-          schema:
-            type: string
+        - $ref: "#/components/parameters/x-correlator"
       responses:
         '200':
           description: OK
           headers:
             x-correlator:
-              description: Correlation id for the different services
-              schema:
-                type: string
+              $ref: "#/components/headers/x-correlator"
           content:
             application/json:
               schema:
@@ -156,12 +142,22 @@ components:
     openId:
       type: openIdConnect
       openIdConnectUrl: https://example.com/.well-known/openid-configuration
+  parameters:
+    x-correlator:
+      name: x-correlator
+      in: header
+      description: Correlation id for the different services
+      schema:
+        type: string
+        pattern: ^[a-zA-Z0-9-]{0,55}$
+        example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
   headers:
     x-correlator:
       description: Correlation id for the different services
       schema:
         type: string
         pattern: ^[a-zA-Z0-9-]{0,55}$
+        example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
   schemas:
     NumberVerificationRequestBody:
       type: object
