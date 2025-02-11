@@ -2,7 +2,7 @@
 
 Checklist for number-verification v1.1.0-rc.1 in release r2.1
 
-| Nr | API release assets  | alpha | release-candidate |  public-release<br>initial | public-release<br> stable | Status | Comments |
+| Nr | API release assets  | alpha | release-candidate |  public-release<br>initial | public-release<br> stable | Status | Reference information |
 |----|----------------------------------------------|:-----:|:-----------------:|:-------:|:------:|:----:|:----:|
 |  1 | API definition                               |   M   |         M         |    M    |    M   |   Y   | [link](/code/API_definitions/number-verification.yaml) |
 |  2 | Design guidelines from Commonalities applied |   O   |         M         |    M    |    M   |   Y   |      |
