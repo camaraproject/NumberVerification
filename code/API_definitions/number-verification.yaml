@@ -32,7 +32,7 @@ info:
 
     Note that the diagram shows just an example of a direct integration from developer's application and MNO's authserver and API, other scenarios of indirect integration via Aggregator/Channel Partner should also be considered. Specific authorization flows may apply, as defined by e.g. GSMA Open Gateway (OGW).
 
-    ![UML Sequence Diagram](https://raw.githubusercontent.com/camaraproject/NumberVerification/main/documentation/API_documentation/assets/uml_v0.3.jpg)
+    ![UML Sequence Diagram](https://raw.githubusercontent.com/camaraproject/NumberVerification/r2.2/documentation/API_documentation/assets/uml_v0.3.jpg)
 
     **Additional details:**
 
@@ -52,13 +52,13 @@ info:
 
     # Further info and support
     [GSMA Mobile Connect Verified MSISDN specification](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.54-Mobile-Connect-Verified-MSISDN-Definition-and-Technical-Requirements-1.0.pdf) was used as source of input for this API.  For more about Mobile Connect, please see [Mobile Connect website](https://mobileconnect.io/).
-  version: 1.1.0-rc.1
+  version: 1.1.0-rc.2
   x-camara-commonalities: 0.5
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
-  - url: '{apiRoot}/number-verification/v1.1.0-rc.1'
+  - url: '{apiRoot}/number-verification/v1rc2'
     variables:
       apiRoot:
         default: http://localhost:9091
