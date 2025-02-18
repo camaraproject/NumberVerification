@@ -15,7 +15,7 @@ Feature: Camara Number Verification API verify
 # * a mobile device with SIM card with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER_HASHED2
 
   Background: Common Number Verification verify setup
-    Given the resource "/number-verification/v1.1.0-rc.1"  as  base url
+    Given the resource "/number-verification/v1rc2"  as  base url
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
