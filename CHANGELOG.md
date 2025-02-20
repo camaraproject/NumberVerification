@@ -3,6 +3,7 @@
 
 ## Table of contents
 
+- **[r2.2](#r22)**
 - **[r2.1](#r21)**
 - **[r1.3](#r13)**
 - **[r1.2](#r12)**
@@ -19,16 +20,45 @@ The below sections record the changes for each API version in each release as fo
 * for subsequent release-candidate(s), only the delta to the previous release-candidate
 * for a public release, the consolidated changes since the previous public release
 
+# r2.2
+
+## Release Notes
+
+This pre-release release contains the definition and documentation of
+* number-verification 1.1.0-rc.2
+
+The API definition(s) are based on
+* Commonalities v0.5.0-rc.1
+* Identity and Consent Management v0.3.0-rc.1
+
+## number-verification 1.1.0-rc.2
+
+**number-verification 1.1.0-rc.2 is the second pre-release for v1.1.0 of the NumberVerification API.**
+
+Main purpose of the rc.2 version is to address https://github.com/camaraproject/NumberVerification/issues/168
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r2.2/code/API_definitions/number-verification.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r2.2/code/API_definitions/number-verification.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/NumberVerification/blob/r2.2/code/API_definitions/number-verification.yaml)
+
+### Changed
+
+- servers.url format aligned with current guidelines (`'{apiRoot}/number-verification/v1rc2'`) by @hdamker in https://github.com/camaraproject/NumberVerification/issues/169
+- Link into main branch replaced with link into release branch by @hdamker in https://github.com/camaraproject/NumberVerification/issues/169
+
+**Full Changelog**: https://github.com/camaraproject/NumberVerification/compare/r2.1...r2.2
+
 # r2.1
 
 ## Release Notes
 
-This patch release contains the definition and documentation of
+This pre-release contains the definition and documentation of
 * number-verification 1.1.0-rc.1
 
 The API definition(s) are based on
-* Commonalities v0.5.0-alpha.1
-* Identity and Consent Management v0.3.0-alpha.1
+* Commonalities v0.5.0-rc.1
+* Identity and Consent Management v0.3.0-rc.1
 
 ## number-verification 1.1.0-rc.1
 
