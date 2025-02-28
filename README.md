@@ -5,10 +5,12 @@
 <a href="https://github.com/camaraproject/NumberVerification" title="Repo Size"><img src="https://img.shields.io/github/repo-size/camaraproject/NumberVerification?style=plastic"></a>
 <a href="https://github.com/camaraproject/NumberVerification/blob/main/LICENSE" title="License"><img src="https://img.shields.io/badge/License-Apache%202.0-green.svg?style=plastic"></a>
 <a href="https://github.com/camaraproject/NumberVerification/releases/latest" title="Latest Release"><img src="https://img.shields.io/github/release/camaraproject/NumberVerification?style=plastic"></a>
+<a href="https://github.com/camaraproject/Governance/blob/main/ProjectStructureAndRoles.md" title="Incubating API Repository"><img src="https://img.shields.io/badge/Incubating%20API%20Repository-green?style=plastic"></a>
 
 # NumberVerification
 
-Repository to describe, develop, document and test the NumberVerification API family
+Incubating API Repository to evolve and maintain the definitions and documentation of the NumberVerification API family
+* API Repository wiki page: https://lf-camaraproject.atlassian.net/wiki/spaces/CAM/pages/14562399/NumberVerification
 
 ## Scope
 
@@ -17,15 +19,10 @@ Repository to describe, develop, document and test the NumberVerification API fa
   * verify the phone number associated with the SIM used in the device connected to the mobile data network.
 * Describe, develop, document and test the APIs (with 1-2 Telcos)  
 * Started: October 2022
-* Location: virtually  
-
-## Meetings
-
-* Current schedule, registration, & meeting links are available on the confluence page: [Meetings information](https://lf-camaraproject.atlassian.net/wiki/spaces/CAM/pages/14562399/NumberVerification)
+* Incubating stage since: February 2025
 
 
-
-## Status and released versions
+## Release Information
 
 * Note: Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until a new release is created. For example, changes may be reverted before a release is created. **For best results, use the latest available release**.
 
@@ -39,12 +36,12 @@ Repository to describe, develop, document and test the NumberVerification API fa
 * For changes see [CHANGELOG.md](https://github.com/camaraproject/NumberVerification/blob/main/CHANGELOG.md)
 
 
-## Contributorship and mailing list
+## Contributing
 
-* To subscribe / unsubscribe to the mailing list of this Sub Project and thus be / resign as Contributor please visit <https://lists.camaraproject.org/g/sp-nve>.
-* A message to all Contributors of this Sub Project can be sent using <sp-nve@lists.camaraproject.org>.
-
-
-## Relevant Information
-
-Since April 4th 2024 WG meeting minutes are placed in [Number Verification Wiki Confluence site](https://wiki.camaraproject.org/display/CAM/NumberVerification)
+* Meetings are held virtually
+   * Schedule: Every 4 weeks, Thursday  Tuesday, 7:30 AM UTC (8:30 CET/9:30 CEST)
+   * Meeting link: [Registration / Join](https://lf-camaraproject.atlassian.net/wiki/spaces/CAM/pages/14562399/NumberVerification)
+* Mailing list:
+   * To subscribe / unsubscribe to the mailing list of this Sub Project and thus be / resign as Contributor please visit <https://lists.camaraproject.org/g/sp-nve>.
+   * A message to all Contributors of this Sub Project can be sent using <sp-nve@lists.camaraproject.org>.
+* Slack channel: https://app.slack.com/client/T05S5J43YQP/C062DDGR60L
