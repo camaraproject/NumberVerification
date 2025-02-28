@@ -32,7 +32,7 @@ info:
 
     Note that the diagram shows just an example of a direct integration from developer's application and the API Provider's auth server:
 
-    ![UML Sequence Diagram](https://raw.githubusercontent.com/camaraproject/NumberVerification/r2.2/documentation/API_documentation/assets/uml_v0.3.jpg)
+    ![UML Sequence Diagram](https://raw.githubusercontent.com/camaraproject/NumberVerification/r2.3/documentation/API_documentation/assets/uml_v0.3.jpg)
 
     **Additional details:**
 
