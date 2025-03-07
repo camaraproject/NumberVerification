@@ -41,7 +41,7 @@ The API definition(s) are based on
   - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r2.3/code/API_definitions/number-verification.yaml)
   - OpenAPI [YAML spec file](https://github.com/camaraproject/NumberVerification/blob/r2.3/code/API_definitions/number-verification.yaml)
 
-changes included in v1.1.0 compared to v1.0.0
+Changes included in v1.1.0 compared to v1.0.0
 
 ### Changed
 
