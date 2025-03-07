@@ -26,7 +26,7 @@ Incubating API Repository to evolve and maintain the definitions and documentati
 
 * Note: Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until a new release is created. For example, changes may be reverted before a release is created. **For best results, use the latest available release**.
 
-* The release r2.3 with version 1.1.0 of the API number-verification is available [here](https://github.com/camaraproject/NumberVerification/tree/r2.3)
+* The public release r2.3 with version 1.1.0 of the API number-verification is available [here](https://github.com/camaraproject/NumberVerification/tree/r2.3)
   - 1.1.0 Number Verification definition **with inline documentation**:
     - OpenAPI [YAML spec file](https://github.com/camaraproject/NumberVerification/blob/r2.3/code/API_definitions/number-verification.yaml)
     - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r2.3/code/API_definitions/number-verification.yaml&nocors)
