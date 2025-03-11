@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Number Verification
   description: |
-    Service Enabling Network Function API to verify that the provided **mobile phone number** is the one used in the device. It verifies that the user is using a device with the same *mobile phone number* as it is declared.
+    Service API to verify that the provided **mobile phone number** is the one used in the device. It verifies that the user is using a device with the same *mobile phone number* as it is declared.
     It also makes it possible for a Service provider to verify the number itself by returning the phone number associated to the authenticated user's access token.
 
     In this API **phone number** term refers to the mobile phone number.
@@ -23,16 +23,16 @@ info:
     This enables a Service Provider (SP) to verify the phone number of the mobile device being used to access their service where the mobile device is accessing the *service provider* over a mobile network (WiFi connections are out of this API scope). This can happen either by getting the comparison result or receiving the phone number of the device that is used, so they can verify it themselves.
 
     # Resources and Operations overview
-    This API currently provides two endpoints where both require a **3-legged token** and authentication via **mobile network** (**excluding** for example by SMS/OTP or user/password as an authentication method):
+    This API currently provides two endpoints which both require a **3-legged token** and authentication via **mobile network** (**excluding** for example by SMS/OTP or user/password as an authentication method):
     - The first one checks if the user mobile phone number matches the phone number associated with the mobile device. It can receive either a hashed or a plain text phone number as input and it compares the received input with the authenticated user's phone number associated to the access token in order to respond **true/false**.
     - The next one retrieves the phone number associated to the user's token and returns it so the verification can be made by the service provider.
 
     # Sequence Diagram
     Number Verification API uses the **standard [OIDC Authorization Code Flow](https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth)**. The following diagram will help to clarify the end-to-end process, including previous steps prior to this API call.
 
-    Note that the diagram shows just an example of a direct integration from developer's application and MNO's authserver and API, other scenarios of indirect integration via Aggregator/Channel Partner should also be considered. Specific authorization flows may apply, as defined by e.g. GSMA Open Gateway (OGW).
+    Note that the diagram shows just an example of a direct integration from developer's application and the API Provider's auth server:
 
-    ![UML Sequence Diagram](https://raw.githubusercontent.com/camaraproject/NumberVerification/r2.2/documentation/API_documentation/assets/uml_v0.3.jpg)
+    ![UML Sequence Diagram](https://raw.githubusercontent.com/camaraproject/NumberVerification/r2.3/documentation/API_documentation/assets/uml_v0.3.jpg)
 
     **Additional details:**
 
@@ -51,14 +51,17 @@ info:
     In the case of the Number Verification API scenario and according to the API definition, 3-legged access tokens must be used by API clients to invoke this API with dedicated scope. The API client must authenticate on behalf of a specific user to use this service. This must be done via mobile network authentication.
 
     # Further info and support
-    [GSMA Mobile Connect Verified MSISDN specification](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.54-Mobile-Connect-Verified-MSISDN-Definition-and-Technical-Requirements-1.0.pdf) was used as source of input for this API.  For more about Mobile Connect, please see [Mobile Connect website](https://mobileconnect.io/).
-  version: 1.1.0-rc.2
+    [GSMA Mobile Connect Verified MSISDN specification](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.54-Mobile-Connect-Verified-MSISDN-Definition-and-Technical-Requirements-1.0.pdf) was used as source of input for this API.
+  version: 1.1.0
   x-camara-commonalities: 0.5
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
+externalDocs:
+  description: Project documentation at CAMARA
+  url: https://github.com/camaraproject/NumberVerification
 servers:
-  - url: '{apiRoot}/number-verification/v1rc2'
+  - url: '{apiRoot}/number-verification/v1'
     variables:
       apiRoot:
         default: http://localhost:9091
@@ -303,6 +306,3 @@ components:
                 status: 403
                 code: NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK
                 message: Client must authenticate via the mobile network to use this service
-externalDocs:
-  description: Project documentation at CAMARA
-  url: https://github.com/camaraproject/NumberVerification
