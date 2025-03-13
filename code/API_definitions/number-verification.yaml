@@ -57,7 +57,7 @@ info:
 
       The API Provider implies the request parameter prompt=none in the Authication Request for this API.
 
-      The lifetime of the access token SHOULD very short.
+      The lifetime of the access token SHOULD be very short.
       
     - **(2):** The way in which the phone_number is retrieved depends on the implementation. 
       For example, access token may be a self contained encrypted JWT, so API can decrypt and identify phone_number. 
