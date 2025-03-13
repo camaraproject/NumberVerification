@@ -3,7 +3,7 @@ info:
   title: Number Verification
   description: |
     API to verify or retrieve the **mobile phone number** that is currently used on the user's device
-  
+
     In this API **phone number** refers to the mobile phone number.
 
     # Introduction
