@@ -3,6 +3,7 @@
 
 ## Table of contents
 
+- **[r2.3](#r23)**
 - **[r2.2](#r22)**
 - **[r2.1](#r21)**
 - **[r1.3](#r13)**
@@ -19,6 +20,44 @@ The below sections record the changes for each API version in each release as fo
 * for the first release-candidate, all changes since the last public release
 * for subsequent release-candidate(s), only the delta to the previous release-candidate
 * for a public release, the consolidated changes since the previous public release
+
+# r2.3
+
+## Release Notes
+
+This public release contains the definition and documentation of
+* number-verification 1.1.0
+
+The API definition(s) are based on
+* Commonalities v0.5.0
+* Identity and Consent Management v0.3.0
+
+## number-verification 1.1.0
+
+**number-verification 1.1.0 is the release for v1.1.0 of the NumberVerification API.**
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r2.3/code/API_definitions/number-verification.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r2.3/code/API_definitions/number-verification.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/NumberVerification/blob/r2.3/code/API_definitions/number-verification.yaml)
+
+Changes included in v1.1.0 compared to v1.0.0
+
+### Changed
+
+- Align error list & model with comm 0.5 by @bigludo7 in https://github.com/camaraproject/NumberVerification/pull/161
+- Add a pattern for x-correlator allowing zero-length string by @bigludo7 in https://github.com/camaraproject/NumberVerification/pull/164
+- servers.url format aligned with current guidelines (`'{apiRoot}/number-verification/v1rc2'`) by @hdamker in https://github.com/camaraproject/NumberVerification/issues/169
+- Link into main branch replaced with link into release branch by @hdamker in https://github.com/camaraproject/NumberVerification/issues/169
+
+### Removed
+
+- Remove 403 INVALID_TOKEN_CONTEXT by @bigludo7 in https://github.com/camaraproject/NumberVerification/pull/163
+
+**Full Changelog** between v1.1.0 and v1.0.0: https://github.com/camaraproject/NumberVerification/compare/r1.3...r2.3
+
+## New Contributors
+* @hdamker made their first contribution by servers.url format aligned with current guidelines (`'{apiRoot}/number-verification/v1rc2'`)
 
 # r2.2
 
