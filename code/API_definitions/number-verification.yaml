@@ -72,7 +72,7 @@ info:
 
     In the case of the Number Verification API scenario and according to the API definition, 3-legged access tokens must be used by API clients to invoke this API with dedicated scope. The API client must authenticate on behalf of a specific user to use this service. This must be done via mobile network authentication.
 
-  version: 1.1.0-rc.2
+  version: 2.0-rc1
   x-camara-commonalities: 0.5
   license:
     name: Apache 2.0
