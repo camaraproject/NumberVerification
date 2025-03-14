@@ -17,7 +17,7 @@ info:
     - **SIM-Based Authentication**: Authentication mechanism based on the identification of the subscriber's SIM installed in the user's device.
     # API Functionality
 
-    This API enables an API Consumer to verify or retrieve the phone number of the mobile device being used to access their service
+    This API enables an API Consumer to verify or retrieve the phone number of the mobile device being used to access their service.
 
     # The Authentication Request
 
