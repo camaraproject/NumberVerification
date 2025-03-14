@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: Number Verification
   description: |
-    API to verify or retrieve the **mobile phone number** that is currently used on the user's device
+    This API can verify or retrieve the **mobile phone number** that is currently allocated by the network operator to the SIM in the end user's device
 
     In this API **phone number** refers to the mobile phone number.
 
