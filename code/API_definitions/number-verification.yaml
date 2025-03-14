@@ -32,7 +32,7 @@ info:
 
     Note that the diagram shows just an example of a direct integration from developer's application and the API Provider's auth server:
 
-    ![UML Sequence Diagram](https://raw.githubusercontent.com/camaraproject/NumberVerification/r2.3/documentation/API_documentation/assets/uml_v0.3.jpg)
+    ![UML Sequence Diagram](https://raw.githubusercontent.com/camaraproject/NumberVerification/main/documentation/API_documentation/assets/uml_v0.3.jpg)
 
     **Additional details:**
 
@@ -52,7 +52,7 @@ info:
 
     # Further info and support
     [GSMA Mobile Connect Verified MSISDN specification](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.54-Mobile-Connect-Verified-MSISDN-Definition-and-Technical-Requirements-1.0.pdf) was used as source of input for this API.
-  version: 1.1.0
+  version: wip
   x-camara-commonalities: 0.5
   license:
     name: Apache 2.0
@@ -61,7 +61,7 @@ externalDocs:
   description: Project documentation at CAMARA
   url: https://github.com/camaraproject/NumberVerification
 servers:
-  - url: '{apiRoot}/number-verification/v1'
+  - url: '{apiRoot}/number-verification/vwip'
     variables:
       apiRoot:
         default: http://localhost:9091
