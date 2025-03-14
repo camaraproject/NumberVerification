@@ -27,7 +27,7 @@ info:
     How the API Consumer gets a TS.43 temporary token is out-of-scope of the API definition.
     When the API Consumer sends the Authentication Request, the temporary token is send in the login_hint parameter with the prefix "operatortoken:".
 
-    If the API Consumer does not have a TS.43 temporary token then the IP address of the mobile connection is used to identify the mobile subscription.
+    If the API Consumer does not have a TS.43 temporary token then the API Consumer must use OpenId Connect Authorization Code Flow as described in current release of [CAMARA APIs Access and User Consent Management](https://github.com/camaraproject/IdentityAndConsentManagement).
     This mechanism of resolving an IP address to a subscribtion does not work on a fixed-net Internet connection nor over WiFi.
     The API Consumer should not send a login_hint in the Authentication Request.
 
