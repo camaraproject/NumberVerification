@@ -16,7 +16,7 @@ info:
 
     - **Network-Based Authentication**: Authentication mechanism based on the identification of the endpoint of a network connection.
     Network operators know to which subscriber a network resource is assigned at a given moment, for example the mobile phone number associated to a specific mobile network connection.
-
+    - **SIM-Based Authentication**: Authentication mechanism based on the identification of the subscriber's SIM installed in the user's device.
     # API Functionality
 
     This API enables an API Consumer to verify or retrieve the phone number of the mobile device being used to access their service
