@@ -14,13 +14,13 @@ info:
 
     # Relevant Definitions and Concepts
 
-    - **Network-Based Authentication**: Authentication mechanism based on the identification of the endpoint of a network connection. 
+    - **Network-Based Authentication**: Authentication mechanism based on the identification of the endpoint of a network connection.
     Network operators know to which subscriber a network resource is assigned at a given moment, for example the mobile phone number associated to a specific mobile network connection.
 
     # API Functionality
 
     This API enables an API Consumer to verify or retrieve the phone number of the mobile device being used to access their service
-    
+
     # The Authentication Request
 
     If the API Consumer has a TS.43 temporary token created on the mobile device then this API works over all connections e.g. WiFi.
@@ -30,18 +30,18 @@ info:
     If the API Consumer does not have a TS.43 temporary token then the IP address of the mobile connection is used to identify the mobile subscription.
     This mechanism of resolving an IP address to a subscribtion does not work on a fixed-net Internet connection nor over WiFi.
     The API Consumer should not send a login_hint in the Authentication Request.
-    
+
     # Resources and Operations overview
 
     This API currently provides two endpoints which both require a **3-legged token**:
-    - The first one checks if the user's mobile phone number matches the phone number associated with the mobile device. 
+    - The first one checks if the user's mobile phone number matches the phone number associated with the mobile device.
       It can receive either a hashed or a plain text phone number as input.
       It compares the received phone number with the user's phone number associated to the access token in order to respond **true/false**.
     - The next one retrieves the phone number associated to the access token and returns it.
 
     # Sequence Diagram
-    
-    Number Verification API uses the **standard [OIDC Authorization Code Flow](https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth)**. 
+
+    Number Verification API uses the **standard [OIDC Authorization Code Flow](https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowAuth)**.
     The following diagram will help to clarify the end-to-end process, including steps prior to this API call.
 
     Note that the diagram shows just an example of a direct integration from developer's application and the API Provider's Authorization Server and API.
@@ -50,15 +50,15 @@ info:
 
     **Implementation Details:**
 
-    - **(1):** Authentication must be automatic without any user interactions. 
-      Authentication methods such as SMS OTP or user/password are incompatible, as the goal is to validate the mobile phone number that is accessing the App. 
-      
+    - **(1):** Authentication must be automatic without any user interactions.
+      Authentication methods such as SMS OTP or user/password are incompatible, as the goal is to validate the mobile phone number that is accessing the App.
+  
       The API Consumer should use of the request parameter prompt=none in the Authication Request, as described in **[OIDC Connect](https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest)**, ensuring no user interaction.
 
       The API Provider implies the request parameter prompt=none in the Authication Request for this API.
 
       The lifetime of the access token SHOULD be very short.
-      
+
     - **(2):** The way in which the phone_number is retrieved depends on the implementation. 
       For example, access token may be a self contained encrypted JWT, so API can decrypt and identify phone_number. 
       Some other implementations might request the phone_number associated to the token from Authorization Server.
