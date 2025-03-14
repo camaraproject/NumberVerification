@@ -58,9 +58,9 @@ info:
 
       The API Provider implies the request parameter prompt=none in the Authentication Request for this API.
 
-    - **(2):** The way in which the phone_number is retrieved depends on the implementation.
-      For example, access token may be a self contained encrypted JWT, so API can decrypt and identify phone_number.
-      Some other implementations might request the phone_number associated to the token from Authorization Server.
+    - **(2):** The way in which the phone number is retrieved depends upon the implementation.
+      For example, the access token may be a self-contained encrypted JWT, and so the API provider can decrypt and identify phone number directly from the access token.
+      Other implementations might retrieve the phone number associated with the access token from their Authorization Server.
 
     # Authorization and authentication
 
