@@ -8,7 +8,7 @@ info:
 
     # Introduction
 
-    Number Verification API performs real-time checks to verify the phone number of the mobile device being used to access a service provider (SP) service.
+    Number Verification API performs real-time checks to verify the phone number of the mobile device being used to access a service provider (SP) service, either by getting the comparison result or receiving the phone number of the device that it is used, so they can verify it themselves.
 
     The mobile phone number is personal data and end-user consent might be required.
 
