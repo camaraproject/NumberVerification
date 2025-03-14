@@ -52,15 +52,15 @@ info:
 
     - **(1):** Authentication must be automatic without any user interactions.
       Authentication methods such as SMS OTP or user/password are incompatible, as the goal is to validate the mobile phone number that is accessing the App.
-  
+
       The API Consumer should use of the request parameter prompt=none in the Authication Request, as described in **[OIDC Connect](https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest)**, ensuring no user interaction.
 
       The API Provider implies the request parameter prompt=none in the Authication Request for this API.
 
       The lifetime of the access token SHOULD be very short.
 
-    - **(2):** The way in which the phone_number is retrieved depends on the implementation. 
-      For example, access token may be a self contained encrypted JWT, so API can decrypt and identify phone_number. 
+    - **(2):** The way in which the phone_number is retrieved depends on the implementation.
+      For example, access token may be a self contained encrypted JWT, so API can decrypt and identify phone_number.
       Some other implementations might request the phone_number associated to the token from Authorization Server.
 
     # Authorization and authentication
