@@ -32,7 +32,7 @@ info:
     ## Authentication Request without a temporary token
 
     If the API Consumer does not have a TS.43 temporary token then the API Consumer must use OpenId Connect Authorization Code Flow as described in the current release of [CAMARA APIs Access and User Consent Management](https://github.com/camaraproject/IdentityAndConsentManagement).
-    This mechanism of utilizing the mobile connection does not work on a fixed-net Internet connection nor over WiFi or VPN.
+    For this method of authentication to work, the device must be connected to the mobile network.
     The API Consumer should not send a login_hint in the Authentication Request.
 
     # Resources and Operations overview
