@@ -23,11 +23,15 @@ info:
 
     # The Authentication Request
 
+    ## Authentication Request with a temporary token
+
     If the API Consumer has a TS.43 temporary token created on the mobile device then this API works over all connections e.g. WiFi taking advantage of the SIM-Based authentication.
     How the API Consumer gets a TS.43 temporary token is out-of-scope of the API definition.
-    When the API Consumer sends the Authentication Request, the temporary token is send in the login_hint parameter with the prefix "operatortoken:".
+    The API Consumer sends the temporary token to their backend and which sends a CIBA Authentication Request, as described in the current release [CAMARA APIs Access and User Consent Management](https://github.com/camaraproject/IdentityAndConsentManagement), with a parameter "login_hint=operatortoken:<temporary token>".
 
-    If the API Consumer does not have a TS.43 temporary token then the API Consumer must use OpenId Connect Authorization Code Flow as described in current release of [CAMARA APIs Access and User Consent Management](https://github.com/camaraproject/IdentityAndConsentManagement).
+    ## Authentication Request without a temporary token
+    
+    If the API Consumer does not have a TS.43 temporary token then the API Consumer must use OpenId Connect Authorization Code Flow as described in the current release of [CAMARA APIs Access and User Consent Management](https://github.com/camaraproject/IdentityAndConsentManagement).
     This mechanism of utilizing the mobile connection does not work on a fixed-net Internet connection nor over WiFi or VPN.
     The API Consumer should not send a login_hint in the Authentication Request.
 
