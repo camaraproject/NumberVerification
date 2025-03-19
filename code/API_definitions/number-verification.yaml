@@ -54,7 +54,7 @@ info:
     - **(1):** Authentication must be automatic without any user interactions.
       Authentication methods such as SMS OTP or user/password are incompatible, as the goal is to validate the mobile phone number that is accessing the App.
 
-      The API Consumer should use of the request parameter prompt=none in the Authentication Request, as described in **[OIDC Connect](https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest)**, ensuring no user interaction.
+      The API Consumer should use the request parameter prompt=none in the Authentication Request, as described in **[OIDC Connect](https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest)**, ensuring no user interaction.
 
       The API Provider implies the request parameter prompt=none in the Authentication Request for this API.
 
