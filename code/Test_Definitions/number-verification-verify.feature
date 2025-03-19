@@ -185,17 +185,17 @@ Feature: Camara Number Verification API verify
 #    And the response property "$.message" is "Phone number cannot be deducted from access token context."
 
   @NumberVerification_phone_number_verify205_must_have_used_network_authentication
-  Scenario:  verify phone number with valid access token but network or SIM based authentication was not used
+  Scenario: verify phone number with valid access token but neither Network-Based authentication nor SIM-Based authentication was used
     Given they use the base url
     And the resource is "/verify"
     And one of the scopes associated with the access token is number-verification:verify
     When the HTTPS "GET" request is sent
     And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
-    And the information, e.g. authentication method reference, associated with the access token indicates that network or SIM based authentication was NOT used
+    And the information, e.g. authentication method reference, associated with the access token indicates that neither Network-based nor SIM-based authentication was used
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
     And the response body complies with the OAS schema at "/components/schemas/ErrorInfo"
     Then the response status code is 403
     And the response property "$.status" is 403
     And the response property "$.code" is "NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK"
-    And the response property "$.message" is "The subscription must be identified via the mobile network or SIM based to use this service."
+    And the response property "$.message" is "The subscription must be identified using either Network-based authentication or SIM-based authentication to access this service."
