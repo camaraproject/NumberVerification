@@ -64,7 +64,7 @@ Changes included in v2.0.0 compared to v1.0.0
 ## New Contributors
 * @hdamker made their first contribution by servers.url format aligned with current guidelines (`'{apiRoot}/number-verification/v1rc2'`)
 
-# r2.3
+# ~~r2.3~~
 
 **Release r2.3 has been revoked and removed in favor of the release r2.4**
 
