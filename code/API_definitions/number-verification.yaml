@@ -47,7 +47,7 @@ info:
 
     The following sequence diagram shows an example of a direct integration into the developer's application and the API Provider's Authorization Server and API for the case that no temporary token is available.
 
-    ![UML Sequence Diagram](https://raw.githubusercontent.com/camaraproject/NumberVerification/r2.3/documentation/API_documentation/assets/uml_v0.3.jpg)
+    ![UML Sequence Diagram](https://raw.githubusercontent.com/camaraproject/NumberVerification/main/documentation/API_documentation/assets/uml_v0.3.jpg)
 
     **Implementation Details:**
 

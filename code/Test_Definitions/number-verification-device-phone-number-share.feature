@@ -13,7 +13,7 @@ Feature: Camara Number Verification API device phone number share
 # * a mobile device with SIM card with NUMBERVERIFY_SHARE_PHONENUMBER2
 
   Background: Common Number Verification phone number share setup
-    Given the resource "/device-phone-number/v1"  as  base url
+    Given the resource "/device-phone-number/vwip"  as  base url
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
