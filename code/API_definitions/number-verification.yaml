@@ -42,7 +42,7 @@ info:
     - The /verify endpoint checks whether the mobile phone number registered by the user with the API consumer matches that actually associated with the mobile device.
       It can receive either a hashed or a plain text phone number as input.
       It compares the received phone number with the user's phone number associated to the access token in order to respond **true/false**.
-    - The next one retrieves the phone number associated to the access token and returns it.
+    - The /device-phone-number endpoint returns the phone number associated by the network operator with the SIM in the end user's device.
 
     # Sequence Diagram
 
