@@ -183,7 +183,7 @@ Feature: Camara Number Verification API, v2.0.0 - Operation phoneNumberVerify
 #    And the response property "$.code" is "INVALID_TOKEN_CONTEXT"
 #    And the response property "$.message" is "Phone number cannot be deducted from access token context."
 
-  @NumberVerification_phone_number_verify205_must_have_used_network_authentication
+  @NumberVerification_phone_number_verify205_must_have_used_network_or_sim_based_authentication
   Scenario: verify phone number with valid access token but neither Network-Based authentication nor SIM-Based authentication was used
     Given they use the base url
     And the resource is "/verify"
