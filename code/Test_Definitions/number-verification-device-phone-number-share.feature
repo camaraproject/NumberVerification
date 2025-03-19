@@ -1,5 +1,4 @@
-@NumberVerification_device_phone_number_share
-Feature: Camara Number Verification API device phone number share
+Feature: Camara Number Verification API, v2.0.0 - Operation phoneNumberShare
 
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specified in
