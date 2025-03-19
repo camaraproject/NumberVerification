@@ -3,10 +3,11 @@
 
 ## Table of contents
 
+- **[r2.4](#r24) Spring25**
 - **[r2.3](#r23)**
 - **[r2.2](#r22)**
 - **[r2.1](#r21)**
-- **[r1.3](#r13)**
+- **[r1.3](#r13) Fall24**
 - **[r1.2](#r12)**
 - **[r1.1](#r11)**
 - **[v0.3.1](#v031)**
@@ -21,27 +22,30 @@ The below sections record the changes for each API version in each release as fo
 * for subsequent release-candidate(s), only the delta to the previous release-candidate
 * for a public release, the consolidated changes since the previous public release
 
-# r2.3
+# r2.4
 
 ## Release Notes
 
-This public release contains the definition and documentation of
-* number-verification 1.1.0
+This **public release** contains the definition and documentation of
+* number-verification 2.0.0
 
 The API definition(s) are based on
 * Commonalities v0.5.0
 * Identity and Consent Management v0.3.0
 
-## number-verification 1.1.0
+## number-verification 2.0.0
 
-**number-verification 1.1.0 is the release for v1.1.0 of the NumberVerification API.**
+**number-verification 2.0.0 is the public release for v2.0.0 of the NumberVerification API.**
+
+The NumberVerification API version has been upgraded from previous v1.0.0 to v2.0.0 even though the functionality updates included in this version do not contain any breaking change.
+However, the inclusion of a new supported authentication method (CIBA+TS.43 temporary token) to enable the use of the API over Wifi, is sufficient to generate a new major version of the API.
 
 - API definition **with inline documentation**:
-  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r2.3/code/API_definitions/number-verification.yaml&nocors)
-  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r2.3/code/API_definitions/number-verification.yaml)
-  - OpenAPI [YAML spec file](https://github.com/camaraproject/NumberVerification/blob/r2.3/code/API_definitions/number-verification.yaml)
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r2.4/code/API_definitions/number-verification.yaml&nocors)
+  - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r2.4/code/API_definitions/number-verification.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/NumberVerification/blob/r2.4/code/API_definitions/number-verification.yaml)
 
-Changes included in v1.1.0 compared to v1.0.0
+Changes included in v2.0.0 compared to v1.0.0
 
 ### Changed
 
@@ -49,15 +53,28 @@ Changes included in v1.1.0 compared to v1.0.0
 - Add a pattern for x-correlator allowing zero-length string by @bigludo7 in https://github.com/camaraproject/NumberVerification/pull/164
 - servers.url format aligned with current guidelines (`'{apiRoot}/number-verification/v1rc2'`) by @hdamker in https://github.com/camaraproject/NumberVerification/issues/169
 - Link into main branch replaced with link into release branch by @hdamker in https://github.com/camaraproject/NumberVerification/issues/169
+- NumberVerification over WiFi by @AxelNennker in https://github.com/camaraproject/NumberVerification/pull/174
 
 ### Removed
 
 - Remove 403 INVALID_TOKEN_CONTEXT by @bigludo7 in https://github.com/camaraproject/NumberVerification/pull/163
 
-**Full Changelog** between v1.1.0 and v1.0.0: https://github.com/camaraproject/NumberVerification/compare/r1.3...r2.3
+**Full Changelog** between v2.0.0 and v1.0.0: https://github.com/camaraproject/NumberVerification/compare/r1.3...r2.4
 
 ## New Contributors
 * @hdamker made their first contribution by servers.url format aligned with current guidelines (`'{apiRoot}/number-verification/v1rc2'`)
+
+# r2.3
+
+**Release r2.3 has been revoked and removed in favor of the release r2.4**
+
+Following the recent approval of TS.43 temporary tokens usage in the ICM workgroup, it has been decided that this API will support them, enabling authentication over WiFi networks.
+
+As a result, in release r2.4, both authentication methods are now available:
+- AuthCode + network-based authentication
+- CIBA + TS.43 temporary tokens
+
+r2.4 is the official public release for Spring25 meta-release.
 
 # r2.2
 

@@ -52,7 +52,7 @@ info:
 
     # Further info and support
     [GSMA Mobile Connect Verified MSISDN specification](https://www.gsma.com/identity/wp-content/uploads/2022/12/IDY.54-Mobile-Connect-Verified-MSISDN-Definition-and-Technical-Requirements-1.0.pdf) was used as source of input for this API.
-  version: wip
+  version: 2.0.0
   x-camara-commonalities: 0.5
   license:
     name: Apache 2.0
@@ -61,7 +61,7 @@ externalDocs:
   description: Project documentation at CAMARA
   url: https://github.com/camaraproject/NumberVerification
 servers:
-  - url: '{apiRoot}/number-verification/vwip'
+  - url: '{apiRoot}/number-verification/v2'
     variables:
       apiRoot:
         default: http://localhost:9091

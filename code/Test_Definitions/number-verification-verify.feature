@@ -15,7 +15,7 @@ Feature: Camara Number Verification API verify
 # * a mobile device with SIM card with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER_HASHED2
 
   Background: Common Number Verification verify setup
-    Given the resource "/number-verification/vwip"  as  base url
+    Given the resource "/number-verification/v2"  as  base url
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
@@ -185,17 +185,17 @@ Feature: Camara Number Verification API verify
 #    And the response property "$.message" is "Phone number cannot be deducted from access token context."
 
   @NumberVerification_phone_number_verify205_must_have_used_network_authentication
-  Scenario:  verify phone number with valid access token but network authentication was not used
+  Scenario:  verify phone number with valid access token but network or SIM based authentication was not used
     Given they use the base url
     And the resource is "/verify"
     And one of the scopes associated with the access token is number-verification:verify
     When the HTTPS "GET" request is sent
     And the connection the request is sent over originates from a device with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1
-    And the information, e.g. authentication method reference, associated with the access token indicates that network authentication was NOT used
+    And the information, e.g. authentication method reference, associated with the access token indicates that network or SIM based authentication was NOT used
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response header "Content-Type" is "application/json"
     And the response body complies with the OAS schema at "/components/schemas/ErrorInfo"
     Then the response status code is 403
     And the response property "$.status" is 403
     And the response property "$.code" is "NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK"
-    And the response property "$.message" is "The subscription must be identified via the mobile network to use this servicet."
+    And the response property "$.message" is "The subscription must be identified via the mobile network or SIM based to use this service."
