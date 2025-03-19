@@ -17,7 +17,7 @@ info:
     - **Network-Based Authentication**: Authentication mechanism based on the identification of the endpoint of a network connection.
     Network operators know to which subscriber a network resource is assigned at a given moment, for example the mobile phone number associated to a specific mobile network connection.
     - **SIM-Based Authentication**: Authentication mechanism based on the identification of the subscriber's SIM installed in the user's device. This mechanism relies on temporary tokens provided by the operator, as defined by [GSMA TS.43](https://www.gsma.com/newsroom/gsma_resources/ts-43-service-entitlement-configuration/) and [GSMA ASAC](https://www.gsma.com/newsroom/gsma_resources/asac-01-v1-0/).
-    
+
     # API Functionality
 
     This API enables an API Consumer to verify or retrieve the phone number of the mobile device being used to access their service.
