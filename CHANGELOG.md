@@ -38,7 +38,7 @@ The API definition(s) are based on
 **number-verification 2.0.0 is the public release for v2.0.0 of the NumberVerification API.**
 
 The NumberVerification API version has been upgraded from previous v1.0.0 to v2.0.0 even though the functionality updates included in this version do not contain any breaking change.
-However, the inclusion of a new supported authentication method (CIBA+TS.43 temporary token) to enable the use of the API over Wifi, is sufficient to generate a new major version of the API.
+However, the inclusion of a new supported authentication method (CIBA+TS.43 temporary token) to enable the use of the API over Wifi, justifies the generation of a new major version of the API.
 
 - API definition **with inline documentation**:
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r2.4/code/API_definitions/number-verification.yaml&nocors)
