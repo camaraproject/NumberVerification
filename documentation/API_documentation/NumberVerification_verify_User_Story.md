@@ -2,7 +2,7 @@
 
 | **Item** | **Details** |
 | ---- | ------- |
-| ***Summary*** | When the user uses an enterprise application (web application or mobile application) and the user enters their phone number, then as an enterprise application developer, I want to verify that the entered phone number is associated with the mobile connection. |
+| ***Summary*** | When the user uses an enterprise application (web application or mobile application) and the user enters their phone number, then as an enterprise application developer, I want to verify that the entered phone number is associated with the user's mobile phone |
 
 | ***Actors and Scope*** | **Actors:** Application service provider (ASP), ASP:User, ASP: BusinessManager, ASP:Administrator, Channel Partner, End-User, Communication Service Provider (CSP). <br> **Scope:**  <br> - Verifies if the specified phone number (plain text or hashed format) matches the one that the user is currently using. |
 | ***Pre-conditions*** |The preconditions are listed below:<br><ol><li>The ASP:BusinessManager and ASP:Administrator have been onboarded to the CSP's API platform via (or not) a Channel Partner.</li><li>The ASP:BusinessManager has successfully subscribed to the Number Verification product from the CSP's product catalog via (or not) a Channel Partner.</li><li>The ASP:Administrator has onboarded the ASP:User to the CSP API platform via (or not) a Channel Partner.</li><li>The ASP:User performs an authorization request to CSP.</li><li> The CSP checks access & End-User approval then provide access token to the ASP:User </li><li> The ASP:User get the access token, via (or not) the Channel Partner, based on network or SIM authentication to ensure secure access of the API.|

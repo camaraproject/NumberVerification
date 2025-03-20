@@ -9,13 +9,13 @@
 
 # NumberVerification
 
-Incubating API Repository to evolve and maintain the definitions and documentation of the NumberVerification API family
+Incubating API Repository to evolve and maintain the definitions and documentation of the NumberVerification API
 * API Repository wiki page: https://lf-camaraproject.atlassian.net/wiki/spaces/CAM/pages/14562399/NumberVerification
 
 ## Scope
 
 * Service APIs for “NumberVerification” (see APIBacklog.md)  
-* It provides the customer with the ability to:  
+* It provides the API Provider with the ability to:  
   * verify the phone number associated with the SIM used in the device connected to the mobile data network.
 * Describe, develop, document and test the APIs (with 1-2 Telcos)  
 * Started: October 2022
