@@ -8,9 +8,9 @@ info:
 
     # Introduction
 
-The Number Verification API is used by the API consumer to perform real-time checks to verify the phone number of a mobile device being used to access the application. This check can be done either by the network, returning "true" or false, or by the application, by matching the phone number returned by the network with the phone number of the device that is being used.```
+    The Number Verification API is used by the API consumer to perform real-time checks to verify the phone number of a mobile device being used to access the application. This check can be done either by the network, returning "true" or false, or by the application, by matching the phone number returned by the network with the phone number of the device that is being used.```
 
-    It uses silent authentication (Network-based authentication or SIM-Based authentication) to verify possession of a phone number in the background without requiring user interaction. There are neither OTPs (One-time passwords) received by SMS nor authenticator app downloads, so it is much simpler. It can be used at sign up, login, or transaction time to validate that a user's SIM (Subscriber Identity Module) is not spoofed or cloned.
+    It uses silent authentication (Network-based authentication or SIM-Based authentication) to verify possession of a phone number in the background without requiring user interaction. There are neither one-time passwords (OTP) received by SMS nor authenticator app downloads, so it is much simpler. It can be used at sign up, login, or transaction time to validate that a user's SIM is not spoofed or cloned.
 
     # Relevant Definitions and Concepts
 
