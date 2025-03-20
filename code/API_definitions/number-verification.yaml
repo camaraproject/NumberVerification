@@ -37,7 +37,7 @@ info:
 
     # Resources and Operations overview
 
-    This API currently provides two endpoints which both require a **3-legged token** obtained by using one of the two methods indicated in _The Authentication Request_ section (therefore **excluding** for example by SMS/OTP or user/password as an authentication method):
+    This API currently provides two endpoints which both require a **3-legged token** obtained by using one of the two methods indicated in _The Authentication Request_ section. This therefore **excludes** using, for example, SMS/OTP or user/password as an authentication method:
     - The /verify endpoint checks whether the mobile phone number registered by the user with the API consumer matches the one actually associated with the mobile device.
       It can receive either a hashed or a plain text phone number as input.
       It compares the received phone number with the user's phone number associated to the access token in order to respond **true/false**.
