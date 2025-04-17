@@ -10,12 +10,14 @@
 # NumberVerification
 
 Incubating API Repository to evolve and maintain the definitions and documentation of the NumberVerification API
-* API Repository wiki page: https://lf-camaraproject.atlassian.net/wiki/spaces/CAM/pages/14562399/NumberVerification
+
+* API Repository [wiki page](https://lf-camaraproject.atlassian.net/wiki/spaces/CAM/pages/14562399/NumberVerification)
+
 
 ## Scope
 
 * Service APIs for “NumberVerification” (see APIBacklog.md)  
-* It provides the API Provider with the ability to:  
+* It provides the API consumer with the ability to:  
   * verify the phone number associated with the SIM used in the device connected to the mobile data network.
 * Describe, develop, document and test the APIs (with 1-2 Telcos)  
 * Started: October 2022
@@ -39,9 +41,9 @@ Incubating API Repository to evolve and maintain the definitions and documentati
 ## Contributing
 
 * Meetings are held virtually
-   * Schedule: Every 4 weeks, Thursday  Tuesday, 7:30 AM UTC (8:30 CET/9:30 CEST)
+   * Schedule: Every 4 weeks, Thursday at 7:30 AM UTC (8:30 CET/9:30 CEST)
    * Meeting link: [Registration / Join](https://lf-camaraproject.atlassian.net/wiki/spaces/CAM/pages/14562399/NumberVerification)
 * Mailing list:
    * To subscribe / unsubscribe to the mailing list of this Sub Project and thus be / resign as Contributor please visit <https://lists.camaraproject.org/g/sp-nve>.
    * A message to all Contributors of this Sub Project can be sent using <sp-nve@lists.camaraproject.org>.
-* Slack channel: https://app.slack.com/client/T05S5J43YQP/C062DDGR60L
+* [Slack channel](https://app.slack.com/client/T05S5J43YQP/C062DDGR60L)
