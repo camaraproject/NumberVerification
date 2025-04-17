@@ -16,7 +16,7 @@ Incubating API Repository to evolve and maintain the definitions and documentati
 
 ## Scope
 
-* Service APIs for “NumberVerification” (see APIBacklog.md)  
+* Service API for “NumberVerification” (see APIBacklog.md)  
 * It provides the API consumer with the ability to:  
   * verify the phone number associated with the SIM used in the device connected to the mobile data network.
 * Describe, develop, document and test the APIs (with 1-2 Telcos)  
