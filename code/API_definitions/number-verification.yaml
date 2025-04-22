@@ -72,7 +72,7 @@ info:
 
     In the case of the Number Verification API scenario and according to the API definition, 3-legged access tokens must be used by API clients to invoke this API with dedicated scope. The API client must authenticate on behalf of a specific user to use this service. This must be done via mobile network authentication.
 
-  version: 2.0.0
+  version: wip
   x-camara-commonalities: 0.5
   license:
     name: Apache 2.0
@@ -81,7 +81,7 @@ externalDocs:
   description: Project documentation at CAMARA
   url: https://github.com/camaraproject/NumberVerification
 servers:
-  - url: '{apiRoot}/number-verification/v2'
+  - url: '{apiRoot}/number-verification/vwip'
     variables:
       apiRoot:
         default: http://localhost:9091
