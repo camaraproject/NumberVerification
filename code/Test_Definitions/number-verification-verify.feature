@@ -1,4 +1,4 @@
-Feature: CAMARA Number Verification API, v2.0.0 - Operation phoneNumberVerify
+Feature: CAMARA Number Verification API, vwip - Operation phoneNumberVerify
 
 # Input to be provided by the implementation to the tests
 # References to OAS spec schemas refer to schemas specified in
@@ -14,7 +14,7 @@ Feature: CAMARA Number Verification API, v2.0.0 - Operation phoneNumberVerify
 # * a mobile device with SIM card with NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER_HASHED2
 
   Background: Common Number Verification verify setup
-    Given the resource "/number-verification/v2"  as  base url
+    Given the resource "/number-verification/vwip"  as  base url
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" is set to a UUID value
