@@ -196,6 +196,7 @@ components:
         hashedPhoneNumber:
           description: Hashed phone number. SHA-256 (in hexadecimal representation) of the mobile phone number in **E.164 format (starting with country code)**. Prefixed with '+'.
           type: string
+          pattern: '^[a-fA-F0-9]{64}$'
           example: 32f67ab4e4312618b09cd23ed8ce41b13e095fe52b73b2e8da8ef49830e50dba
     NumberVerificationMatchResponse:
       type: object
