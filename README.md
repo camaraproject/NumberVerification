@@ -32,7 +32,7 @@ Incubating API Repository to evolve and maintain the definitions and documentati
   - 2.0.0 Number Verification definition **with inline documentation**:
     - OpenAPI [YAML spec file](https://github.com/camaraproject/NumberVerification/blob/r2.4/code/API_definitions/number-verification.yaml)
     - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r2.4/code/API_definitions/number-verification.yaml&nocors)
-    - [View it on Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r2.4/code/API_definitions/number-verification.yaml)
+    - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r2.4/code/API_definitions/number-verification.yaml)
 
 * Previous releases and pre-releases of the repository are available in https://github.com/camaraproject/NumberVerification/releases 
 * For changes see [CHANGELOG.md](https://github.com/camaraproject/NumberVerification/blob/main/CHANGELOG.md)
