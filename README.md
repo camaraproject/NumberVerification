@@ -11,8 +11,7 @@
 
 Incubating API Repository to evolve and maintain the definitions and documentation of the NumberVerification API
 
-* API Repository [wiki page](https://lf-camaraproject.atlassian.net/wiki/spaces/CAM/pages/14562399/NumberVerification)
-
+* API Repository [wiki page](https://lf-camaraproject.atlassian.net/wiki/x/XzTe)
 
 ## Scope
 
