@@ -3,6 +3,7 @@
 
 ## Table of contents
 
+- **[r3.1](#r24) Fall25**
 - **[r2.4](#r24) Spring25**
 - ~~[r2.3](#r23)~~
 - **[r2.2](#r22)**
@@ -21,6 +22,41 @@ The below sections record the changes for each API version in each release as fo
 * for the first release-candidate, all changes since the last public release
 * for subsequent release-candidate(s), only the delta to the previous release-candidate
 * for a public release, the consolidated changes since the previous public release
+
+# r3.1
+
+This **public release** contains the definition and documentation of
+* number-verification 2.1.0-rc.1
+
+The API definition(s) are based on
+* Commonalities v0.6.0-rc.1
+* Identity and Consent Management v0.4.0-rc.1
+
+## number-verification 2.1.0-rc.1
+
+**number-verification 2.1.0-rc.1 is the first pre-release for v2.0.0-rc.1 of the NumberVerification API.**
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r3.1/code/API_definitions/number-verification.yaml&nocors)
+  - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r3.1/code/API_definitions/number-verification.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/NumberVerification/blob/r3.1/code/API_definitions/number-verification.yaml)
+
+### Added
+
+- Add pattern validation for hashedPhoneNumber by @ravindrapalaskar17 in https://github.com/camaraproject/NumberVerification/pull/188
+- Documented Error Responses info.description section by @bigludo7 in https://github.com/camaraproject/NumberVerification/pull/199
+
+### Changed
+
+- Update README.md - adding Number Insights as Sub Project by @hdamker in https://github.com/camaraproject/NumberVerification/pull/195
+- Update x-correlator format by @bigludo7 in https://github.com/camaraproject/NumberVerification/pull/200
+- Update test plan by @fernandopradocabrilo in https://github.com/camaraproject/NumberVerification/pull/204
+
+## New Contributors
+* @ravindrapalaskar17 made their first contribution in https://github.com/camaraproject/NumberVerification/pull/188
+* @hdamker-bot made their first contribution in https://github.com/camaraproject/NumberVerification/pull/196
+
+**Full Changelog**: https://github.com/camaraproject/NumberVerification/compare/r2.4...r3.1
 
 # r2.4
 
