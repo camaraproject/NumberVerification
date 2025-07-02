@@ -45,6 +45,7 @@ The API definition(s) are based on
 
 - Add pattern validation for hashedPhoneNumber by @ravindrapalaskar17 in https://github.com/camaraproject/NumberVerification/pull/188
 - Documented Error Responses info.description section by @bigludo7 in https://github.com/camaraproject/NumberVerification/pull/199
+- Include documentation to use with JWT-bearer auth flow by @fernandopradocabrillo in https://github.com/camaraproject/NumberVerification/pull/206
 
 ### Changed
 
@@ -52,9 +53,12 @@ The API definition(s) are based on
 - Update x-correlator format by @bigludo7 in https://github.com/camaraproject/NumberVerification/pull/200
 - Update test plan by @fernandopradocabrilo in https://github.com/camaraproject/NumberVerification/pull/204
 
+### Removed
+
+- Remove AUTHENTICATION_REQUIRED error by @fernandopradocabrillo in https://github.com/camaraproject/NumberVerification/pull/206
+
 ## New Contributors
 * @ravindrapalaskar17 made their first contribution in https://github.com/camaraproject/NumberVerification/pull/188
-* @hdamker-bot made their first contribution in https://github.com/camaraproject/NumberVerification/pull/196
 
 **Full Changelog**: https://github.com/camaraproject/NumberVerification/compare/r2.4...r3.1
 
