@@ -17,10 +17,9 @@ Feature: CAMARA Number Verification API, vwip - Operation phoneNumberVerify
     Given the resource "/number-verification/vwip"  as  base url
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
-    And the header "x-correlator" is set to a UUID value
+    And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
     And the request body is compliant with the schema NumberVerificationRequestBody
     And the response body is compliant with the schema NumberVerificationMatchResponse
-    And the header "x-correlator" is set to a UUID value
     And NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 is compliant with the schema DevicePhoneNumber
     And NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER2 is compliant with the schema DevicePhoneNumber
     And NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER1 is different to NUMBERVERIFY_VERIFY_MATCH_PHONENUMBER2
