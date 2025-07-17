@@ -49,7 +49,6 @@ The API definition(s) are based on
 
 ### Changed
 
-- Update README.md - adding Number Insights as Sub Project by @hdamker in https://github.com/camaraproject/NumberVerification/pull/195
 - Update x-correlator format by @bigludo7 in https://github.com/camaraproject/NumberVerification/pull/200
 - Update test plan by @fernandopradocabrilo in https://github.com/camaraproject/NumberVerification/pull/204
 
