@@ -10,8 +10,8 @@ Checklist for number-verification v2.1.0-rc.1 in release r3.1
 |  4 | API versioning convention applied            |   M   |         M         |    M    |    M   |   Y   |      |
 |  5 | API documentation                            |   M   |         M         |    M    |    M   |   Y   | Embedded documentation into API spec - [link](/code/API_definitions/number-verification.yaml)  |
 |  6 | User stories                                 |   O   |         O         |    O    |    M   |   Y   | [get](/documentation/API_documentation/NumberVerification_device_phone_number_User_Story.md) [verify](/documentation/API_documentation/NumberVerification_verify_User_Story.md) |
-|  7 | Basic API test cases & documentation         |   O   |         M         |    M    |    M   |   Y   | [get](code/Test_Definitions/number-verification-phoneNumberShare.feature) [verify](/code/Test_Definitions/number-verification-phoneNumberVerify.feature) |
-|  8 | Enhanced API test cases & documentation      |   O   |         O         |    O    |    M   |   Y   | [get](code/Test_Definitions/number-verification-phoneNumberShare.feature) [verify](code/Test_Definitions/number-verification-phoneNumberVerify.feature) |
+|  7 | Basic API test cases & documentation         |   O   |         M         |    M    |    M   |   Y   | [get](/code/Test_definitions/number-verification-phoneNumberShare.feature) [verify](/code/Test_definitions/number-verification-phoneNumberVerify.feature) |
+|  8 | Enhanced API test cases & documentation      |   O   |         O         |    O    |    M   |   Y   | [get](/code/Test_definitions/number-verification-phoneNumberShare.feature) [verify](/code/Test_definitions/number-verification-phoneNumberVerify.feature) |
 |  9 | Test result statement                        |   O   |         O         |    O    |    M   |   N   |     |
 | 10 | API release numbering convention applied     |   M   |         M         |    M    |    M   |   Y   |      |
 | 11 | Change log updated                           |   M   |         M         |    M    |    M   |   Y   | [link](/CHANGELOG.md) |
@@ -28,3 +28,4 @@ To fill the checklist:
 Note: the checklists of a public API version and of its preceding release-candidate API version can be the same.
 
 The documentation for the content of the checklist is here: see API Readiness Checklist section in the [API Release Process](https://lf-camaraproject.atlassian.net/wiki/x/jine).
+
