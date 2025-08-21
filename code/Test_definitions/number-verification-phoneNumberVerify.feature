@@ -9,7 +9,6 @@ Feature: CAMARA Number Verification API, v2.1.0-rc.1 - Operation phoneNumberVeri
   # * a valid testing phone number supported by the service
   # * a valid testing hashed phone number supported by the service
 
-
   Background: Common phoneNumberVerify setup
     Given the resource "/number-verification/v2rc1" as base url
     And the header "Content-Type" is set to "application/json"
@@ -27,7 +26,6 @@ Feature: CAMARA Number Verification API, v2.1.0-rc.1 - Operation phoneNumberVeri
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/NumberVerificationMatchResponse"
-
 
   # Scenarios testing specific situations
 
@@ -66,7 +64,6 @@ Feature: CAMARA Number Verification API, v2.1.0-rc.1 - Operation phoneNumberVeri
     When the request "phoneNumberVerify" is sent
     Then the response status code is 200
     And the response property "$.devicePhoneNumberVerified" == false
-
 
   # Generic 400 errors
 
@@ -158,7 +155,7 @@ Feature: CAMARA Number Verification API, v2.1.0-rc.1 - Operation phoneNumberVeri
   # Other specific 403 errors
 
   @phoneNumberVerify_403.2_not_authenticated_using_network_or_sim_based_authentication
-  Scenario: Response error when the token has not been obtained by a supported authentication method 
+  Scenario: Response error when the token has not been obtained by a supported authentication method
     Given the header "Authorization" is set to a token for which neither Network-based nor SIM-based authentication was used
     And the request body is set to a valid request body
     When the request "phoneNumberVerify" is sent
