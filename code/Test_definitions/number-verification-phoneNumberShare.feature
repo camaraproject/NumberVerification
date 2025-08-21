@@ -8,13 +8,11 @@ Feature: CAMARA Number Verification API, v2.1.0-rc.1 - Operation phoneNumberShar
   # Testing assets:
   # * a valid testing phone number supported by the service
 
-
   Background: Common phoneNumberShare setup
     Given the resource "/number-verification/v2rc1" as base url
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
-
 
   # Generic success scenario
 
@@ -26,7 +24,6 @@ Feature: CAMARA Number Verification API, v2.1.0-rc.1 - Operation phoneNumberShar
     And the response header "Content-Type" is "application/json"
     And the response header "x-correlator" has same value as the request header "x-correlator"
     And the response body complies with the OAS schema at "#/components/schemas/NumberVerificationShareResponse"
-
 
   # Scenarios testing specific situations
   @phone_number_share_02_success_scenario
@@ -80,7 +77,7 @@ Feature: CAMARA Number Verification API, v2.1.0-rc.1 - Operation phoneNumberShar
   # Other specific 403 errors
 
   @phoneNumberShare_403.2_not_authenticated_using_network_or_sim_based_authentication
-  Scenario: Response error when the token has not been obtained by a supported authentication method 
+  Scenario: Response error when the token has not been obtained by a supported authentication method
     Given the header "Authorization" is set to a token for which neither Network-based nor SIM-based authentication was used
     When the request "phoneNumberShare" is sent
     Then the response status code is "403"
