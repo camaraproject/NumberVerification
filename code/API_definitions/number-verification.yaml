@@ -46,22 +46,18 @@ info:
       It compares the received phone number with the user's phone number associated to the access token in order to respond **true/false**.
     - The /device-phone-number endpoint returns the phone number associated by the network operator with the SIM in the end user's device.
 
-    # Sequence Diagram
+    # Implementation Details
 
-    The following sequence diagram shows an example of a direct integration into the developer's application and the API Provider's Authorization Server and API for the case that no temporary token is available.
+    Detailed sequence diagrams of end-to-end integration with CIBA and JWT-Bearer token flow are available in **[CAMARA-API-access-and-user-consent document](https://github.com/camaraproject/IdentityAndConsentManagement/blob/main/documentation/CAMARA-API-access-and-user-consent.md)**.
 
-    ![UML Sequence Diagram](https://raw.githubusercontent.com/camaraproject/NumberVerification/r2.4/documentation/API_documentation/assets/uml_v0.3.jpg)
-
-    **Implementation Details:**
-
-    - **(1):** Authentication must be automatic without any user interactions.
+    - **Note1:** Authentication must be automatic without any user interactions.
       Authentication methods such as SMS OTP or user/password are incompatible, as the goal is to validate the mobile phone number that is accessing the App.
 
       The API Consumer should use the request parameter prompt=none in the Authentication Request, as described in **[OIDC Connect](https://openid.net/specs/openid-connect-core-1_0.html#AuthRequest)**, ensuring no user interaction.
 
       The API Provider implies the request parameter prompt=none in the Authentication Request for this API.
 
-    - **(2):** The way in which the phone number is retrieved depends upon the implementation.
+    - **Note2:** The way in which the phone number is retrieved depends upon the implementation.
       For example, the access token may be a self-contained encrypted JWT, and so the API provider can decrypt and identify phone number directly from the access token.
       Other implementations might retrieve the phone number associated with the access token from their Authorization Server.
 
