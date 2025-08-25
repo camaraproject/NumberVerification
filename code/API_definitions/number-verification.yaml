@@ -23,7 +23,7 @@ info:
     This API enables an API Consumer to verify or retrieve the phone number of the mobile device being used to access their service.
 
     # The Authentication Request
-    
+
     **For NumberVerification the API provider guarantees that there is no user interaction.** Would user interaction be needed the authorization server returns an error.
     Authentication methods such as SMS OTP or user/password are incompatible, as the goal is to validate the mobile phone number that is accessing the App.
 
