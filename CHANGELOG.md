@@ -26,7 +26,7 @@ The below sections record the changes for each API version in each release as fo
 
 # r3.2
 
-This **public candidate** contains the definition and documentation of
+This **public release** contains the definition and documentation of
 * number-verification 2.1.0
 
 The API definition(s) are based on
