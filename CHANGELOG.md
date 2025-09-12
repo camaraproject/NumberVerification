@@ -3,15 +3,16 @@
 
 ## Table of contents
 
-- **[r3.1](#r31) Fall25**
-- **[r2.4](#r24) Spring25**
+- [r3.2](#r32) **Fall25**
+- [r3.1](#r31) 
+- [r2.4](#r24) **Spring25**
 - ~~[r2.3](#r23)~~
-- **[r2.2](#r22)**
-- **[r2.1](#r21)**
-- **[r1.3](#r13) Fall24**
-- **[r1.2](#r12)**
-- **[r1.1](#r11)**
-- **[v0.3.1](#v031)**
+- [r2.2](#r22)
+- [r2.1](#r21)
+- [r1.3](#r13) **Fall24**
+- [r1.2](#r12)
+- [r1.1](#r11)
+- [v0.3.1](#v031)
 
 
 **Please be aware that the project will have frequent updates to the main branch. There are no compatibility guarantees associated with code in any branch, including main, until it has been released. For example, changes may be reverted before a release is published. For the best results, use the latest published release.**
@@ -23,9 +24,50 @@ The below sections record the changes for each API version in each release as fo
 * for subsequent release-candidate(s), only the delta to the previous release-candidate
 * for a public release, the consolidated changes since the previous public release
 
-# r3.1
+# r3.2
 
 This **public release** contains the definition and documentation of
+* number-verification 2.1.0
+
+The API definition(s) are based on
+* Commonalities v0.6.0
+* Identity and Consent Management v0.4.0
+
+## number-verification 2.1.0
+
+**number-verification 2.1.0 is the public release for v2.1.0 of the NumberVerification API.**
+
+- API definition **with inline documentation**:
+  - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r3.2/code/API_definitions/number-verification.yaml&nocors)
+  - [View it on Swagger Editor](https://camaraproject.github.io/swagger-ui/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r3.2/code/API_definitions/number-verification.yaml)
+  - OpenAPI [YAML spec file](https://github.com/camaraproject/NumberVerification/blob/r3.2/code/API_definitions/number-verification.yaml)
+
+### Added
+
+- Add pattern validation for hashedPhoneNumber by @ravindrapalaskar17 in https://github.com/camaraproject/NumberVerification/pull/188
+- Documented Error Responses info.description section by @bigludo7 in https://github.com/camaraproject/NumberVerification/pull/199
+- Include documentation to use with JWT-bearer auth flow by @fernandopradocabrillo in https://github.com/camaraproject/NumberVerification/pull/206
+
+### Changed
+
+- Update x-correlator format by @bigludo7 in https://github.com/camaraproject/NumberVerification/pull/200
+- Update test plan by @fernandopradocabrilo in https://github.com/camaraproject/NumberVerification/pull/204
+- Update ErrorInfo attribute description by @bigludo7 in https://github.com/camaraproject/NumberVerification/pull/217
+
+### Removed
+
+- Remove AUTHENTICATION_REQUIRED error by @fernandopradocabrillo in https://github.com/camaraproject/NumberVerification/pull/206
+- Remove sequence diagram image in the yaml and instead refer to ICM by @bigludo7 in https://github.com/camaraproject/NumberVerification/pull/213
+
+## New Contributors
+* @ravindrapalaskar17 made their first contribution in https://github.com/camaraproject/NumberVerification/pull/188
+
+**Full Changelog**: https://github.com/camaraproject/NumberVerification/compare/r2.4...r3.2
+
+
+# r3.1
+
+This **release candidate** contains the definition and documentation of
 * number-verification 2.1.0-rc.1
 
 The API definition(s) are based on
@@ -34,7 +76,7 @@ The API definition(s) are based on
 
 ## number-verification 2.1.0-rc.1
 
-**number-verification 2.1.0-rc.1 is the first pre-release for v2.0.0-rc.1 of the NumberVerification API.**
+**number-verification 2.1.0-rc.1 is the first pre-release for v2.1.0-rc.1 of the NumberVerification API.**
 
 - API definition **with inline documentation**:
   - [View it on ReDoc](https://redocly.github.io/redoc/?url=https://raw.githubusercontent.com/camaraproject/NumberVerification/r3.1/code/API_definitions/number-verification.yaml&nocors)

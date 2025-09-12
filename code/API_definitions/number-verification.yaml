@@ -70,7 +70,7 @@ info:
 
     As a specific rule, error `501 - NOT_IMPLEMENTED` can be only a possible error response if it is explicitly documented in the API.
 
-  version: wip
+  version: 2.1.0
   x-camara-commonalities: 0.6
   license:
     name: Apache 2.0
@@ -79,7 +79,7 @@ externalDocs:
   description: Project documentation at CAMARA
   url: https://github.com/camaraproject/NumberVerification
 servers:
-  - url: '{apiRoot}/number-verification/vwip'
+  - url: '{apiRoot}/number-verification/v2'
     variables:
       apiRoot:
         default: http://localhost:9091
@@ -232,10 +232,10 @@ components:
           description: HTTP response status code
         code:
           type: string
-          description: Code given to this error
+          description: A human-readable code to describe the error
         message:
           type: string
-          description: Detailed error description
+          description: A human-readable description of what the event represents
   responses:
     Generic400:
       description: Problem with the client request
