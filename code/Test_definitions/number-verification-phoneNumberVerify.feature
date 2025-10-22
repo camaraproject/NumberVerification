@@ -1,4 +1,4 @@
-Feature: CAMARA Number Verification API, v2.1.0 - Operation phoneNumberVerify
+Feature: CAMARA Number Verification API, vwip - Operation phoneNumberVerify
 
   # Input to be provided by the implementation to the tester
   #
@@ -10,7 +10,7 @@ Feature: CAMARA Number Verification API, v2.1.0 - Operation phoneNumberVerify
   # * a valid testing hashed phone number supported by the service
 
   Background: Common phoneNumberVerify setup
-    Given the resource "/number-verification/v2" as base url
+    Given the resource "/number-verification/vwip" as base url
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
