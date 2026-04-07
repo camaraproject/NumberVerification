@@ -28,8 +28,8 @@ info:
     Authentication methods such as SMS OTP or user/password are incompatible, as the goal is to validate the mobile phone number that is accessing the App.
 
     **Authentication is the core of this service API, ensuring that the phone number retrieved or verified is correct and according to the current SIM or network connection.** For that purpose, the following security requirements apply to access tokens containing number verification scopes:
- 
-    - Single-use token (one-time use): To prevent replay attacks and ensure the integrity of the verification process, the access token MUST be restricted to a single successful API call. 
+
+    - Single-use token (one-time use): To prevent replay attacks and ensure the integrity of the verification process, the access token MUST be restricted to a single successful API call.
     - No refresh tokens: Refresh tokens MUST not be issued for Number Verification scopes. If the token expires or is used up, the API Consumer MUST initiate a new authorization flow to obtain a new access token.
     - Short-lived expiration: The access token MUST not exceed an expiration time of 300 seconds (5 minutes).
 
