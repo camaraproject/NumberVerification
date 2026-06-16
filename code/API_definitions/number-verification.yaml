@@ -99,11 +99,11 @@ servers:
     variables:
       apiRoot:
         default: http://localhost:9091
-        description: API root, defined by the service provider, e.g. `api.example.com` or `api.example.com/somepath
+        description: API root, defined by the service provider, e.g. `api.example.com` or `api.example.com/somepath`
 tags:
-  - name: Phone number verify
+  - name: Phone Number Verify
     description: API operation to verify a phone number received as input. It can be received either in plain text or hashed format.
-  - name: Phone number share
+  - name: Phone Number Share
     description: API operation to return the phone number associated to the access token.
 paths:
   /verify:
@@ -177,6 +177,7 @@ paths:
 components:
   securitySchemes:
     openId:
+      description: OpenID Connect authentication.
       type: openIdConnect
       openIdConnectUrl: https://example.com/.well-known/openid-configuration
   schemas:
@@ -187,14 +188,12 @@ components:
       maxProperties: 1
       properties:
         phoneNumber:
-          type: string
-          pattern: '^\+[1-9][0-9]{4,14}$'
-          example: '+123456789'
-          description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
+          $ref: "../common/CAMARA_common.yaml#/components/schemas/PhoneNumber"
         hashedPhoneNumber:
           description: Hashed phone number. SHA-256 (in hexadecimal representation) of the mobile phone number in **E.164 format (starting with country code)**. Prefixed with '+'.
           type: string
           pattern: '^[a-fA-F0-9]{64}$'
+          maxLength: 64
           example: 32f67ab4e4312618b09cd23ed8ce41b13e095fe52b73b2e8da8ef49830e50dba
     NumberVerificationMatchResponse:
       type: object
@@ -213,10 +212,7 @@ components:
         devicePhoneNumber:
           $ref: '#/components/schemas/DevicePhoneNumber'
     DevicePhoneNumber:
-      type: string
-      pattern: '^\+[1-9][0-9]{4,14}$'
-      example: '+123456789'
-      description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
+      $ref: "../common/CAMARA_common.yaml#/components/schemas/PhoneNumber"
     DevicePhoneNumberVerified:
       description: Number verification. True, if it matches
       type: boolean
