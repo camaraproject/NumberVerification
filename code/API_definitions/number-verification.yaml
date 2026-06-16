@@ -109,7 +109,7 @@ paths:
   /verify:
     post:
       tags:
-        - Phone number verify
+        - Phone Number Verify
       summary: Verifies if the received hashed/plain text phone number matches the phone number associated with the access token
       description: |
         Verifies if the specified phone number (either in plain text or hashed format) matches the one that the user is currently using. Only one of the plain or hashed formats must be provided.
@@ -146,7 +146,7 @@ paths:
   /device-phone-number:
     get:
       tags:
-        - Phone number share
+        - Phone Number Share
       summary: Returns the phone number associated with the access token
       description: |
         Returns the phone number so the API clients can verify the number themselves:
