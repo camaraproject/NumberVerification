@@ -58,26 +58,36 @@ info:
       It compares the received phone number with the user's phone number associated to the access token in order to respond **true/false**.
     - The /device-phone-number endpoint returns the phone number associated by the network operator with the SIM in the end user's device.
 
+    <!-- CAMARA:MANDATORY:authorization-and-authentication:BEGIN -->
     # Authorization and authentication
 
-    The "Camara Security and Interoperability Profile" provides details of how an API consumer requests an access token. Please refer to [Identity and Consent Management](https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the profile.
+    The "Camara Security and Interoperability Profile" provides details of how an API consumer requests an access token. Please refer to Identity and Consent Management (https://github.com/camaraproject/IdentityAndConsentManagement/) for the released version of the profile.
 
     The specific authorization flows to be used will be agreed upon during the onboarding process, happening between the API consumer and the API provider, taking into account the declared purpose for accessing the API, whilst also being subject to the prevailing legal framework dictated by local legislation.
 
     In cases where personal data is processed by the API and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of three-legged access tokens is mandatory. This ensures that the API remains in compliance with privacy regulations, upholding the principles of transparency and user-centric privacy-by-design.
+     <!-- CAMARA:MANDATORY:authorization-and-authentication:END -->
 
-    In the case of the Number Verification API scenario and according to the API definition, 3-legged access tokens must be used by API clients to invoke this API with dedicated scope. The API client must authenticate on behalf of a specific user to use this service. This must be done via mobile network authentication.
+      In the case of the Number Verification API scenario and according to the API definition, 3-legged access tokens must be used by API clients to invoke this API with dedicated scope. The API client must authenticate on behalf of a specific user to use this service. This must be done via mobile network authentication.
 
+     <!-- CAMARA:MANDATORY:additional-error-responses:BEGIN -->
     # Additional CAMARA error responses
 
-    The list of error codes in this API specification is not exhaustive. Therefore the API specification may not document some non-mandatory error statuses as indicated in `CAMARA API Design Guide`.
+    The list of error codes in this API specification is not exhaustive. Therefore the API specification MAY not document some non-mandatory error statuses as indicated in `CAMARA API Design Guide`.
 
     Please refer to the `CAMARA_common.yaml` of the Commonalities Release associated to this API version for a complete list of error responses. The applicable Commonalities Release can be identified in the `API Readiness Checklist` document associated to this API version.
 
     As a specific rule, error `501 - NOT_IMPLEMENTED` can be only a possible error response if it is explicitly documented in the API.
+    <!-- CAMARA:MANDATORY:additional-error-responses:END -->
+
+    <!-- CAMARA:MANDATORY:request-body-strictness:BEGIN -->
+    # Request body strictness
+
+    This API rejects requests with JSON request bodies that contain properties not declared in this specification, at any nesting level. Unknown properties result in a `400 INVALID_ARGUMENT` response.
+    <!-- CAMARA:MANDATORY:request-body-strictness:END -->
 
   version: wip
-  x-camara-commonalities: 0.6
+  x-camara-commonalities: 0.8.0
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
@@ -89,17 +99,17 @@ servers:
     variables:
       apiRoot:
         default: http://localhost:9091
-        description: API root, defined by the service provider, e.g. `api.example.com` or `api.example.com/somepath
+        description: API root, defined by the service provider, e.g. `api.example.com` or `api.example.com/somepath`
 tags:
-  - name: Phone number verify
+  - name: Phone Number Verify
     description: API operation to verify a phone number received as input. It can be received either in plain text or hashed format.
-  - name: Phone number share
+  - name: Phone Number Share
     description: API operation to return the phone number associated to the access token.
 paths:
   /verify:
     post:
       tags:
-        - Phone number verify
+        - Phone Number Verify
       summary: Verifies if the received hashed/plain text phone number matches the phone number associated with the access token
       description: |
         Verifies if the specified phone number (either in plain text or hashed format) matches the one that the user is currently using. Only one of the plain or hashed formats must be provided.
@@ -107,7 +117,7 @@ paths:
         - It returns true/false depending on if the hashed phone number received as input matches the authenticated user's `device phone number` associated to the access token
       operationId: phoneNumberVerify
       parameters:
-        - $ref: "#/components/parameters/x-correlator"
+        - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
       requestBody:
         content:
           application/json:
@@ -119,15 +129,15 @@ paths:
           description: OK
           headers:
             x-correlator:
-              $ref: "#/components/headers/x-correlator"
+              $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/NumberVerificationMatchResponse'
         '400':
-          $ref: '#/components/responses/Generic400'
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic400"
         '401':
-          $ref: '#/components/responses/Generic401'
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic401"
         '403':
           $ref: '#/components/responses/PhoneNumberVerificationPermissionDenied403'
       security:
@@ -136,7 +146,7 @@ paths:
   /device-phone-number:
     get:
       tags:
-        - Phone number share
+        - Phone Number Share
       summary: Returns the phone number associated with the access token
       description: |
         Returns the phone number so the API clients can verify the number themselves:
@@ -144,21 +154,21 @@ paths:
         - It returns the authenticated user's `device phone number` associated to the access token
       operationId: phoneNumberShare
       parameters:
-        - $ref: "#/components/parameters/x-correlator"
+        - $ref: "../common/CAMARA_common.yaml#/components/parameters/x-correlator"
       responses:
         '200':
           description: OK
           headers:
             x-correlator:
-              $ref: "#/components/headers/x-correlator"
+              $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/NumberVerificationShareResponse'
         '400':
-          $ref: '#/components/responses/Generic400'
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic400"
         '401':
-          $ref: '#/components/responses/Generic401'
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic401"
         '403':
           $ref: '#/components/responses/PhoneNumberVerificationPermissionDenied403'
       security:
@@ -167,25 +177,10 @@ paths:
 components:
   securitySchemes:
     openId:
+      description: OpenID Connect authentication.
       type: openIdConnect
       openIdConnectUrl: https://example.com/.well-known/openid-configuration
-  parameters:
-    x-correlator:
-      name: x-correlator
-      in: header
-      description: Correlation id for the different services
-      schema:
-        $ref: "#/components/schemas/XCorrelator"
-  headers:
-    x-correlator:
-      description: Correlation id for the different services
-      schema:
-        $ref: "#/components/schemas/XCorrelator"
   schemas:
-    XCorrelator:
-      type: string
-      pattern: ^[a-zA-Z0-9-_:;.\/<>{}]{0,256}$
-      example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
     NumberVerificationRequestBody:
       type: object
       description: Payload to verify the phone number.
@@ -193,14 +188,12 @@ components:
       maxProperties: 1
       properties:
         phoneNumber:
-          type: string
-          pattern: '^\+[1-9][0-9]{4,14}$'
-          example: '+123456789'
-          description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
+          $ref: "../common/CAMARA_common.yaml#/components/schemas/PhoneNumber"
         hashedPhoneNumber:
           description: Hashed phone number. SHA-256 (in hexadecimal representation) of the mobile phone number in **E.164 format (starting with country code)**. Prefixed with '+'.
           type: string
           pattern: '^[a-fA-F0-9]{64}$'
+          maxLength: 64
           example: 32f67ab4e4312618b09cd23ed8ce41b13e095fe52b73b2e8da8ef49830e50dba
     NumberVerificationMatchResponse:
       type: object
@@ -219,77 +212,11 @@ components:
         devicePhoneNumber:
           $ref: '#/components/schemas/DevicePhoneNumber'
     DevicePhoneNumber:
-      type: string
-      pattern: '^\+[1-9][0-9]{4,14}$'
-      example: '+123456789'
-      description: A public identifier addressing a telephone subscription. In mobile networks it corresponds to the MSISDN (Mobile Station International Subscriber Directory Number). In order to be globally unique it has to be formatted in international format, according to E.164 standard, prefixed with '+'.
+      $ref: "../common/CAMARA_common.yaml#/components/schemas/PhoneNumber"
     DevicePhoneNumberVerified:
       description: Number verification. True, if it matches
       type: boolean
-    ErrorInfo:
-      type: object
-      required:
-        - status
-        - code
-        - message
-      properties:
-        status:
-          type: integer
-          description: HTTP response status code
-        code:
-          type: string
-          description: A human-readable code to describe the error
-        message:
-          type: string
-          description: A human-readable description of what the event represents
   responses:
-    Generic400:
-      description: Problem with the client request
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 400
-                  code:
-                    enum:
-                      - INVALID_ARGUMENT
-          example:
-            status: 400
-            code: INVALID_ARGUMENT
-            message: Client specified an invalid argument, request body or query param
-    Generic401:
-      description: Unauthorized
-      headers:
-        x-correlator:
-          $ref: "#/components/headers/x-correlator"
-      content:
-        application/json:
-          schema:
-            allOf:
-              - $ref: "#/components/schemas/ErrorInfo"
-              - type: object
-                properties:
-                  status:
-                    enum:
-                      - 401
-                  code:
-                    enum:
-                      - UNAUTHENTICATED
-          examples:
-            GENERIC_401_UNAUTHENTICATED:
-              description: Request cannot be authenticated and a new authentication is required
-              value:
-                status: 401
-                code: UNAUTHENTICATED
-                message: Request not authenticated due to missing, invalid, or expired credentials. A new authentication is required.
     PhoneNumberVerificationPermissionDenied403:
       description: |
         Client does not have sufficient permission.
@@ -297,12 +224,12 @@ components:
           - Client authentication was not via mobile network. In order to check the authentication method, AMR parameter value in the 3-legged user's access token can be used and make sure that the authentication was not either by SMS+OTP nor username/password (`{"code": "NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK","message": "Client must authenticate via the mobile network to use this service"}`)
       headers:
         x-correlator:
-          $ref: "#/components/headers/x-correlator"
+          $ref: "../common/CAMARA_common.yaml#/components/headers/x-correlator"
       content:
         application/json:
           schema:
             allOf:
-              - $ref: "#/components/schemas/ErrorInfo"
+              - $ref: "../common/CAMARA_common.yaml#/components/schemas/ErrorInfo"
               - type: object
                 properties:
                   status:
