@@ -1,13 +1,15 @@
 # CAMARA Number Verification — Operator Token Acquisition
-## Companion Specification to CAMARA NV API 2.1
+## Companion Guide to CAMARA NV API 2.1
 
 | Field | Value |
 |---|---|
 | **Document version** | 0.1 |
 | **Status** | DRAFT — for review and discussion |
+| **Document type** | Informative guide (non-normative). See "Status of this document" in §1. |
 | **Date** | 2026-06-25 |
 | **Scope** | Android (TS.43 / GMS path) |
-| **Relation to CAMARA NV 2.1** | This document specifies how to obtain the `operatorToken` and use it within the CAMARA NV 2.1 JWT Bearer authentication flow. It does not modify or replace any normative requirement of CAMARA NV 2.1. |
+| **Relation to CAMARA NV 2.1** | This document describes how to obtain the `operatorToken` and use it within the CAMARA NV 2.1 JWT Bearer authentication flow. It is informative: it does not modify or replace any normative requirement of CAMARA NV 2.1, and it introduces no new normative requirements of its own. |
+| **Naming note** | To avoid confusion, the `sub` claim label was disambiguated between the two hops: on the Application → Aggregator hop it is named `vp_token` (it carries the OpenID4VP `vp_token` / SD-JWT), while the Aggregator → operator (CSP) hop keeps `operatortoken` (it carries the actual Operator Token). This is a naming change only, made purely to disambiguate the two hops; it does not alter the flow or the scope of the document. |
 
 ---
 
@@ -46,14 +48,16 @@
 
 CAMARA Number Verification API 2.1 supports JWT Bearer with Operator Token as the authentication mode for accessing the NV endpoints. This mode requires the caller to hold a valid `operatorToken`. CAMARA NV 2.1 does not specify how that token is obtained. This document fills that gap for the Android platform using the TS.43 / GMS path via the OpenID4VP Digital Credentials API.
 
-This specification standardises two interfaces:
+This guide describes two interfaces:
 
-- **App ↔ Aggregator (Channel Partner):** two endpoints exposed by the Aggregator to the Application — `/openid4vp/credentials` (bootstrap: delivers the OpenID4VP credential the App will pass to Android) and `/token` (the Application builds and signs a JWT Bearer assertion (RFC 7523) carrying the Operator Token (SD-JWT from Step 2) in the `sub` claim as `"operatortoken:<SD-JWT>"`; the Aggregator validates the assertion, extracts and decrypts the SD-JWT, and returns a CAMARA access token).
+- **App ↔ Aggregator (Channel Partner):** two endpoints exposed by the Aggregator to the Application — `/openid4vp/credentials` (bootstrap: delivers the OpenID4VP credential the App will pass to Android) and `/token` (the Application builds and signs a JWT Bearer assertion (RFC 7523) carrying the Operator Token (SD-JWT from Step 2) in the `sub` claim as `"vp_token:<SD-JWT>"`; the Aggregator validates the assertion, extracts and decrypts the SD-JWT, and returns a CAMARA access token).
 - **Aggregator ↔ Operator Auth Server (CSP):** the RFC 7523 JWT Bearer call by which the **Aggregator** (after validating and decrypting the SD-JWT) exchanges the carrier-issued `temp_token` for a CAMARA access token. The JWT Bearer assertion at this hop is **built and signed by the Aggregator**, with `sub` formatted as `operatortoken:<temp_token>` and `iss` set to the Aggregator's `client_id` registered with that CSP.
 
-Application authentication against the Aggregator is **not** standardised here — each Aggregator may use its own scheme.
+Application authentication against the Aggregator is **not** described here — each Aggregator may use its own scheme.
 
 The Operator Token (SD-JWT) returned by Android is **both signed and encrypted** at the data layer that matters: the carrier-issued `temp_token` is wrapped inside a JWE (RFC 7516, ECDH-ES + A128GCM) that only the Aggregator can decrypt — using the ephemeral private key it generated and kept when serving the credential in Step 1. The Application therefore cannot read the `temp_token` even though it carries the SD-JWT through.
+
+> **Status of this document.** This is an **informative guide**. It carries no normative force within CAMARA and introduces no requirements beyond those already defined in CAMARA NV 2.1. The RFC 2119 keywords used below (see §1.2) describe the **recommended** way to implement the approach set out here; they are not CAMARA-mandated obligations. Where the guide says an interface is "described" or "recommended", it is offering a concrete, interoperable option — it is not asserting a conformance requirement. The two interfaces above are documented so that independent implementations can interoperate; whether any part of this guide is later promoted to a normative CAMARA artefact is a separate decision for the working group.
 
 ### 1.1 Intended audience
 
@@ -120,10 +124,10 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 | **CSP** | Communication Service Provider — the operator that owns the end-user's mobile subscription and ultimately validates the `temp_token` to issue the CAMARA access token. |
 | **Ephemeral keypair** | An EC keypair (P-256) generated fresh by the Aggregator for each `/openid4vp/credentials` request. The public key is embedded in the `credential_authorization_jwt` `jwks`; the private key is retained solely for JWE decryption in §5.2 and discarded immediately after. |
 | **Issuer JWT** | The first component of the SD-JWT, signed by Android Telephony. It carries `iss = "Telephony"`, the `vct`, and the `cnf` key binding for the Binding JWT. |
-| **Operator Token** | An Android platform and CAMARA NV 2.1 term — **not defined in GSMA TS.43**. The SD-JWT credential (`<Issuer JWT>~<Binding JWT>`) assembled by Android Telephony and returned in the OpenID4VP `vp_token`. It is the transport structure for the TS.43 Temporary Token (`temp_token`): the Issuer JWT (signed by Android Telephony, `iss = "Telephony"`) asserts the credential type (`vct`) and device key binding (`cnf`); the Binding JWT carries the nonce, consent hash, carrier identification, and the Temporary Token encrypted in the `encrypted_credential` JWE. The Application embeds it in the `sub` claim of the JWT Bearer assertion (`"operatortoken:<SD-JWT>"`) that it sends to the Aggregator in Step 3. |
+| **Operator Token** | An Android platform and CAMARA NV 2.1 term — **not defined in GSMA TS.43**. The SD-JWT credential (`<Issuer JWT>~<Binding JWT>`) assembled by Android Telephony and returned in the OpenID4VP `vp_token`. It is the transport structure for the TS.43 Temporary Token (`temp_token`): the Issuer JWT (signed by Android Telephony, `iss = "Telephony"`) asserts the credential type (`vct`) and device key binding (`cnf`); the Binding JWT carries the nonce, consent hash, carrier identification, and the Temporary Token encrypted in the `encrypted_credential` JWE. The Application embeds it in the `sub` claim of the JWT Bearer assertion (`"vp_token:<SD-JWT>"`) that it sends to the Aggregator in Step 3. |
 | **SD-JWT** | Selective Disclosure JSON Web Token. In this document, the two-part structure `<Issuer JWT>~<Binding JWT>` returned by Android in the `vp_token`. |
 | **temp_token** | The **Temporary Token** as defined in GSMA TS.43 §2.8.6: a token issued by the Entitlement Configuration Server (ECS) and handed to the client (Android / GMS) to be passed to a third party — the Aggregator (Application Server in TS.43 terms) — for authentication on the ECS. The ECS maintains the binding `{TemporaryToken → MSISDN}`. In Android's implementation it is encrypted inside the `encrypted_credential` JWE (ECDH-ES + A128GCM) within the Binding JWT, readable only by the Aggregator. The Aggregator decrypts it in §5.2 and submits it to the CSP Auth Server in §5.3 as the `sub` claim of the JWT Bearer assertion (`sub = "operatortoken:<temp_token>"`). |
-| **vp_token** | The OpenID4VP response field containing the SD-JWT, keyed by the Aggregator's `id` from the DCQL credential object. |
+| **vp_token** | The OpenID4VP response field containing the SD-JWT, keyed by the Aggregator's `id` from the DCQL credential object. The same term is reused as the `sub` prefix (`vp_token:<SD-JWT>`) on the App → Aggregator hop (Step 3), identifying the subject as this OpenID4VP presentation. |
 
 ---
 
@@ -173,7 +177,7 @@ In Android platform documentation the **Verifier** role is referred to as the **
       ECS-->>GMS: temp_token
       GMS-->>App: vp_token: SD-JWT
 
-      App->>V: ③ POST /token<br/>assertion = JWT {sub=operatortoken:SD-JWT}
+      App->>V: ③ POST /token<br/>assertion = JWT {sub=vp_token:SD-JWT}
       V->>OA: POST /token (RFC 7523)<br/>sub = operatortoken:temp_token
       OA->>ECS: GetPhoneNumber(temp_token)
       ECS-->>OA: MSISDN
@@ -229,7 +233,7 @@ If the Application has previously completed a successful Operator Token flow on 
 
 The Application POSTs to `/openid4vp/credentials` including the carrier ID list. The Aggregator checks the list against its per-CSP allowlist and, if at least one carrier is eligible, generates the OpenID4VP credential and returns it directly. **This is a single call — there is no separate eligibility endpoint.**
 
-> **Note:** The `/openid4vp/credentials` endpoint shape is **defined by this specification and proposed for standardisation**; authentication against it is **Aggregator-specific** (mTLS, OAuth client credentials, JWT bearer with Aggregator-issued keys, etc., per Aggregator).
+> **Note:** The `/openid4vp/credentials` endpoint shape is **described by this guide as a recommended shape**; authentication against it is **Aggregator-specific** (mTLS, OAuth client credentials, JWT bearer with Aggregator-issued keys, etc., per Aggregator).
 
 ```http
 POST /openid4vp/credentials HTTP/1.1
@@ -436,15 +440,15 @@ grant_type=urn%3Aietf%3Aparams%3Aoauth%3Agrant-type%3Ajwt-bearer
 | Field | Description |
 |---|---|
 | `grant_type` | Fixed: `urn:ietf:params:oauth:grant-type:jwt-bearer` (RFC 7523 — names the bearer-credential grant family). |
-| `assertion` | JWT Bearer assertion (RFC 7523) built and signed by the Application with its private key registered with the Aggregator. Required claims: `iss` = Application's `client_id` at the Aggregator; `sub` = `"operatortoken:<SD-JWT>"` (the full SD-JWT from Step 2, with prefix); `aud` = this Aggregator's `/token` endpoint URL; `scope` = CAMARA scope (MUST be present as a JWT claim — MUST NOT appear as a separate form body parameter); `exp`, `iat`, `jti` per RFC 7523. |
-> **`sub` claim — Operator Token as grant subject:** The Operator Token (SD-JWT from Step 2) is placed in the `sub` claim of the assertion using the prefix `"operatortoken:<SD-JWT>"`. This prefix identifies the subject as a TS.43-based credential. The `scope` claim MUST be inside the assertion JWT; it MUST NOT appear in the request body. The Aggregator verifies the Application's signature, extracts the SD-JWT from `sub`, and after JWE decryption uses the same prefix convention in its own assertion to the CSP: `"operatortoken:<temp_token>"` (§5.3).
+| `assertion` | JWT Bearer assertion (RFC 7523) built and signed by the Application with its private key registered with the Aggregator. Required claims: `iss` = Application's `client_id` at the Aggregator; `sub` = `"vp_token:<SD-JWT>"` (the full SD-JWT from Step 2, with prefix); `aud` = this Aggregator's `/token` endpoint URL; `scope` = CAMARA scope (MUST be present as a JWT claim — MUST NOT appear as a separate form body parameter); `exp`, `iat`, `jti` per RFC 7523. |
+> **`sub` claim — Operator Token as grant subject:** The Operator Token (SD-JWT from Step 2) is placed in the `sub` claim of the assertion using the prefix `"vp_token:<SD-JWT>"` (renamed from `operatortoken:` following the PR #238 review, reflecting that the value carried is the OpenID4VP `vp_token`). The `scope` claim MUST be inside the assertion JWT; it MUST NOT appear in the request body. The Aggregator verifies the Application's signature, extracts the SD-JWT from `sub`, and after JWE decryption builds its own assertion to the CSP with the prefix `"operatortoken:<temp_token>"` (§5.3).
 
 Example JWT assertion, which MUST be signed by the API Consumer and MAY be encrypted:
 
 ```json
 {
   "iss": "client_id",
-  "sub": "operatortoken:ey...",
+  "sub": "vp_token:ey...",
   "aud": "https://az.api-provider.com/token.oauth2",
   "exp": 1504807731,
   "iat": 1504804131,
@@ -476,7 +480,7 @@ The Application uses this `access_token` against the NV API (Step 4). It does no
 
 #### Operator Token (SD-JWT) structure — reference
 
-The Application SHALL NOT parse this; it is documented here so that Aggregator implementers (and reviewers of this specification) understand what travels in the `sub` claim of the `assertion` and what §5 below covers.
+The Application SHALL NOT parse this; it is documented here so that Aggregator implementers (and reviewers of this guide) understand what travels in the `sub` claim of the `assertion` and what §5 below covers.
 
 The SD-JWT is composed of **two JWTs joined by a single `~` separator**:
 
@@ -558,13 +562,13 @@ Content-Type: application/json
 
 ## 5. Aggregator (Channel Partner) Internal Responsibilities
 
-This section describes what the Aggregator SHALL do internally upon receiving the JWT Bearer assertion from the Application in Step 3. From the Application's perspective Step 3 is a single round-trip (`/token` in, access token out); everything below — SD-JWT validation, JWE decryption, the RFC 7523 call to the CSP — happens inside the Aggregator before it responds to the App. The Aggregator → CSP interface (§5.3) **is** standardised by this document; the Application developer does not implement any of this logic.
+This section describes what the Aggregator SHALL do internally upon receiving the JWT Bearer assertion from the Application in Step 3. From the Application's perspective Step 3 is a single round-trip (`/token` in, access token out); everything below — SD-JWT validation, JWE decryption, the RFC 7523 call to the CSP — happens inside the Aggregator before it responds to the App. The Aggregator → CSP interface (§5.3) **is** described by this guide as a recommended, CSP-agnostic flow; the Application developer does not implement any of this logic.
 
 ### 5.1 Application assertion validation and SD-JWT processing
 
-The JWT Bearer grant used at this interface is defined in [CAMARA Identity and Consent Management — JWT Bearer Flow](https://github.com/camaraproject/IdentityAndConsentManagement/blob/r4.2/documentation/CAMARA-API-access-and-user-consent.md#jwt-bearer-flow). This section specifies the additional validation steps required for the `operatortoken:` subject prefix and the SD-JWT structure carried in the `sub` claim:
+The JWT Bearer grant used at this interface is defined in [CAMARA Identity and Consent Management — JWT Bearer Flow](https://github.com/camaraproject/IdentityAndConsentManagement/blob/r4.2/documentation/CAMARA-API-access-and-user-consent.md#jwt-bearer-flow). This section specifies the additional validation steps required for the `vp_token:` subject prefix and the SD-JWT structure carried in the `sub` claim:
 
-0. **Validate the Application's JWT Bearer assertion** — verify the JWT signature using the Application's public key registered with the Aggregator. Validate `iss` (matches the registered Application `client_id`), `aud` (matches this Aggregator's `/token` endpoint URL), `exp` (not expired), and `jti` (single-use — reject any replayed assertion). Extract the `sub` claim; it MUST start with the prefix `operatortoken:`. Strip the prefix to obtain the Operator Token (SD-JWT).
+0. **Validate the Application's JWT Bearer assertion** — verify the JWT signature using the Application's public key registered with the Aggregator. Validate `iss` (matches the registered Application `client_id`), `aud` (matches this Aggregator's `/token` endpoint URL), `exp` (not expired), and `jti` (single-use — reject any replayed assertion). Extract the `sub` claim that starts with the prefix `vp_token:`. Strip the prefix to obtain the Operator Token (SD-JWT).
 1. **Split** the SD-JWT on the single `~` separator to obtain the Issuer JWT and the Binding JWT.
 2. **Verify the Issuer JWT signature** using the public key in its `x5c` header (Android device Credential Manager public key, registered during Channel Partner whitelisting).
 3. **Verify the Binding JWT signature** using the `cnf` key from the Issuer JWT payload.
@@ -602,7 +606,7 @@ The decrypted plaintext is:
 
 ### 5.3 Aggregator → CSP JWT Bearer flow (standardised)
 
-This is the part of the chain that this document **standardises across CSPs**: the Aggregator builds and signs a JWT Bearer assertion (RFC 7523) and POSTs it to the CSP's `/token` endpoint. **The Application is not involved in building this assertion** — by the time the Aggregator reaches this step, the Application has already received its CAMARA access token in the response to Step 3 (the Aggregator returns it after this hop completes).
+This part of the chain is not defined by this guide: it follows the CAMARA specification of the standard interface across CSPs — the [JWT Bearer Flow with Operator Token](https://github.com/camaraproject/IdentityAndConsentManagement/blob/r4.2/documentation/CAMARA-API-access-and-user-consent.md#jwt-bearer-flow-with-operator-token) defined in CAMARA Identity and Consent Management. Following that specification, the Aggregator builds and signs a JWT Bearer assertion (RFC 7523) and POSTs it to the CSP's `/token` endpoint. **The Application is not involved in building this assertion** — by the time the Aggregator reaches this step, the Application has already received its CAMARA access token in the response to Step 3 (the Aggregator returns it after this hop completes).
 
 ```mermaid
 sequenceDiagram
@@ -623,6 +627,8 @@ sequenceDiagram
 > **Informative — internal CSP implementation:** The `GetPhoneNumber` interaction between the API Exposure Platform (Authentication Server) and the Entitlement Configuration Server is just an illustrative example, not a normative one. The Entitlement Configuration Server SHALL validate the temporary token when performing a TS.43 operation like GetPhoneNumber, VerifyPhoneNumber, GetSubscriberDeviceInfo or AcquireOperatorToken.
 
 **Standardisation points enforced on the Aggregator ↔ CSP interface:**
+
+These elements are those specified by the CAMARA [JWT Bearer Flow with Operator Token](https://github.com/camaraproject/IdentityAndConsentManagement/blob/r4.2/documentation/CAMARA-API-access-and-user-consent.md#jwt-bearer-flow-with-operator-token); this guide does not add to or modify them.
 
 | Element | Value |
 |---|---|
@@ -689,7 +695,7 @@ The security properties of this protocol depend on several mechanisms that SHALL
 
 ---
 
-The Application is split into **App Frontend** (running on the device — calls `CredentialManager`, no direct contact with the Aggregator) and **App Backend** (server-side — calls the Aggregator and the NV API). The interface between them is **not standardised by this document** — it is part of each App's own private API design. Two logical exchanges are shown as `[App API — TBD]`: (1) Frontend asking Backend for a ready-to-submit OpenID4VP request; (2) Frontend handing the resulting SD-JWT back to Backend. App developers are free to shape these endpoints however they prefer (REST, GraphQL, push channel, etc.).
+The Application is split into **App Frontend** (running on the device — calls `CredentialManager`, no direct contact with the Aggregator) and **App Backend** (server-side — calls the Aggregator and the NV API). The interface between them is **not described by this guide** — it is part of each App's own private API design. Two logical exchanges are shown as `[App API — TBD]`: (1) Frontend asking Backend for a ready-to-submit OpenID4VP request; (2) Frontend handing the resulting SD-JWT back to Backend. App developers are free to shape these endpoints however they prefer (REST, GraphQL, push channel, etc.).
 
 ```mermaid
 sequenceDiagram
@@ -725,7 +731,7 @@ sequenceDiagram
     FE->>BE: SD-JWT (extracted from vp_token)
 
     Note over BE,V: Step 3 — Backend POSTs JWT Bearer assertion to Aggregator /token
-    BE->>V: POST /token (RFC 7523)<br/>grant_type=jwt-bearer<br/>assertion=JWT{<br/>iss=app_client_id,<br/>sub=operatortoken:SD-JWT<br/>}
+    BE->>V: POST /token (RFC 7523)<br/>grant_type=jwt-bearer<br/>assertion=JWT{<br/>iss=app_client_id,<br/>sub=vp_token:SD-JWT<br/>}
     Note over V: §5.1 Validate App JWT assertion<br/>extract SD-JWT from sub<br/>Validate SD-JWT:<br/>- IssuerJWT sig (x5c)<br/>- BindingJWT sig (cnf)<br/>- vct, exp, aud, nonce<br/>- keep consent_data_hash<br/>§5.2 Decrypt JWE → temp_token<br/>§5.3 Resolve CSP from carrier_hint<br/>and BUILD + sign RFC 7523 assertion
 
     Note over V,OA: §5.3 — Aggregator → CSP (standardised, internal to Step 3)
@@ -745,12 +751,12 @@ sequenceDiagram
 
 **Summary of interfaces in the diagram:**
 
-| Interface | Standardised by | Notes |
+| Interface | Defined / described by | Notes |
 |---|---|---|
 | App Frontend ↔ App Backend | **No** — left to each App's developer | Two logical exchanges: (1) request payload delivery, (2) SD-JWT return. Shape, transport, and auth chosen by the App. |
-| App Backend ↔ Aggregator | **This document** (`/openid4vp/credentials`, `/token`) | Authentication scheme is Aggregator-specific. |
+| App Backend ↔ Aggregator | **This guide** (`/openid4vp/credentials`, `/token`) | Authentication scheme is Aggregator-specific. |
 | App Frontend ↔ Android (GMS) | Android Digital Credentials API | `CredentialManager.getCredential` on native; `navigator.credentials.get` on web. |
-| Aggregator ↔ CSP | **This document** (§5.3 RFC 7523 assertion shape) | Per-CSP signing-key registration is bilateral. |
+| Aggregator ↔ CSP | **CAMARA** — [JWT Bearer Flow with Operator Token](https://github.com/camaraproject/IdentityAndConsentManagement/blob/r4.2/documentation/CAMARA-API-access-and-user-consent.md#jwt-bearer-flow-with-operator-token) (applied in §5.3) | Per-CSP signing-key registration is bilateral. |
 | App Backend ↔ NV API | CAMARA NV 2.1 | Bearer access token. |
 > **Informative — internal CSP implementation:** The `GetPhoneNumber` interaction between the API Exposure Platform (Authentication Server) and the Entitlement Configuration Server is just an illustrative example, not a normative one. The Entitlement Configuration Server SHALL validate the temporary token when performing a TS.43 operation like GetPhoneNumber, VerifyPhoneNumber, GetSubscriberDeviceInfo or AcquireOperatorToken.
 ---
@@ -842,4 +848,4 @@ This mechanism is what allows each CSP to **gate, per-Aggregator, who may obtain
 
 ---
 
-*This document is a companion specification intended to be read alongside CAMARA Number Verification API 2.1. It does not supersede any normative requirement of that specification.*
+*This document is a companion **informative guide** intended to be read alongside CAMARA Number Verification API 2.1. It does not supersede any normative requirement of that specification and introduces no new normative requirements of its own.*
