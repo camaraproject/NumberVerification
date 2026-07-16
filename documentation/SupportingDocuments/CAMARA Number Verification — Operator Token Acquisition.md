@@ -188,8 +188,7 @@ In Android platform documentation the **Verifier** role is referred to as the **
       NV-->>App: devicePhoneNumber
   ```
 
-The Application interacts exclusively with standard CAMARA-shaped interfaces. The Aggregator owns JWE decryption (using the ephemeral private key generated in Step ①) and the internal RFC 7523 assertion toward the CSP.
-
+The Application interacts exclusively with standard CAMARA-shaped interfaces. The Aggregator owns JWE decryption (using the ephemeral private key generated in Step ①) and the internal RFC 7523 assertion toward the CSP. This Aggregator (Channel Partner) model follows the GSMA [Open Gateway Technical Realisation Guidelines (OPG.10 v4.0)](https://www.gsma.com/solutions-and-impact/technologies/networks/wp-content/uploads/2012/10/OPG.10-v4.0-Open-Gateway-Technical-Realisation-Guidelines.pdf).
 
 ---
 
