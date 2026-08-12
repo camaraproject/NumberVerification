@@ -89,7 +89,8 @@ Feature: CAMARA Number Verification API, vwip - Operation phoneNumberVerify
   Scenario: Error when request body contains a property but it is neither phoneNumber nor hashedPhoneNumber
     Given a valid testing phoneNumber supported by the service, identified by the token
     And the request body property "$.additional_property" is set to "foo_value"
-    And the request body does not contain neither "$.phoneNumber" nor "$.hashedPhoneNumber"
+    And the request body contains neither "$.phoneNumber" nor "$.hashedPhoneNumber"
+    When the request "phoneNumberVerify" is sent
     Then the response status code is 400
     And the response property "$.status" is 400
     And the response property "$.code" is "INVALID_ARGUMENT"
@@ -100,8 +101,7 @@ Feature: CAMARA Number Verification API, vwip - Operation phoneNumberVerify
   @phone_number_verify_400.4_both_phone_number_and_hashed_in_request
   Scenario: Response error when phoneNumber and hashedPhoneNumber are provided together in the request body
     Given the request body property "$.phoneNumber" is set to a valid phone number
-    And the same phone number is compliant with OAS schema at "#/components/schemas/PhoneNumber"
-    And the request body property "$.hashedPhoneNumber" is set to a valid phone number compliant with OAS schema at "#/components/schemas/HashedPhoneNumber"
+    And the request body property "$.hashedPhoneNumber" is set to a valid phone number, hashed in SHA-256 (in hexadecimal representation)
     When the request "phoneNumberVerify" is sent
     Then the response status code is 400
     And the response property "$.status" is 400
@@ -169,7 +169,7 @@ Feature: CAMARA Number Verification API, vwip - Operation phoneNumberVerify
   @phone_number_verify_C02.01_phone_number_not_schema_compliant
   Scenario: Phone number value does not comply with the schema
     Given the header "Authorization" is set to a valid access token which does not identify a single phone number
-    And the request body property "$.phoneNumber" does not comply with the OAS schema at "#/components/schemas/PhoneNumber"
+    And the request body property "$.phoneNumber" is set to a value that does not comply with the schema of the "phoneNumber" property at "#/components/schemas/NumberVerificationRequestBody"
     When the request "phoneNumberVerify" is sent
     Then the response status code is 400
     And the response property "$.status" is 400
