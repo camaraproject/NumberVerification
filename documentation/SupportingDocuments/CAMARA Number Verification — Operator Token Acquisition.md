@@ -855,6 +855,12 @@ This mechanism is what allows each CSP to **gate, per-Aggregator, who may obtain
 
 > **What the Application is *not*:** the Application has no certificate, no key, and no whitelist entry on the device side. From the Wallet's perspective only the Aggregator is cryptographically authorised. The Application's identity reaches the CSP only later, in §5.3, via the `iss = aggregator_client_id_at_csp` claim of the JWT Bearer assertion — where `aggregator_client_id_at_csp` is the client ID the Application (or its Aggregator acting on its behalf) has registered with that CSP during onboarding.
 
+**Ongoing governance obligations.** Onboarding establishes the initial trust anchor; maintaining ecosystem security requires CSPs to treat Aggregator management as a continuous operational responsibility:
+
+- CSPs SHALL conduct periodic security auditing of all contracted Aggregators — including key-management practices, token-handling procedures, access logging, and incident-response readiness.
+- CSPs SHALL maintain operational readiness to invoke GMS whitelist revocation (via Android) and CAMARA Auth Server revocation independently of each other, so that either layer can block a compromised Aggregator without dependency on the other.
+- The bilateral Aggregator agreement SHALL include contractual provisions for immediate whitelist suspension upon confirmed malicious activity or material security-policy violation.
+
 ---
 
 *This document is a companion **informative guide** intended to be read alongside CAMARA Number Verification API 2.1. It does not supersede any normative requirement of that specification and introduces no new normative requirements of its own.*
