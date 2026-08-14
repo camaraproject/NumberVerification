@@ -688,6 +688,16 @@ The security properties of this protocol depend on several mechanisms that SHALL
 
 **Consent auditability.** The `consent_data_hash` field in the Binding JWT is the SHA-256 of the consent material shown to the user. Because it is covered by the device's signature, it constitutes a cryptographic attestation that the correct consent text was presented before the token was issued.
 
+**Aggregator auditing and revocation.** CSPs SHALL establish ongoing security-audit obligations for contracted Aggregators as a condition of the bilateral agreement and GMS whitelist entry. When a compromise is confirmed, two independently sufficient revocation mechanisms are available:
+
+- **GMS whitelist revocation** — the CSP instructs Android to remove the Aggregator's certificate fingerprint from the GMS whitelist (Appendix B.1). GMS will then refuse to issue Operator Tokens for that Aggregator on any device.
+- **CAMARA Auth Server revocation** — the CSP revokes the Aggregator's `client_id` registration at the CAMARA Auth Server. Subsequent JWT Bearer assertions from that Aggregator are rejected at Step 3 (§5.3) regardless of GMS whitelist state.
+
+Either mechanism is independently sufficient to block a compromised Aggregator; operating both provides defence in depth.
+
+**Play Integrity API (defence in depth).** Aggregators SHOULD verify the integrity of the requesting device and application environment using the [Google Play Integrity API](https://developer.android.com/google/play/integrity) or an equivalent hardware-backed device-attestation mechanism. The verdict MAY be evaluated at Step 1 (before issuing the `credential_authorization_jwt`) or at Step 3 (before accepting the SD-JWT). A failed device-integrity verdict SHOULD result in the credential being denied or the request being flagged for elevated risk review.
+
+
 ---
 
 ## Appendix A — End-to-end sequence diagram
