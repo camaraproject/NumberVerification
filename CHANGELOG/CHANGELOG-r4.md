@@ -71,7 +71,7 @@ Changes documented below are compared to version 2.1.0.
 
 ### Added
 
-* N/A
+* Access token security considerations for Number Verification API by @jpengar in https://github.com/camaraproject/NumberVerification/pull/226
 
 ### Changed
 
