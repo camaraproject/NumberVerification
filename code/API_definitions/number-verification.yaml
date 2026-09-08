@@ -242,11 +242,7 @@ components:
                       - NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK
           examples:
             GENERIC_403_PERMISSION_DENIED:
-              description: Permission denied. OAuth2 token access does not have the required scope or when the user fails operational security
-              value:
-                status: 403
-                code: PERMISSION_DENIED
-                message: Client does not have sufficient permissions to perform this action.
+              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_403_PERMISSION_DENIED"
             GENERIC_403_USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK:
               value:
                 status: 403
