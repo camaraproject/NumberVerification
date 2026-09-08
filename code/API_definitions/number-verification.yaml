@@ -210,9 +210,7 @@ components:
         - devicePhoneNumber
       properties:
         devicePhoneNumber:
-          $ref: '#/components/schemas/DevicePhoneNumber'
-    DevicePhoneNumber:
-      $ref: "../common/CAMARA_common.yaml#/components/schemas/PhoneNumber"
+          $ref: "../common/CAMARA_common.yaml#/components/schemas/PhoneNumber"
     DevicePhoneNumberVerified:
       description: Number verification. True, if it matches
       type: boolean
