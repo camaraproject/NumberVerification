@@ -136,9 +136,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/NumberVerificationMatchResponse'
         '400':
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic400"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/BadRequest400"
         '401':
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic401"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Unauthenticated401"
         '403':
           $ref: '#/components/responses/PhoneNumberVerificationPermissionDenied403'
       security:
@@ -167,9 +167,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/NumberVerificationShareResponse'
         '400':
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic400"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/BadRequest400"
         '401':
-          $ref: "../common/CAMARA_common.yaml#/components/responses/Generic401"
+          $ref: "../common/CAMARA_common.yaml#/components/responses/Unauthenticated401"
         '403':
           $ref: '#/components/responses/PhoneNumberVerificationPermissionDenied403'
       security:
@@ -242,11 +242,7 @@ components:
                       - NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK
           examples:
             GENERIC_403_PERMISSION_DENIED:
-              description: Permission denied. OAuth2 token access does not have the required scope or when the user fails operational security
-              value:
-                status: 403
-                code: PERMISSION_DENIED
-                message: Client does not have sufficient permissions to perform this action.
+              $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_403_PERMISSION_DENIED"
             GENERIC_403_USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK:
               value:
                 status: 403
