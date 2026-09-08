@@ -87,7 +87,7 @@ info:
     <!-- CAMARA:MANDATORY:request-body-strictness:END -->
 
   version: wip
-  x-camara-commonalities: 0.8.0
+  x-camara-commonalities: 0.9.0
   license:
     name: Apache 2.0
     url: https://www.apache.org/licenses/LICENSE-2.0.html
