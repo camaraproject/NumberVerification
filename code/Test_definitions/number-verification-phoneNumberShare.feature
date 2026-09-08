@@ -36,7 +36,7 @@ Feature: CAMARA Number Verification API, vwip - Operation phoneNumberShare
 
   # Generic 401 errors
 
-  @phone_number_verify_401.1_no_authorization_header
+  @phone_number_share_401.1_no_authorization_header
   Scenario: No Authorization header
     Given the header "Authorization" is removed
     When the request "phoneNumberShare" is sent
@@ -45,7 +45,7 @@ Feature: CAMARA Number Verification API, vwip - Operation phoneNumberShare
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @phone_number_verify_401.2_expired_access_token
+  @phone_number_share_401.2_expired_access_token
   Scenario: Expired access token
     Given the header "Authorization" is set to an expired access token
     When the request "phoneNumberShare" is sent
@@ -54,7 +54,7 @@ Feature: CAMARA Number Verification API, vwip - Operation phoneNumberShare
     And the response property "$.code" is "UNAUTHENTICATED"
     And the response property "$.message" contains a user friendly text
 
-  @phone_number_verify_401.3_invalid_access_token
+  @phone_number_share_401.3_invalid_access_token
   Scenario: Invalid access token
     Given the header "Authorization" is set to an invalid access token
     When the request "phoneNumberShare" is sent
