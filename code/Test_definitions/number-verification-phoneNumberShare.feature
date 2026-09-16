@@ -34,6 +34,17 @@ Feature: CAMARA Number Verification API, vwip - Operation phoneNumberShare
     Then the response status code is 200
     And the response property "$.devicePhoneNumber" is equal to the phone number associated with the access token
 
+  # Generic 400 errors
+
+  @phone_number_share_400.1_invalid_x-correlator
+  Scenario: Invalid x-correlator header
+    Given the header "x-correlator" does not comply with the schema at "#/components/schemas/XCorrelator"
+    When the request "phoneNumberShare" is sent
+    Then the response status code is 400
+    And the response property "$.status" is 400
+    And the response property "$.code" is "INVALID_ARGUMENT"
+    And the response property "$.message" contains a user friendly text
+
   # Generic 401 errors
 
   @phone_number_share_401.1_no_authorization_header
