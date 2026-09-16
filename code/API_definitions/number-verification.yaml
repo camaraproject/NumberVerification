@@ -243,7 +243,8 @@ components:
           examples:
             GENERIC_403_PERMISSION_DENIED:
               $ref: "../common/CAMARA_common.yaml#/components/examples/GENERIC_403_PERMISSION_DENIED"
-            GENERIC_403_USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK:
+            NUMBER_VERIFICATION_403_USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK:
+              description: API-specific error case — client did not authenticate via the mobile network
               value:
                 status: 403
                 code: NUMBER_VERIFICATION.USER_NOT_AUTHENTICATED_BY_MOBILE_NETWORK
