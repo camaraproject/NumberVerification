@@ -82,15 +82,17 @@ Changes documented below are compared to version 2.1.0.
 
 ### Added
 
-* N/A
+* Add companion whitepaper: Operator Token Acquisition for Number Verification on Android (TS.43/OpenID4VP) by @albertoramosmonagas in https://github.com/camaraproject/NumberVerification/pull/238
 
 ### Changed
 
-* N/A
+* Refactor DevicePhoneNumber reference in YAML by @bigludo7 in https://github.com/camaraproject/NumberVerification/pull/249
 
 ### Fixed
 
-* N/A
+* fix(number-verification): correct Gherkin test definition defects by @hdamker in https://github.com/camaraproject/NumberVerification/pull/255
+* test(number-verification): add missing 400 scenario for phoneNumberShare by @hdamker in https://github.com/camaraproject/NumberVerification/pull/257
+* Correct externalDocs.description wording in number-verification.yaml by @hdamker in https://github.com/camaraproject/NumberVerification/pull/240
 
 ### Removed
 
