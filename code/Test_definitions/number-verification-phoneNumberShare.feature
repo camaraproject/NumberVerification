@@ -1,4 +1,4 @@
-Feature: CAMARA Number Verification API, vwip - Operation phoneNumberShare
+Feature: CAMARA Number Verification API, v2.1.1-rc.2 - Operation phoneNumberShare
 
   # Input to be provided by the implementation to the tester
   #
@@ -9,7 +9,7 @@ Feature: CAMARA Number Verification API, vwip - Operation phoneNumberShare
   # * a valid testing phone number supported by the service
 
   Background: Common phoneNumberShare setup
-    Given the resource "/number-verification/vwip" as base url
+    Given the resource "/number-verification/v2rc2" as base url
     And the header "Content-Type" is set to "application/json"
     And the header "Authorization" is set to a valid access token
     And the header "x-correlator" complies with the schema at "#/components/schemas/XCorrelator"
