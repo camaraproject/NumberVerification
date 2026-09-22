@@ -82,6 +82,7 @@ Changes documented below are compared to version 2.1.0.
 
 ### Added
 
+* Access token security considerations for Number Verification API by @jpengar in https://github.com/camaraproject/NumberVerification/pull/226
 * Add companion whitepaper: Operator Token Acquisition for Number Verification on Android (TS.43/OpenID4VP) by @albertoramosmonagas in https://github.com/camaraproject/NumberVerification/pull/238
 
 ### Changed
