@@ -2,7 +2,7 @@ repository:
   repository_name: NumberVerification
   release_tag: r4.1
   release_type: pre-release-rc
-  release_date: null
+  release_date: '2026-09-27T06:07:08Z'
   src_commit_sha: baeb5e49444dc70de8f42b9cabaf94a5ef0f14fe
 apis:
 - api_name: number-verification
