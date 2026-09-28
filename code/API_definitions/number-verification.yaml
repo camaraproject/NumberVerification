@@ -30,8 +30,8 @@ info:
     **Authentication is the core of this service API, ensuring that the phone number retrieved or verified is correct and according to the current SIM or network connection.** For that purpose, the following security requirements apply to access tokens containing number verification scopes:
 
     - Single-use token (one-time use): To prevent replay attacks and ensure the integrity of the verification process, the access token MUST be restricted to a single API call.
-    - No refresh tokens: Refresh tokens MUST not be issued for Number Verification scopes. If the token expires or is used up, the API Consumer MUST initiate a new authorization flow to obtain a new access token.
-    - Short-lived expiration: The access token MUST not exceed an expiration time of 300 seconds (5 minutes).
+    - No refresh tokens: Refresh tokens MUST NOT be issued for Number Verification scopes. If the token expires or is used up, the API Consumer MUST initiate a new authorization flow to obtain a new access token.
+    - Short-lived expiration: The access token MUST NOT exceed an expiration time of 300 seconds (5 minutes).
 
     ## Authentication Request with a temporary token
 
@@ -67,9 +67,9 @@ info:
     The specific authorization flows to be used will be agreed upon during the onboarding process, happening between the API consumer and the API provider, taking into account the declared purpose for accessing the API, whilst also being subject to the prevailing legal framework dictated by local legislation.
 
     In cases where personal data is processed by the API and users can exercise their rights through mechanisms such as opt-in and/or opt-out, the use of three-legged access tokens is mandatory. This ensures that the API remains in compliance with privacy regulations, upholding the principles of transparency and user-centric privacy-by-design.
-     <!-- CAMARA:MANDATORY:authorization-and-authentication:END -->
+    <!-- CAMARA:MANDATORY:authorization-and-authentication:END -->
 
-      In the case of the Number Verification API scenario and according to the API definition, 3-legged access tokens must be used by API clients to invoke this API with dedicated scope. The API client must authenticate on behalf of a specific user to use this service. This must be done via mobile network authentication.
+    In the case of the Number Verification API scenario and according to the API definition, 3-legged access tokens must be used by API clients to invoke this API with dedicated scope. The API client must authenticate on behalf of a specific user to use this service. This must be done via mobile network authentication.
 
     <!-- CAMARA:MANDATORY:additional-error-responses:BEGIN -->
 
