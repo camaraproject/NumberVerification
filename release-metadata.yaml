@@ -1,0 +1,13 @@
+repository:
+  repository_name: NumberVerification
+  release_tag: r4.2
+  release_type: public-release
+  release_date: null
+  src_commit_sha: f7ae538acbfaa6208b164202cabbfcffaa3cf76f
+apis:
+- api_name: number-verification
+  api_version: 2.1.1
+  api_title: Number Verification
+dependencies:
+  commonalities_release: r4.4 (0.9.0)
+  identity_consent_management_release: r4.2 (0.5.0)
